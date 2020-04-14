@@ -36,7 +36,7 @@ class Heatmap(Vis):
         self.vmin = vmin
         self.vmax = vmax
 
-    def heatmap(self) -> None:
+    def plot(self) -> None:
         self.check_args_in_columns([self.columns, [self.row_index]])
         df_dists = pd.DataFrame(self.df[self.columns].values)
         df_dists.columns = self.columns
@@ -47,14 +47,4 @@ class Heatmap(Vis):
         plt.title(self.title)
         plt.setp(fig.ax_heatmap.yaxis.get_majorticklabels(), rotation=0)
         plt.setp(fig.ax_heatmap.xaxis.get_majorticklabels(), rotation=45, horizontalalignment='right')
-
-    def get_heatmap_str(self) -> str:
-        self.heatmap()
-        return self.return_svg()
-
-    def save_heatmap(self, label_lst: list) -> None:
-        label_lst = self.check_label(label_lst, 'heatmap')
-        self.heatmap()
-        self.save_svg(label_lst)
-
 

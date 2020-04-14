@@ -26,6 +26,7 @@ from sciviso import Vis
 class Boxplot(Vis):
     """
     Box plot. Adds stat annotations and returns the SVG or saves it to disk.
+    for stats annotations details see: https://github.com/webermarcolivier/statannot
     """
     def __init__(self, df: pd.DataFrame, x: object, y: object, title='', hue=None, order=None, hue_order=None,
                     showfliers=False, add_dots=False, add_stats=True, stat_method='Mann-Whitney', box_pairs=None):
@@ -42,8 +43,9 @@ class Boxplot(Vis):
         self.add_stats = add_stats
         self.stat_method = stat_method
         self.box_pairs = box_pairs
+        self.label = 'boxplot'
 
-    def boxplot(self):
+    def plot(self):
         x, y, hue_order, order, hue, box_pairs = self.x, self.y, self.hue_order, self.order, self.hue, self.box_pairs
         # First lets check whether we were passed lists or strings for our y and x arrays
         if not isinstance(x, str) and not isinstance(y, str):
@@ -89,12 +91,3 @@ class Boxplot(Vis):
         plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
         plt.title(self.title)
 
-    def get_boxplot_str(self) -> str:
-        self.boxplot()
-        return self.return_svg()
-
-    def save_boxplot(self, label_lst: list) -> None:
-
-        label_lst = self.check_label(label_lst, 'boxplot')
-        self.boxplot()
-        self.save_svg(label_lst)

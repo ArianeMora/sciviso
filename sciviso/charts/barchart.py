@@ -22,10 +22,9 @@ import seaborn as sns
 from sciviso import Vis
 
 
-class Violinplot(Vis):
+class Barchart(Vis):
 
-    def __init__(self, df: pd.DataFrame, x: object, y: object, title='', hue=None, order=None, hue_order=None,
-                 showfliers=False, add_dots=False):
+    def __init__(self, df: pd.DataFrame, x: object, y: object, title='', hue=None, order=None, hue_order=None):
         super().__init__(df)
         self.df = df
         self.x = x
@@ -34,20 +33,19 @@ class Violinplot(Vis):
         self.hue = hue
         self.order = order
         self.hue_order = hue_order
-        self.showfliers = showfliers
-        self.add_dots = add_dots
+        self.label = 'barchart'
 
     def plot(self):
-        x, y, hue, order, hue_order = self.x, self.y, self.hue, self.order, self.hue_order
-
-        if not isinstance(self.x, str) and not isinstance(self.y, str):
+        x, y, hue_order, order, hue = self.x, self.y, self.hue_order, self.order, self.hue
+        # First lets check whether we were passed lists or strings for our y and x arrays
+        if not isinstance(x, str) and not isinstance(y, str):
             vis_df = pd.DataFrame()
             vis_df['x'] = x
             vis_df['y'] = y
             x = 'x'
             y = 'y'
-            if self.hue is not None:
-                vis_df['colour'] = self.hue
+            if hue is not None:
+                vis_df['colour'] = hue
                 hue = 'colour'
             if order is None:
                 order = list(set(vis_df['x'].values))
@@ -62,11 +60,9 @@ class Violinplot(Vis):
             order = list(set(vis_df[x].values))
             order.sort()
 
-        ax = sns.violinplot(data=vis_df, x=x, y=y, hue=hue, hue_order=hue_order, order=order, palette=self.palette,
-                            showfliers=self.showfliers)
-        if self.add_dots:
-            ax = sns.stripplot(data=vis_df, x=x, y=y, hue_order=hue_order, order=order, color='.2')
+        ax = sns.barplot(data=vis_df, x=x, y=y, hue=hue, hue_order=hue_order, order=order, palette=self.palette)
 
         ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right')
         plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
         plt.title(self.title)
+

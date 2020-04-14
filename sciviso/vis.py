@@ -31,7 +31,7 @@ class VisException(SciException):
 class Vis:
 
     def __init__(self, df: pd.DataFrame, sciutil=None, cmap='viridis', sep='_', figsize=(12, 8), dpi=300,
-                 style='whitegrid', palette='pastel', opacity=0.8):
+                 style='whitegrid', palette='pastel', opacity=0.8, default_colour="teal"):
         self.sep = sep
         self.df = df
         self.columns = list(df.columns)
@@ -43,6 +43,8 @@ class Vis:
         sns.set(rc={'figure.figsize': self.figsize})
         self.u = SciUtil() if sciutil is None else sciutil
         self.opacity = opacity
+        self.label = ''
+        self.default_colour = default_colour
 
     @staticmethod
     def return_svg() -> str:
@@ -139,3 +141,15 @@ class Vis:
         if label_lst is None:
             return ['.', label_alt]
         return label_lst
+
+    def get_plot_str(self) -> str:
+        self.plot()
+        return self.return_svg()
+
+    def save_plot(self, label_lst: list) -> None:
+        label_lst = self.check_label(label_lst, self.label)
+        self.plot()
+        self.save_svg(label_lst)
+
+    def plot(self):
+        self.u.warn_p(["Please initiate one of the charts. Vis is just a wrapper. See docs for more info."])
