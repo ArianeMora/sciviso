@@ -24,10 +24,10 @@ from sciviso import Vis
 
 class Heatmap(Vis):
 
-    def __init__(self, df: pd.DataFrame, columns: list, row_index: str, title='', cluster_rows=True, cluster_cols=True,
+    def __init__(self, df: pd.DataFrame, chart_columns: list, row_index: str, title='', cluster_rows=True, cluster_cols=True,
                  row_colours=None, vmin=None, vmax=None):
         super().__init__(df)
-        self.columns = columns
+        self.chart_columns = chart_columns
         self.row_index = row_index
         self.title = title
         self.cluster_rows = cluster_rows
@@ -37,14 +37,15 @@ class Heatmap(Vis):
         self.vmax = vmax
 
     def plot(self) -> None:
-        self.check_args_in_columns([self.columns, [self.row_index]])
-        df_dists = pd.DataFrame(self.df[self.columns].values)
-        df_dists.columns = self.columns
+        self.check_args_in_columns([self.chart_columns, [self.row_index]])
+        df_dists = pd.DataFrame(self.df[self.chart_columns].values)
+        df_dists.columns = self.chart_columns
         df_dists.index = self.df[self.row_index].values
 
-        fig = sns.clustermap(df_dists, col_cluster=self.cluster_cols, row_cluster=self.cluster_rows,
+        ax = sns.clustermap(df_dists, col_cluster=self.cluster_cols, row_cluster=self.cluster_rows,
                              row_colors=self.row_colours, cmap=self.cmap, vmax=self.vmax, vmin=self.vmin)
         plt.title(self.title)
-        plt.setp(fig.ax_heatmap.yaxis.get_majorticklabels(), rotation=0)
-        plt.setp(fig.ax_heatmap.xaxis.get_majorticklabels(), rotation=45, horizontalalignment='right')
+        plt.setp(ax.ax_heatmap.yaxis.get_majorticklabels(), rotation=0)
+        plt.setp(ax.ax_heatmap.xaxis.get_majorticklabels(), rotation=45, horizontalalignment='right')
 
+        return ax

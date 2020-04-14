@@ -63,7 +63,7 @@ class Boxplot(Vis):
         else:
             vis_df = self.df
         # set the orders
-        if hue_order is None:
+        if hue_order is None and hue is not None:
             hue_order = list(set(vis_df[hue].values))
             hue_order.sort()
         if order is None:
@@ -77,17 +77,23 @@ class Boxplot(Vis):
         if self.add_stats:
             # Add all pairs in the order if the box pairs is none
             if box_pairs is None:
+                pairs = []
                 box_pairs = []
                 for i in order:
                     for j in order:
                         if i != j:
-                            box_pairs.append((i, j))
+                            # Ensure we don't get duplicates
+                            pair = f'{i}{j}' if i < j else f'{j}{i}'
+                            if pair not in pairs:
+                                box_pairs.append((i, j))
+                                pairs.append(pair)
             # Add stats annotation
             add_stat_annotation(ax, data=vis_df, x=x, y=y, order=order,
-                                box_pairs=[box_pairs],
+                                box_pairs=box_pairs,
                                 test=self.stat_method, text_format='star', loc='inside', verbose=2)
 
         ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right')
         plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
         plt.title(self.title)
 
+        return ax

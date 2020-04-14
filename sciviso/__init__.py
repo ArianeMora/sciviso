@@ -24,3 +24,9 @@ __author_email__ = 'ariane.n.mora@gmail.com'
 __license__ = 'GPL3'
 
 from sciviso.vis import Vis, VisException
+from sciviso.charts.barchart import Barchart
+from sciviso.charts.boxplot import Boxplot
+from sciviso.charts.heatmap import Heatmap
+from sciviso.charts.scatterplot import Scatterplot
+from sciviso.charts.violinplot import Violinplot
+from sciviso.charts.volcanoplot import Volcanoplot

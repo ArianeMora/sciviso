@@ -37,6 +37,19 @@ class Scatterplot(Vis):
         self.correlation = correlation
 
     def annotate(self, ax: plt.axes, x: np.array, y: np.array, labels: np.array) -> plt.axes:
+        """
+        https://stackoverflow.com/questions/5147112/how-to-put-individual-tags-for-a-scatter-plot for more details
+        Parameters
+        ----------
+        ax
+        x
+        y
+        labels
+
+        Returns
+        -------
+
+        """
         for i, name in enumerate(labels):
             if name in self.points_to_annotate:
                 ax.annotate(name, (x[i], y[i]))
@@ -64,3 +77,7 @@ class Scatterplot(Vis):
         if self.points_to_annotate is not None:
             self.check_columns([self.annotation_label])
             self.annotate(ax, vis_df[x].values, vis_df[y].values, self.df[self.annotation_label].values)
+
+        plt.title(self.title)
+
+        return ax

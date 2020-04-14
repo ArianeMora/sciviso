@@ -39,12 +39,12 @@ class Vis:
         self.figsize = figsize
         self.dpi = dpi
         self.palette = palette
-        sns.set(style="whitegrid")
-        sns.set(rc={'figure.figsize': self.figsize})
+        self.style = style
         self.u = SciUtil() if sciutil is None else sciutil
         self.opacity = opacity
         self.label = ''
         self.default_colour = default_colour
+        sns.set(rc={'figure.figsize': self.figsize}, style=self.style)
 
     @staticmethod
     def return_svg() -> str:

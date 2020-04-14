@@ -53,7 +53,7 @@ class Barchart(Vis):
         else:
             vis_df = self.df
         # set the orders
-        if hue_order is None:
+        if hue_order is None and hue is not None:
             hue_order = list(set(vis_df[hue].values))
             hue_order.sort()
         if order is None:
@@ -66,3 +66,4 @@ class Barchart(Vis):
         plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
         plt.title(self.title)
 
+        return ax
