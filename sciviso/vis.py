@@ -14,11 +14,11 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.     #
 #                                                                             #
 ###############################################################################
+
 import io
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-
 
 from sciutil import SciUtil, SciException
 
