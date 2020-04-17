@@ -58,25 +58,31 @@ class TestVis(unittest.TestCase):
         boxplot = Boxplot(self.df, self.label, self.y)
         boxplot.plot()
         plt.show()
+        # Example showing formatting data for plots
+        df = boxplot.format_data_for_boxplot(self.df, ["sepal_length", "sepal_width"], "label", ["Iris-setosa", "Iris-virginica"])
+        boxplot = Boxplot(df, "Conditions", "Values")
+        boxplot.plot()
+        plt.show()
 
     def test_heatmap(self):
-        heatmap = Heatmap(self.df, self.numeric_cols, self.label)
+        heatmap = Heatmap(self.df, self.numeric_cols, self.label, 'Xlabel', 'Ylabel')
         heatmap.plot()
+        heatmap.save_png([self.data_dir, "heatmap"])
         plt.show()
 
     def test_scatterplot(self):
-        scatterplot = Scatterplot(self.df, self.x, self.y, 'sepal_length', points_to_annotate=['Iris-setosa'],
+        scatterplot = Scatterplot(self.df, self.x, self.y, 'sepal_length', 'Xlabel', 'Ylabel', points_to_annotate=['Iris-setosa'],
                                   annotation_label=self.label)
         scatterplot.plot()
         plt.show()
 
     def test_violinplot(self):
-        violinplot = Violinplot(self.df, self.label, self.y, add_dots=True)
+        violinplot = Violinplot(self.df, self.label, self.y, 'Xlabel', 'Ylabel', add_dots=True)
         violinplot.plot()
         plt.show()
 
     def test_volcanoplot(self):
-        volcanoplot = Volcanoplot(self.df, self.x, self.y, self.label)
+        volcanoplot = Volcanoplot(self.df, self.x, self.y, self.label, 'A Title', 'Xlabel', 'Ylabel', label_big_sig=True)
         volcanoplot.plot()
         plt.show()
 

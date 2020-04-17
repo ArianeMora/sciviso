@@ -15,55 +15,27 @@
 #                                                                             #
 ###############################################################################
 
-import argparse
-import os
 import sys
 
 from sciviso import __version__
 
 
 def print_help():
-    lines = [f'scidat {__version__}',
+    lines = [f'sciviso {__version__}',
              'usage: ',
-             '--download ',
-             '      [path to manifest file downloaded from TCGA ]',
-             '      [directory to save the sub manifests]',
-             '      [directory with gdc_client file]',
-             '      [directory to download the files to]',
-             '--annotate ',
-             '      [directory with TCGA downloaded data]',
-             '      [list of columns to annotate each file with (or blank for the default)]']
+             'No command line version exists yet. Please look at the tests for examples.']
     print('\n'.join(lines))
 
 
 def main(args=None):
-    parser = argparse.ArgumentParser(description='Process some integers.')
-    parser.add_argument('newick', type=str, help='path to the newick file')
-
     if len(sys.argv) == 1:
         print_help()
         sys.exit(0)
     elif sys.argv[1] in {'-v', '--v', '-version', '--version'}:
-        print(f'scidat v{__version__}')
+        print(f'sciviso v{__version__}')
         sys.exit(0)
-    else:
-        print(f'scidat v{__version__}')
-        args = parser.parse_args(args)
-
-        # Validate the input arguments.
-        if not os.path.isfile(args.newick):
-            print(f'The input file cannot be found: {args.newick}')
-            sys.exit(1)
-        if args.method not in {'pd', 'node'}:
-            print('Invalid choice for method, select either: pd or node')
-            sys.exit(1)
-        out_dir = os.path.dirname(args.output)
-        if not os.path.isdir(out_dir):
-            os.makedirs(out_dir)
-
     # Done - no errors.
     sys.exit(0)
-
 
 if __name__ == "__main__":
     main()

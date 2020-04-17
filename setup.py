@@ -46,7 +46,7 @@ setup(name='sciviso',
               'sciviso = sciviso.__main__:main'
           ]
       },
-      install_requires=['sciutil', 'pandas', 'numpy', 'pybiomart'],
+      install_requires=['sciutil', 'pandas', 'numpy', 'pybiomart', 'matplotlib', 'statannot', 'seaborn'],
       python_requires='>=3.6',
       data_files=[("", ["LICENSE"])]
       )

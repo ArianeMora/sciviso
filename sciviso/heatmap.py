@@ -24,8 +24,8 @@ from sciviso import Vis
 
 class Heatmap(Vis):
 
-    def __init__(self, df: pd.DataFrame, chart_columns: list, row_index: str, title='', cluster_rows=True, cluster_cols=True,
-                 row_colours=None, vmin=None, vmax=None):
+    def __init__(self, df: pd.DataFrame, chart_columns: list, row_index: str, title='', xlabel='', ylabel='',
+                 cluster_rows=True, cluster_cols=True, row_colours=None, vmin=None, vmax=None):
         super().__init__(df)
         self.chart_columns = chart_columns
         self.row_index = row_index
@@ -35,6 +35,8 @@ class Heatmap(Vis):
         self.row_colours = row_colours
         self.vmin = vmin
         self.vmax = vmax
+        self.xlabel = xlabel
+        self.ylabel = ylabel
 
     def plot(self) -> None:
         self.check_args_in_columns([self.chart_columns, [self.row_index]])
@@ -48,4 +50,6 @@ class Heatmap(Vis):
         plt.setp(ax.ax_heatmap.yaxis.get_majorticklabels(), rotation=0)
         plt.setp(ax.ax_heatmap.xaxis.get_majorticklabels(), rotation=45, horizontalalignment='right')
 
+        self.add_labels(title=False, x=False)
+        ax.fig.suptitle(self.title, fontsize=self.title_font_size, fontweight=self.title_font_weight)
         return ax

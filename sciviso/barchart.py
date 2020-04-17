@@ -18,18 +18,14 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-from statannot import add_stat_annotation
 
 from sciviso import Vis
 
 
-class Boxplot(Vis):
-    """
-    Box plot. Adds stat annotations and returns the SVG or saves it to disk.
-    for stats annotations details see: https://github.com/webermarcolivier/statannot
-    """
-    def __init__(self, df: pd.DataFrame, x: object, y: object, title='', hue=None, order=None, hue_order=None,
-                    showfliers=False, add_dots=False, add_stats=True, stat_method='Mann-Whitney', box_pairs=None):
+class Barchart(Vis):
+
+    def __init__(self, df: pd.DataFrame, x: object, y: object, title='', xlabel='', ylabel='', hue=None, order=None,
+                 hue_order=None):
         super().__init__(df)
         self.df = df
         self.x = x
@@ -38,15 +34,12 @@ class Boxplot(Vis):
         self.hue = hue
         self.order = order
         self.hue_order = hue_order
-        self.showfliers = showfliers
-        self.add_dots = add_dots
-        self.add_stats = add_stats
-        self.stat_method = stat_method
-        self.box_pairs = box_pairs
-        self.label = 'boxplot'
+        self.label = 'barchart'
+        self.xlabel = xlabel
+        self.ylabel = ylabel
 
     def plot(self):
-        x, y, hue_order, order, hue, box_pairs = self.x, self.y, self.hue_order, self.order, self.hue, self.box_pairs
+        x, y, hue_order, order, hue = self.x, self.y, self.hue_order, self.order, self.hue
         # First lets check whether we were passed lists or strings for our y and x arrays
         if not isinstance(x, str) and not isinstance(y, str):
             vis_df = pd.DataFrame()
@@ -70,30 +63,8 @@ class Boxplot(Vis):
             order = list(set(vis_df[x].values))
             order.sort()
 
-        ax = sns.boxplot(data=vis_df, x=x, y=y, hue=hue, hue_order=hue_order, order=order, palette=self.palette,
-                         showfliers=self.showfliers)
-        if self.add_dots:
-            ax = sns.stripplot(data=vis_df, x=x, y=y, hue_order=hue_order, order=order, color='.2')
-        if self.add_stats:
-            # Add all pairs in the order if the box pairs is none
-            if box_pairs is None:
-                pairs = []
-                box_pairs = []
-                for i in order:
-                    for j in order:
-                        if i != j:
-                            # Ensure we don't get duplicates
-                            pair = f'{i}{j}' if i < j else f'{j}{i}'
-                            if pair not in pairs:
-                                box_pairs.append((i, j))
-                                pairs.append(pair)
-            # Add stats annotation
-            add_stat_annotation(ax, data=vis_df, x=x, y=y, order=order,
-                                box_pairs=box_pairs,
-                                test=self.stat_method, text_format='star', loc='inside', verbose=2)
-
+        ax = sns.barplot(data=vis_df, x=x, y=y, hue=hue, hue_order=hue_order, order=order, palette=self.palette)
         ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right')
         plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
-        plt.title(self.title)
-
+        self.add_labels()
         return ax

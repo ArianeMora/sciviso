@@ -24,7 +24,8 @@ from sciviso import Vis
 
 class Volcanoplot(Vis):
 
-    def __init__(self, df: pd.DataFrame, log_fc: str, p_val: str, label_column: str, invert=False, p_val_cutoff=0.05,
+    def __init__(self, df: pd.DataFrame, log_fc: str, p_val: str, label_column: str, title='',
+                 xlabel='', ylabel='', invert=False, p_val_cutoff=0.05,
                  log_fc_cuttoff=2, label_big_sig=False, colours=None, offset=0, values_to_label=None):
         super().__init__(df)
         self.log_fc = log_fc
@@ -45,8 +46,11 @@ class Volcanoplot(Vis):
                         'sig_small-pos-logFC': 'salmon',
                         'sig_big-neg-logFC': 'mediumblue',
                         'sig_big-pos-logFC': 'firebrick'} if colours is None else colours
+        self.xlabel = xlabel
+        self.ylabel = ylabel
+        self.title = title
 
-    def add_scatter_and_annotate(self, fig: plt, x: np.array, y: np.array, colour: str, idxs: np.array):
+    def add_scatter_and_annotate(self, fig: plt, x: np.array, y: np.array, colour: str, idxs: np.array, annotate=False):
         x = x[idxs]
         y = y[idxs]
         ax = fig.scatter(x, y, c=colour, alpha=self.opacity)
@@ -56,7 +60,22 @@ class Volcanoplot(Vis):
             labels = self.df[self.label_column].values[idxs]
             for i, name in enumerate(labels):
                 if name in self.values_to_label:
-                    ax.annotate(name, (x[i], y[i]))
+                    fig.annotate(name, (x[i], y[i]),
+                                 xytext=(0, 10),
+                                 textcoords='offset points', ha='center', va='bottom',
+                                 bbox=dict(boxstyle='round,pad=0.5',
+                                           fc='white', alpha=0.2)
+                                 )
+        # Check if the user wants these labeled
+        if self.label_big_sig and annotate:
+            labels = self.df[self.label_column].values[idxs]
+            for i, name in enumerate(labels):
+                fig.annotate(name, (x[i], y[i]),
+                             xytext=(0, 10),
+                             textcoords='offset points', ha='center', va='bottom',
+                             bbox=dict(boxstyle='round,pad=0.5',
+                             fc='white', alpha=0.2)
+                             )
         return ax
 
     def plot(self):
@@ -101,21 +120,12 @@ class Volcanoplot(Vis):
         self.add_scatter_and_annotate(ax, x, y, self.colours['ns_small-pos-logFC'], ns_small_pos_logfc)
         self.add_scatter_and_annotate(ax, x, y, self.colours['ns_big-pos-logFC'], ns_big_pos_logfc)
         self.add_scatter_and_annotate(ax, x, y, self.colours['sig_small-pos-logFC'], sig_small_pos_logfc)
-        ax_val = self.add_scatter_and_annotate(ax, x, y, self.colours['sig_big-pos-logFC'], sig_big_pos_logfc)
-        # Check if the user wants these labeled
-        if self.label_big_sig:
-            labels = self.df[self.label_column].values[sig_big_pos_logfc]
-            for i, name in enumerate(labels):
-                ax_val.annotate(name, (x[i], y[i]))
+        self.add_scatter_and_annotate(ax, x, y, self.colours['sig_big-pos-logFC'], sig_big_pos_logfc, annotate=True)
+
         # Negative
         self.add_scatter_and_annotate(ax, x, y, self.colours['ns_small-neg-logFC'], ns_small_neg_logfc)
         self.add_scatter_and_annotate(ax, x, y, self.colours['ns_big-neg-logFC'], ns_big_neg_logfc)
         self.add_scatter_and_annotate(ax, x, y, self.colours['sig_small-neg-logFC'], sig_small_neg_logfc)
-        ax = self.add_scatter_and_annotate(ax, x, y, self.colours['sig_big-neg-logFC'], sig_big_neg_logfc)
-        # Check if the user wants these labeled
-        if self.label_big_sig:
-            labels = self.df[self.label_column].values[sig_big_neg_logfc]
-            for i, name in enumerate(labels):
-                ax.annotate(name, (x[i], y[i]))
-
+        self.add_scatter_and_annotate(ax, x, y, self.colours['sig_big-neg-logFC'], sig_big_neg_logfc, annotate=True)
+        self.add_labels()
         return ax

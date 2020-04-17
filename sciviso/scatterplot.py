@@ -24,8 +24,8 @@ from sciviso import Vis
 
 class Scatterplot(Vis):
 
-    def __init__(self, df: pd.DataFrame, x: object, y: object, title='', colour=None, points_to_annotate=None,
-                 annotation_label=None, add_correlation=False, correlation='Spearman'):
+    def __init__(self, df: pd.DataFrame, x: object, y: object, title='', xlabel='', ylabel='', colour=None,
+                 points_to_annotate=None, annotation_label=None, add_correlation=False, correlation='Spearman'):
         super().__init__(df)
         self.x = x
         self.y = y
@@ -35,6 +35,8 @@ class Scatterplot(Vis):
         self.annotation_label = annotation_label
         self.add_correlation = add_correlation
         self.correlation = correlation
+        self.xlabel = xlabel
+        self.ylabel = ylabel
 
     def annotate(self, ax: plt.axes, x: np.array, y: np.array, labels: np.array) -> plt.axes:
         """
@@ -52,7 +54,12 @@ class Scatterplot(Vis):
         """
         for i, name in enumerate(labels):
             if name in self.points_to_annotate:
-                ax.annotate(name, (x[i], y[i]))
+                ax.annotate(name, (x[i], y[i]),
+                            xytext=(-5, 10),
+                            textcoords='offset points', ha='center', va='bottom',
+                            bbox=dict(boxstyle='round,pad=0.5',
+                            fc='white', alpha=0.2)
+            )
 
         return ax
 
@@ -78,6 +85,5 @@ class Scatterplot(Vis):
             self.check_columns([self.annotation_label])
             self.annotate(ax, vis_df[x].values, vis_df[y].values, self.df[self.annotation_label].values)
 
-        plt.title(self.title)
-
+        self.add_labels()
         return ax

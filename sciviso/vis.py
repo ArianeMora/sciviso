@@ -30,7 +30,18 @@ class VisException(SciException):
 
 class Vis:
 
-    def __init__(self, df: pd.DataFrame, sciutil=None, cmap='viridis', sep='_', figsize=(12, 8), dpi=300,
+    """
+
+    #font.serif      : DejaVu Serif, Bitstream Vera Serif, Computer Modern Roman,
+    New Century Schoolbook, Century Schoolbook L, Utopia, ITC Bookman, Bookman, Nimbus Roman No9 L,
+    Times New Roman, Times, Palatino, Charter, serif
+#font.sans-serif : DejaVu Sans, Bitstream Vera Sans, Computer Modern Sans Serif,
+
+ Lucida Grande, Verdana, Geneva, Lucid, Arial, Helvetica, Avant Garde, sans-serif
+
+    """
+
+    def __init__(self, df: pd.DataFrame, sciutil=None, cmap='viridis', sep='_', figsize=(8, 6), dpi=300,
                  style='whitegrid', palette='pastel', opacity=0.8, default_colour="teal"):
         self.sep = sep
         self.df = df
@@ -44,7 +55,22 @@ class Vis:
         self.opacity = opacity
         self.label = ''
         self.default_colour = default_colour
-        sns.set(rc={'figure.figsize': self.figsize}, style=self.style)
+        self.label_font_size = 12
+        self.title_font_size = 16
+        self.title_font_weight = 700
+        self.title = None
+        self.xlabel = None
+        self.ylabel = None
+        sns.set(rc={'figure.figsize': self.figsize, 'font.family': 'sans-serif',
+                    'font.sans-serif': 'Arial', 'font.size': 12.0}, style=self.style)
+
+    def add_labels(self, title=True, x=True, y=True):
+        if x:
+            plt.xlabel(self.xlabel, fontsize=self.label_font_size)
+        if y:
+            plt.ylabel(self.ylabel, fontsize=self.label_font_size)
+        if title:
+            plt.title(self.title, fontsize=self.title_font_size, fontweight=self.title_font_weight)
 
     @staticmethod
     def return_svg() -> str:
@@ -65,6 +91,10 @@ class Vis:
     def save_svg(self, label_lst: list) -> None:
         label = self.u.generate_label(label_lst, '.svg')
         plt.savefig(label)
+
+    def save_png(self, label_lst: list) -> None:
+        label = self.u.generate_label(label_lst, '.png')
+        self.u.save_plt(plt, label, dpi=300)
 
     def get_columns(self, reqs=None, method="all") -> list:
         """
