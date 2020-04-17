@@ -1,4 +1,6 @@
 # sciviso
+[![codecov.io](https://codecov.io/github/ArianeMora/sciviso/coverage.svg?branch=master)](https://codecov.io/github/ArianeMora/sciviso?branch=master)
+[![PyPI](https://img.shields.io/pypi/v/sciviso)](https://pypi.org/project/sciviso/)
 
 ## A wrapper to format all plots the same 
 
