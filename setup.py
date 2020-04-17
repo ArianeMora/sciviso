@@ -16,7 +16,7 @@ def readme():
 
 setup(name='sciviso',
       version=read_version(),
-      description='sciviso: Wrapper for common visualisations for biological data.',
+      description='sciviso: Wrapper for common visualisations for sci constellation.',
       long_description=readme(),
       long_description_content_type='text/markdown',
       author='Ariane Mora',
@@ -46,7 +46,7 @@ setup(name='sciviso',
               'sciviso = sciviso.__main__:main'
           ]
       },
-      install_requires=['sciutil', 'pandas', 'numpy', 'pybiomart', 'matplotlib', 'statannot', 'seaborn'],
+      install_requires=['sciutil', 'pandas', 'numpy', 'matplotlib', 'statannot', 'seaborn'],
       python_requires='>=3.6',
       data_files=[("", ["LICENSE"])]
       )
