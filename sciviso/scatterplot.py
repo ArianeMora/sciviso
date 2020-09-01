@@ -18,17 +18,20 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+from mpl_toolkits.mplot3d import Axes3D
 
 from sciviso import Vis
 
 
 class Scatterplot(Vis):
 
-    def __init__(self, df: pd.DataFrame, x: object, y: object, title='', xlabel='', ylabel='', colour=None,
+    def __init__(self, df: pd.DataFrame, x: object, y: object, title='', xlabel='', ylabel='', colour=None, z = None,
+                 zlabel = None,
                  points_to_annotate=None, annotation_label=None, add_correlation=False, correlation='Spearman'):
         super().__init__(df)
         self.x = x
         self.y = y
+        self.z = z
         self.title = title
         self.colour = colour
         self.points_to_annotate = points_to_annotate
@@ -37,6 +40,7 @@ class Scatterplot(Vis):
         self.correlation = correlation
         self.xlabel = xlabel
         self.ylabel = ylabel
+        self.zlabel = zlabel
 
     def annotate(self, ax: plt.axes, x: np.array, y: np.array, labels: np.array) -> plt.axes:
         """
@@ -63,7 +67,16 @@ class Scatterplot(Vis):
 
         return ax
 
-    def plot(self):
+    def annotate3D(self, ax: plt.axes, x: np.array, y: np.array, z: np.array, labels: np.array) -> plt.axes:
+
+        for i, name in enumerate(labels):
+            if name in self.points_to_annotate:
+                ax.text3D(x[i], y[i], z[i], name, size=12, zorder=1)
+
+
+        return ax
+
+    def plot2D(self):
         x, y = self.x, self.y
         if not isinstance(x, str) and not isinstance(y, str):
             vis_df = pd.DataFrame()
@@ -78,7 +91,7 @@ class Scatterplot(Vis):
 
         # Plot the points
         fig, ax = plt.subplots()
-        ax.scatter(vis_df[x].values, vis_df[y].values, c=self.colour, alpha=self.opacity)
+        scatter = ax.scatter(vis_df[x].values, vis_df[y].values, c=self.colour, alpha=self.opacity, cmap=self.cmap)
 
         # Check if we need to annotate anything
         if self.points_to_annotate is not None:
@@ -86,4 +99,44 @@ class Scatterplot(Vis):
             self.annotate(ax, vis_df[x].values, vis_df[y].values, self.df[self.annotation_label].values)
 
         self.add_labels()
+        plt.colorbar(scatter)
+
         return ax
+
+    def plot3D(self):
+        x, y, z = self.x, self.y, self.z
+        if not isinstance(x, str) and not isinstance(y, str):
+            vis_df = pd.DataFrame()
+            vis_df['x'] = x
+            vis_df['y'] = y
+            vis_df['z'] = z
+            x = 'x'
+            y = 'y'
+            z = 'z'
+        else:
+            vis_df = self.df
+        if self.colour is None:
+            self.colour = self.default_colour
+
+        # Plot the points
+        fig = plt.figure()
+        ax = Axes3D(fig)
+
+        scatter = ax.scatter(vis_df[x].values, vis_df[y].values, vis_df[z].values,
+                             c=self.colour, alpha=self.opacity, cmap=self.cmap)
+        # Check if we need to annotate anything
+        if self.points_to_annotate is not None:
+            self.check_columns([self.annotation_label])
+            self.annotate3D(ax, vis_df[x].values, vis_df[y].values, vis_df[z].values,
+                          self.df[self.annotation_label].values)
+
+        self.add_labels()
+        plt.colorbar(scatter)
+
+        return ax
+
+    def plot(self):
+        if self.z is None:
+            return self.plot2D()
+        else:
+            return self.plot3D()

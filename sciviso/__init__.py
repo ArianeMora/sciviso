@@ -28,5 +28,6 @@ from sciviso.violinplot import Violinplot
 from sciviso.boxplot import Boxplot
 from sciviso.barchart import Barchart
 from sciviso.heatmap import Heatmap
+from sciviso.histogram import Histogram
 from sciviso.scatterplot import Scatterplot
 from sciviso.volcanoplot import Volcanoplot

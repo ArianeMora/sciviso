@@ -19,6 +19,7 @@ import io
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
+from matplotlib.colors import ListedColormap
 
 from sciutil import SciUtil, SciException
 
@@ -41,12 +42,12 @@ class Vis:
 
     """
 
-    def __init__(self, df: pd.DataFrame, sciutil=None, cmap='viridis', sep='_', figsize=(8, 6), dpi=300,
+    def __init__(self, df: pd.DataFrame, sciutil=None, cmap='coolwarm', sep='_', figsize=(8, 6), dpi=300,
                  style='whitegrid', palette='pastel', opacity=0.8, default_colour="teal"):
         self.sep = sep
         self.df = df
         self.columns = list(df.columns)
-        self.cmap = cmap
+        self.cmap = ListedColormap(sns.color_palette(cmap))
         self.figsize = figsize
         self.dpi = dpi
         self.palette = palette
@@ -61,6 +62,7 @@ class Vis:
         self.title = None
         self.xlabel = None
         self.ylabel = None
+        self.cmap_str = cmap
         sns.set(rc={'figure.figsize': self.figsize, 'font.family': 'sans-serif',
                     'font.sans-serif': 'Arial', 'font.size': 12.0}, style=self.style)
 
@@ -71,6 +73,14 @@ class Vis:
             plt.ylabel(self.ylabel, fontsize=self.label_font_size)
         if title:
             plt.title(self.title, fontsize=self.title_font_size, fontweight=self.title_font_weight)
+
+    @staticmethod
+    def apply_limits(axis, max_v: float, min_v=None):
+        min_v = 0 if min_v is None else min_v
+        if axis == 'x' and max_v is not None:
+            plt.xlim(min_v, max_v)
+        elif axis == 'y' and max_v is not None:
+            plt.ylim(min_v, max_v)
 
     @staticmethod
     def return_svg() -> str:
