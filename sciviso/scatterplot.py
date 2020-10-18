@@ -72,8 +72,6 @@ class Scatterplot(Vis):
         for i, name in enumerate(labels):
             if name in self.points_to_annotate:
                 ax.text3D(x[i], y[i], z[i], name, size=12, zorder=1)
-
-
         return ax
 
     def plot2D(self):
@@ -134,6 +132,75 @@ class Scatterplot(Vis):
         plt.colorbar(scatter)
 
         return ax
+
+    def plot_groups_2D(self, grp_labels: list, grp_idxs: list, grp_colours=None, plt_bg=True, max_bg=600,
+                       s=70, linewidth=1.0, alpha_highlight=0.8, alpha_bg=0.5):
+        """ Allows pre-specified groups to be plot, user passes in an ordered list of group_labels,
+        that match group_idxs. Optionally also passes the group colours. """
+        if not grp_colours:
+            grp_colours = self.palette
+
+        fig, ax = plt.subplots()
+
+        x = self.df[self.x].values
+        y = self.df[self.y].values
+        labels = []
+        if plt_bg:
+            rand_idxs = np.random.choice(range(0, len(self.df), 1), max_bg)
+            colour = ['lightgrey'] * rand_idxs
+            ax.scatter(x[rand_idxs], y[rand_idxs], c=colour, alpha=alpha_bg)
+            labels = ['None']
+
+        g_i = 0
+        c_i = 0
+        for g in grp_idxs:
+            ax.scatter(x[g], y[g], s=s, c=grp_colours[c_i],
+                       label=grp_labels[g_i],
+                       edgecolors='k', linewidth=linewidth,
+                       alpha=alpha_highlight)
+            labels.append(grp_labels[g_i])
+            c_i += 1
+            if c_i == len(grp_colours):
+                c_i = 0
+            g_i += 1
+        ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+        plt.title(self.title)
+        plt.show()
+
+    def plot_groups_3D(self, grp_labels: list, grp_idxs: list, grp_colours=None, plt_bg=True, max_bg=600,
+                       s=70, linewidth=1.0, alpha_highlight=0.8, alpha_bg=0.5):
+        """ Allows pre-specified groups to be plot, user passes in an ordered list of group_labels,
+        that match group_idxs. Optionally also passes the group colours. """
+        if not grp_colours:
+            grp_colours = self.palette
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection='3d')
+
+        x = self.df[self.x].values
+        y = self.df[self.y].values
+        z = self.df[self.z].values
+        labels = []
+        if plt_bg:
+            rand_idxs = np.random.choice(range(0, len(self.df), 1), max_bg)
+            colour = ['lightgrey'] * rand_idxs
+            ax.scatter(x[rand_idxs], y[rand_idxs], z[rand_idxs], c=colour, alpha=alpha_bg)
+            labels = ['None']
+
+        g_i = 0
+        c_i = 0
+        for g in grp_idxs:
+            ax.scatter(x[g], y[g], z[g], s=s, c=grp_colours[c_i],
+                       label=grp_labels[g_i],
+                       edgecolors='k', linewidth=linewidth,
+                       alpha=alpha_highlight)
+            labels.append(grp_labels[g_i])
+            c_i += 1
+            if c_i == len(grp_colours):
+                c_i = 0
+            g_i += 1
+        ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+        plt.title(self.title)
+        plt.show()
 
     def plot(self):
         if self.z is None:

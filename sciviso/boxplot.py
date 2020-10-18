@@ -82,6 +82,8 @@ class Boxplot(Vis):
         return box_df
 
     def plot(self):
+        sns.palplot(self.palette)
+        sns.color_palette(self.palette)
         x, y, hue_order, order, hue, box_pairs = self.x, self.y, self.hue_order, self.order, self.hue, self.box_pairs
         # First lets check whether we were passed lists or strings for our y and x arrays
         if not isinstance(x, str) and not isinstance(y, str):
@@ -109,7 +111,7 @@ class Boxplot(Vis):
         ax = sns.boxplot(data=vis_df, x=x, y=y, hue=hue, hue_order=hue_order, order=order, palette=self.palette,
                          showfliers=self.showfliers)
         if self.add_dots:
-            ax = sns.stripplot(data=vis_df, x=x, y=y, hue_order=hue_order, order=order, color='.2')
+            ax = sns.swarmplot(data=vis_df, x=x, y=y, hue_order=hue_order, order=order, color='.2')
         if self.add_stats:
             # Add all pairs in the order if the box pairs is none
             if box_pairs is None:

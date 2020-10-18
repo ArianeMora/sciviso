@@ -31,3 +31,4 @@ from sciviso.heatmap import Heatmap
 from sciviso.histogram import Histogram
 from sciviso.scatterplot import Scatterplot
 from sciviso.volcanoplot import Volcanoplot
+from sciviso.line import Line

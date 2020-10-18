@@ -63,8 +63,15 @@ class Vis:
         self.xlabel = None
         self.ylabel = None
         self.cmap_str = cmap
+        self.palette = ['#483873', '#1BD8A6', '#B117B7', '#AAC7E2', '#FFC107', '#016957', '#9785C0',
+             '#D09139', '#338A03', '#FF69A1', '#5930B1', '#FFE884', '#35B567', '#1E88E5',
+             '#ACAD60', '#A2FFB4', '#B618F5', '#854A9C']
+        plt.rcParams['svg.fonttype'] = 'none'  # Ensure text is saved as text
         sns.set(rc={'figure.figsize': self.figsize, 'font.family': 'sans-serif',
                     'font.sans-serif': 'Arial', 'font.size': 12.0}, style=self.style)
+
+    def set_palette(self, palette):
+        self.palette = palette
 
     def add_labels(self, title=True, x=True, y=True):
         if x:

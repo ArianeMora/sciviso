@@ -24,7 +24,7 @@ import shutil
 import tempfile
 import unittest
 
-from sciviso import Barchart, Boxplot, Heatmap, Histogram, Scatterplot, Violinplot, Volcanoplot
+from sciviso import Barchart, Boxplot, Heatmap, Histogram, Scatterplot, Violinplot, Volcanoplot, Line
 
 
 class TestVis(unittest.TestCase):
@@ -70,7 +70,8 @@ class TestVis(unittest.TestCase):
         boxplot.plot()
         plt.show()
         # Example showing formatting data for plots
-        df = boxplot.format_data_for_boxplot(self.df, ["sepal_length", "sepal_width"], "label", ["Iris-setosa", "Iris-virginica"])
+        df = boxplot.format_data_for_boxplot(self.df, ["sepal_length", "sepal_width"], "label",
+                                             ["Iris-setosa", "Iris-virginica"])
         boxplot = Boxplot(df, "Conditions", "Values")
         boxplot.plot()
         plt.show()
@@ -85,18 +86,21 @@ class TestVis(unittest.TestCase):
         lut = dict(zip(set(labels), sns.color_palette("coolwarm", len(set(labels)))))
         row_colors2 = pd.DataFrame(labels)[0].map(lut)
 
-        heatmap = Heatmap(self.df, self.numeric_cols, self.label, 'Xlabel', 'Ylabel', row_colours=[row_colors, row_colors2])
+        heatmap = Heatmap(self.df, self.numeric_cols, self.label, 'Xlabel', 'Ylabel',
+                          row_colours=[row_colors, row_colors2])
         heatmap.plot()
         heatmap.save_png([self.data_dir, "heatmap"])
         plt.show()
 
     def test_scatterplot(self):
-        scatterplot = Scatterplot(self.df, self.x, self.y, 'sepal_length', 'Xlabel', 'Ylabel', points_to_annotate=['Iris-setosa'],
+        scatterplot = Scatterplot(self.df, self.x, self.y, 'sepal_length', 'Xlabel', 'Ylabel',
+                                  points_to_annotate=['Iris-setosa'],
                                   annotation_label=self.label, colour=self.df[self.x].values)
         scatterplot.plot()
         plt.show()
 
-        scatterplot = Scatterplot(self.df, self.x, self.y, 'sepal_length', 'Xlabel', 'Ylabel', z='sepal_length', points_to_annotate=['Iris-setosa'],
+        scatterplot = Scatterplot(self.df, self.x, self.y, 'sepal_length', 'Xlabel', 'Ylabel', z='sepal_length',
+                                  points_to_annotate=['Iris-setosa'],
                                   annotation_label=self.label, colour=self.df[self.x].values)
         scatterplot.plot()
         plt.show()
@@ -107,6 +111,18 @@ class TestVis(unittest.TestCase):
         plt.show()
 
     def test_volcanoplot(self):
-        volcanoplot = Volcanoplot(self.df, self.x, self.y, self.label, 'A Title', 'Xlabel', 'Ylabel', label_big_sig=True)
+        self.df = pd.read_csv(self.data_dir + 'volcano.csv')
+
+        volcanoplot = Volcanoplot(self.df, 'logfc', 'padj', 'external_gene_name', 'A Title', 'Xlabel', 'Ylabel',
+                                  label_big_sig=True)
         volcanoplot.plot()
+        plt.show()
+
+    def test_line(self):
+        line = Line(self.df, 'title', 'Xlabel', 'Ylabel')
+        idxs = np.where(self.df['label'] == 'Iris-setosa')[0]
+        labels = ['length', 'width']
+        cols = [['sepal_length', 'petal_length'], ['sepal_width', 'petal_width']]
+
+        line.plot_line_grps(idxs, labels, cols)
         plt.show()

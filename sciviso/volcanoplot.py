@@ -26,7 +26,8 @@ class Volcanoplot(Vis):
 
     def __init__(self, df: pd.DataFrame, log_fc: str, p_val: str, label_column: str, title='',
                  xlabel='', ylabel='', invert=False, p_val_cutoff=0.05,
-                 log_fc_cuttoff=2, label_big_sig=False, colours=None, offset=0, values_to_label=None):
+                 log_fc_cuttoff=2, label_big_sig=False, colours=None, offset=None,
+                 values_to_label=None, max_labels=20):
         super().__init__(df)
         self.log_fc = log_fc
         self.p_val = p_val
@@ -42,17 +43,19 @@ class Volcanoplot(Vis):
                         'ns_small-pos-logFC': 'lightgrey',
                         'ns_big-neg-logFC': 'grey',
                         'ns_big-pos-logFC': 'grey',
-                        'sig_small-neg-logFC': 'lightskyblue',
-                        'sig_small-pos-logFC': 'salmon',
-                        'sig_big-neg-logFC': 'mediumblue',
-                        'sig_big-pos-logFC': 'firebrick'} if colours is None else colours
+                        'sig_small-neg-logFC': '#2970b1',
+                        'sig_small-pos-logFC': '#d6604c',
+                        'sig_big-neg-logFC': '#0a3568',
+                        'sig_big-pos-logFC': '#6f0220'} if colours is None else colours
         self.xlabel = xlabel
         self.ylabel = ylabel
         self.title = title
+        self.max_labels = max_labels
 
-    def add_scatter_and_annotate(self, fig: plt, x: np.array, y: np.array, colour: str, idxs: np.array, annotate=False):
-        x = x[idxs]
-        y = y[idxs]
+    def add_scatter_and_annotate(self, fig: plt, x_all: np.array, y_all: np.array,
+                                 colour: str, idxs: np.array, annotate=False):
+        x = x_all[idxs]
+        y = y_all[idxs]
         ax = fig.scatter(x, y, c=colour, alpha=self.opacity)
 
         # Check if we want to annotate any of these with their gene IDs
@@ -68,7 +71,13 @@ class Volcanoplot(Vis):
                                  )
         # Check if the user wants these labeled
         if self.label_big_sig and annotate:
-            labels = self.df[self.label_column].values[idxs]
+            # If they do have a limit on the number of ones we show (i.e. we don't want 10000 gene names...)
+            max_values = -1 * self.max_labels
+            most_sig_idxs = np.argpartition(y, max_values)[max_values: ]
+            labels = self.df[self.label_column].values[idxs][most_sig_idxs]
+            x = x[most_sig_idxs]
+            y = y[most_sig_idxs]
+            # We only label the ones with the max log fc
             for i, name in enumerate(labels):
                 fig.annotate(name, (x[i], y[i]),
                              xytext=(0, 10),
@@ -85,6 +94,13 @@ class Volcanoplot(Vis):
         -------
 
         """
+        # if offset is not given, make the offset the smallest value in the dataset
+        if not self.offset:
+            vals = self.df[self.p_val].values
+            self.offset = np.min(vals[np.nonzero(vals)])
+            self.u.warn_p(['No offset was provided, setting offset to be smallest value recorded in dataset: ',
+                           self.offset])
+
         # x axis has log_fc, first only plot the values < cutoff
         x = self.df[self.log_fc].values
         y = -1 * np.log10(self.df[self.p_val].values + self.offset)

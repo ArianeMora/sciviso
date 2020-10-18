@@ -25,7 +25,8 @@ from sciviso import Vis
 class Heatmap(Vis):
 
     def __init__(self, df: pd.DataFrame, chart_columns: list, row_index: str, title='', xlabel='', ylabel='',
-                 cluster_rows=True, cluster_cols=True, row_colours=None, col_colours=None, vmin=None, vmax=None):
+                 cluster_rows=True, cluster_cols=True, row_colours=None, col_colours=None, vmin=None, vmax=None,
+                 cmap_str='RdBu_r'):
         super().__init__(df)
         self.chart_columns = chart_columns
         self.row_index = row_index
@@ -38,6 +39,7 @@ class Heatmap(Vis):
         self.vmax = vmax
         self.xlabel = xlabel
         self.ylabel = ylabel
+        self.cmap_str = cmap_str
 
     def plot(self) -> None:
         self.check_args_in_columns([self.chart_columns, [self.row_index]])
