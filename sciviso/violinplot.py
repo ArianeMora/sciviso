@@ -41,8 +41,6 @@ class Violinplot(Vis):
 
     def plot(self):
         x, y, hue, order, hue_order = self.x, self.y, self.hue, self.order, self.hue_order
-        sns.palplot(self.palette)
-        sns.color_palette(self.palette)
         if not isinstance(self.x, str) and not isinstance(self.y, str):
             vis_df = pd.DataFrame()
             vis_df['x'] = x

@@ -69,11 +69,13 @@ class TestVis(unittest.TestCase):
         boxplot = Boxplot(self.df, self.label, self.y)
         boxplot.plot()
         plt.show()
+
         # Example showing formatting data for plots
         df = boxplot.format_data_for_boxplot(self.df, ["sepal_length", "sepal_width"], "label",
                                              ["Iris-setosa", "Iris-virginica"])
         boxplot = Boxplot(df, "Conditions", "Values")
         boxplot.plot()
+        plt.savefig('fig.svg')
         plt.show()
 
     def test_heatmap(self):

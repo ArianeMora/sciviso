@@ -82,8 +82,6 @@ class Boxplot(Vis):
         return box_df
 
     def plot(self):
-        sns.palplot(self.palette)
-        sns.color_palette(self.palette)
         x, y, hue_order, order, hue, box_pairs = self.x, self.y, self.hue_order, self.order, self.hue, self.box_pairs
         # First lets check whether we were passed lists or strings for our y and x arrays
         if not isinstance(x, str) and not isinstance(y, str):
@@ -100,6 +98,7 @@ class Boxplot(Vis):
                 order.sort()
         else:
             vis_df = self.df
+
         # set the orders
         if hue_order is None and hue is not None:
             hue_order = list(set(vis_df[hue].values))
@@ -131,6 +130,6 @@ class Boxplot(Vis):
                                 test=self.stat_method, text_format='star', loc='inside', verbose=2)
 
         ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right')
-        plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+        #plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
         self.add_labels()
         return ax
