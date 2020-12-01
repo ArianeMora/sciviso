@@ -27,7 +27,7 @@ class Volcanoplot(Vis):
     def __init__(self, df: pd.DataFrame, log_fc: str, p_val: str, label_column: str, title='',
                  xlabel='', ylabel='', invert=False, p_val_cutoff=0.05,
                  log_fc_cuttoff=2, label_big_sig=False, colours=None, offset=None,
-                 values_to_label=None, max_labels=20):
+                 values_to_label=None, max_labels=20, values_colours=None):
         super().__init__(df)
         self.log_fc = log_fc
         self.p_val = p_val
@@ -51,6 +51,7 @@ class Volcanoplot(Vis):
         self.ylabel = ylabel
         self.title = title
         self.max_labels = max_labels
+        self.values_colours = values_colours or {}
 
     def add_scatter_and_annotate(self, fig: plt, x_all: np.array, y_all: np.array,
                                  colour: str, idxs: np.array, annotate=False):
@@ -63,16 +64,19 @@ class Volcanoplot(Vis):
             labels = self.df[self.label_column].values[idxs]
             for i, name in enumerate(labels):
                 if name in self.values_to_label:
+                    lbl_bg = self.values_colours.get(name)
                     fig.annotate(name, (x[i], y[i]),
                                  xytext=(0, 10),
                                  textcoords='offset points', ha='center', va='bottom',
                                  bbox=dict(boxstyle='round,pad=0.5',
-                                           fc='white', alpha=0.2)
+                                           fc=lbl_bg, alpha=0.5)
                                  )
         # Check if the user wants these labeled
         if self.label_big_sig and annotate:
             # If they do have a limit on the number of ones we show (i.e. we don't want 10000 gene names...)
             max_values = -1 * self.max_labels
+            if len(y) < self.max_labels:
+                max_values = -1 * (len(y) - 1)
             most_sig_idxs = np.argpartition(y, max_values)[max_values: ]
             labels = self.df[self.label_column].values[idxs][most_sig_idxs]
             x = x[most_sig_idxs]
