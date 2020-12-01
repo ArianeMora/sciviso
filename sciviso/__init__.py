@@ -16,9 +16,9 @@
 ###############################################################################
 
 __title__ = 'sciviso'
-__description__ = 'sciviso: Wrapper for common visualisations for biological data.'
+__description__ = 'sciviso: Wrapper for common visualisations for sci packages.'
 __url__ = 'https://github.com/ArianeMora/sciviso.git'
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 __author__ = 'Ariane Mora'
 __author_email__ = 'ariane.n.mora@gmail.com'
 __license__ = 'GPL3'
