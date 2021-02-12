@@ -26,8 +26,10 @@ from sciviso import Vis
 class Histogram(Vis):
 
     def __init__(self, df: pd.DataFrame, x: object, title='', xlabel='', ylabel='', colour=None, normalise=False, fit_norm=False,
-                 plot_rug=False, plot_kde=False, plot_hist=True, bins=20, min_x=None, max_x=None, min_y=None, max_y=None):
-        super().__init__(df)
+                 plot_rug=False, plot_kde=False, plot_hist=True, bins=20, min_x=None, max_x=None, min_y=None, max_y=None,
+                 figsize=(1.5, 1.5), title_font_size=8, label_font_size=6, title_font_weight=700):
+        super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
+                         title_font_weight=title_font_weight)
         self.df = df
         self.x = x
         self.title = title
@@ -64,8 +66,8 @@ class Histogram(Vis):
             ax = sns.distplot(values, kde=self.plot_kde, rug=self.plot_rug, hist=self.plot_hist,
                               norm_hist=self.normalise, bins=self.bins)
         self.add_labels()
-        ax.tick_params(labelsize=self.label_font_size)
-
         self.apply_limits('x', self.max_x, self.min_x)
         self.apply_limits('y', self.max_y, self.min_y)
+        ax.tick_params(labelsize=self.label_font_size)
+
         return ax

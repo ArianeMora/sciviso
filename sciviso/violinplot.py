@@ -25,8 +25,10 @@ from sciviso import Vis
 class Violinplot(Vis):
 
     def __init__(self, df: pd.DataFrame, x: object, y: object, title='', xlabel='', ylabel='', hue=None, order=None,
-                 hue_order=None, showfliers=False, add_dots=False):
-        super().__init__(df)
+                 hue_order=None, showfliers=False, add_dots=False, figsize=(1.5, 1.5), title_font_size=8,
+                 label_font_size=6, title_font_weight=700):
+        super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
+                         title_font_weight=title_font_weight)
         self.df = df
         self.x = x
         self.y = y

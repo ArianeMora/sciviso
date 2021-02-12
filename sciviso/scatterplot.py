@@ -27,8 +27,11 @@ class Scatterplot(Vis):
 
     def __init__(self, df: pd.DataFrame, x: object, y: object, title='', xlabel='', ylabel='', colour=None, z = None,
                  zlabel = None,
-                 points_to_annotate=None, annotation_label=None, add_correlation=False, correlation='Spearman'):
-        super().__init__(df)
+                 points_to_annotate=None, annotation_label=None, add_correlation=False, correlation='Spearman',
+                 figsize=(2, 2), title_font_size=8, label_font_size=6, title_font_weight=700):
+        super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
+                         title_font_weight=title_font_weight)
+
         self.x = x
         self.y = y
         self.z = z

@@ -28,7 +28,10 @@ class Volcanoplot(Vis):
     def __init__(self, df: pd.DataFrame, log_fc: str, p_val: str, label_column: str, title='',
                  xlabel='', ylabel='', invert=False, p_val_cutoff=0.05,
                  log_fc_cuttoff=2, label_big_sig=False, colours=None, offset=None,
-                 text_colours=None, values_to_label=None, max_labels=20, values_colours=None):
+                 text_colours=None, values_to_label=None, max_labels=20, values_colours=None,
+                 figsize=(3, 3), title_font_size=8, label_font_size=6, title_font_weight=700):
+        super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
+                         title_font_weight=title_font_weight)
         super().__init__(df)
         self.log_fc = log_fc
         self.p_val = p_val
