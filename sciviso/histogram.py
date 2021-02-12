@@ -63,8 +63,9 @@ class Histogram(Vis):
         else:
             ax = sns.distplot(values, kde=self.plot_kde, rug=self.plot_rug, hist=self.plot_hist,
                               norm_hist=self.normalise, bins=self.bins)
-
         self.add_labels()
+        ax.tick_params(labelsize=self.label_font_size)
+
         self.apply_limits('x', self.max_x, self.min_x)
         self.apply_limits('y', self.max_y, self.min_y)
         return ax

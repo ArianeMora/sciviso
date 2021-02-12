@@ -65,6 +65,7 @@ class Barchart(Vis):
 
         ax = sns.barplot(data=vis_df, x=x, y=y, hue=hue, hue_order=hue_order, order=order, palette=self.palette)
         ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right')
-        plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+        plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., fontsize=self.label_font_size)
+        ax.tick_params(labelsize=self.label_font_size)
         self.add_labels()
         return ax

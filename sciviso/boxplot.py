@@ -28,9 +28,11 @@ class Boxplot(Vis):
     Box plot. Adds stat annotations and returns the SVG or saves it to disk.
     for stats annotations details see: https://github.com/webermarcolivier/statannot
     """
-    def __init__(self, df: pd.DataFrame, x: object, y: object, title='', xlabel='', ylabel='',
-                 hue=None, order=None, hue_order=None, showfliers=False, add_dots=False, add_stats=True, stat_method='Mann-Whitney', box_pairs=None):
-        super().__init__(df)
+    def __init__(self, df: pd.DataFrame, x: object, y: object, title='', xlabel='', ylabel='', box_colors=None,
+                 hue=None, order=None, hue_order=None, showfliers=False, add_dots=False, add_stats=True,
+                 stat_method='Mann-Whitney', box_pairs=None, figsize=(1.5, 1.5), title_font_size=8, label_font_size=6, title_font_weight=700):
+        super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
+                         title_font_weight=title_font_weight)
         self.df = df
         self.x = x
         self.y = y
@@ -46,6 +48,7 @@ class Boxplot(Vis):
         self.label = 'boxplot'
         self.xlabel = xlabel
         self.ylabel = ylabel
+        self.box_colors = box_colors
 
     def format_data_for_boxplot(self, df: pd.DataFrame, conditions: list, filter_column=None, filter_values=None):
         condition_dict = defaultdict(list)
@@ -81,7 +84,7 @@ class Boxplot(Vis):
         box_df['Conditions'] = condition
         return box_df
 
-    def plot(self):
+    def plot(self, legend=True):
         x, y, hue_order, order, hue, box_pairs = self.x, self.y, self.hue_order, self.order, self.hue, self.box_pairs
         # First lets check whether we were passed lists or strings for our y and x arrays
         if not isinstance(x, str) and not isinstance(y, str):
@@ -130,6 +133,13 @@ class Boxplot(Vis):
                                 test=self.stat_method, text_format='star', loc='inside', verbose=2)
 
         ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right')
-        #plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+        if legend:
+            plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.,  fontsize=self.label_font_size)
+        ax.tick_params(labelsize=self.label_font_size)
         self.add_labels()
+
+        # Check if the user supplied a list of colours for the boxes:
+        if self.box_colors is not None:
+            for i, b in enumerate(ax.artists):
+                b.set_facecolor(self.box_colors[i])
         return ax

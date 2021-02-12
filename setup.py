@@ -45,7 +45,7 @@ setup(name='sciviso',
               'sciviso = sciviso.__main__:main'
           ]
       },
-      install_requires=['sciutil', 'pandas', 'numpy', 'matplotlib', 'statannot', 'seaborn'],
+      install_requires=['sciutil', 'pandas', 'numpy', 'matplotlib', 'statannot', 'seaborn', 'adjustText'],
       python_requires='>=3.6',
       data_files=[("", ["LICENSE"])]
       )

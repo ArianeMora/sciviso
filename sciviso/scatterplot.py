@@ -98,7 +98,7 @@ class Scatterplot(Vis):
 
         self.add_labels()
         plt.colorbar(scatter)
-
+        ax.tick_params(labelsize=self.label_font_size)
         return ax
 
     def plot3D(self):
@@ -129,7 +129,9 @@ class Scatterplot(Vis):
                           self.df[self.annotation_label].values)
 
         self.add_labels()
-        plt.colorbar(scatter)
+        ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize=self.label_font_size)
+        ax.tick_params(labelsize=self.label_font_size)
+        #plt.colorbar(scatter)
 
         return ax
 
@@ -163,7 +165,9 @@ class Scatterplot(Vis):
             if c_i == len(grp_colours):
                 c_i = 0
             g_i += 1
-        ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+        ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize=self.label_font_size)
+        ax.tick_params(labelsize=self.label_font_size)
+
         plt.title(self.title)
         plt.show()
 
@@ -198,7 +202,9 @@ class Scatterplot(Vis):
             if c_i == len(grp_colours):
                 c_i = 0
             g_i += 1
-        ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+        ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize=self.label_font_size)
+        ax.tick_params(labelsize=self.label_font_size)
+
         plt.title(self.title)
         plt.show()
 

@@ -73,7 +73,7 @@ class TestVis(unittest.TestCase):
         # Example showing formatting data for plots
         df = boxplot.format_data_for_boxplot(self.df, ["sepal_length", "sepal_width"], "label",
                                              ["Iris-setosa", "Iris-virginica"])
-        boxplot = Boxplot(df, "Conditions", "Values")
+        boxplot = Boxplot(df, "Conditions", "Values", box_colors=["red", "red", "green"])
         boxplot.plot()
         plt.savefig('fig.svg')
         plt.show()
@@ -87,7 +87,7 @@ class TestVis(unittest.TestCase):
         labels = self.df['sepal_length'].values.astype(int)
         lut = dict(zip(set(labels), sns.color_palette("coolwarm", len(set(labels)))))
         row_colors2 = pd.DataFrame(labels)[0].map(lut)
-
+        annot = self.df[self.numeric_cols].values
         heatmap = Heatmap(self.df, self.numeric_cols, self.label, 'Xlabel', 'Ylabel',
                           row_colours=[row_colors, row_colors2])
         heatmap.plot()

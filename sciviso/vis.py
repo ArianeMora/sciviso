@@ -42,8 +42,9 @@ class Vis:
 
     """
 
-    def __init__(self, df: pd.DataFrame, sciutil=None, cmap='coolwarm', sep='_', figsize=(8, 6), dpi=300,
-                 style='whitegrid', palette='pastel', opacity=0.8, default_colour="teal"):
+    def __init__(self, df: pd.DataFrame, sciutil=None, cmap='seismic', sep='_', dpi=300,
+                 style='ticks', palette='pastel', opacity=0.8, default_colour="teal", figsize=(3, 3),
+                 title_font_size=8, label_font_size=6, title_font_weight=700):
         self.sep = sep
         self.df = df
         self.columns = list(df.columns)
@@ -56,9 +57,9 @@ class Vis:
         self.opacity = opacity
         self.label = ''
         self.default_colour = default_colour
-        self.label_font_size = 12
-        self.title_font_size = 16
-        self.title_font_weight = 700
+        self.label_font_size = label_font_size
+        self.title_font_size = title_font_size
+        self.title_font_weight = title_font_weight
         self.title = None
         self.xlabel = None
         self.ylabel = None
@@ -67,8 +68,9 @@ class Vis:
              '#D09139', '#338A03', '#FF69A1', '#5930B1', '#FFE884', '#35B567', '#1E88E5',
              '#ACAD60', '#A2FFB4', '#B618F5', '#854A9C']
         plt.rcParams['svg.fonttype'] = 'none'  # Ensure text is saved as text
+        plt.rcParams['figure.figsize'] = self.figsize
         sns.set(rc={'figure.figsize': self.figsize, 'font.family': 'sans-serif',
-                    'font.sans-serif': 'Arial', 'font.size': 12.0}, style=self.style)
+                    'font.sans-serif': 'Arial', 'font.size': label_font_size}, style=self.style)
 
     def set_palette(self, palette):
         self.palette = palette

@@ -26,8 +26,9 @@ class Heatmap(Vis):
 
     def __init__(self, df: pd.DataFrame, chart_columns: list, row_index: str, title='', xlabel='', ylabel='',
                  cluster_rows=True, cluster_cols=True, row_colours=None, col_colours=None, vmin=None, vmax=None,
-                 cmap_str='RdBu_r'):
-        super().__init__(df)
+                 figsize=(3, 3), title_font_size=8, label_font_size=6, title_font_weight=700, cmap='RdBu_r'):
+        super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
+                         title_font_weight=title_font_weight)
         self.chart_columns = chart_columns
         self.row_index = row_index
         self.title = title
@@ -39,20 +40,20 @@ class Heatmap(Vis):
         self.vmax = vmax
         self.xlabel = xlabel
         self.ylabel = ylabel
-        self.cmap_str = cmap_str
+        self.cmap_str = cmap
 
-    def plot(self) -> None:
+    def plot(self):
         self.check_args_in_columns([self.chart_columns, [self.row_index]])
         df_dists = pd.DataFrame(self.df[self.chart_columns].values)
         df_dists.columns = self.chart_columns
         df_dists.index = self.df[self.row_index].values
-
-        ax = sns.clustermap(df_dists, col_cluster=self.cluster_cols, row_cluster=self.cluster_rows, col_colors=self.col_colours,
-                             row_colors=self.row_colours, cmap=self.cmap_str, vmax=self.vmax, vmin=self.vmin, yticklabels=1)
+        ax = sns.clustermap(df_dists, col_cluster=self.cluster_cols, figsize=self.figsize, row_cluster=self.cluster_rows,
+                            col_colors=self.col_colours,
+                            row_colors=self.row_colours, cmap=self.cmap, vmax=self.vmax, vmin=self.vmin, yticklabels=1)
         plt.title(self.title)
         plt.setp(ax.ax_heatmap.yaxis.get_majorticklabels(), rotation=0)
         plt.setp(ax.ax_heatmap.xaxis.get_majorticklabels(), rotation=45, horizontalalignment='right')
-
+        ax.ax_heatmap.tick_params(labelsize=self.label_font_size)
         self.add_labels(title=False, x=False)
         ax.fig.suptitle(self.title, fontsize=self.title_font_size, fontweight=self.title_font_weight)
         return ax
