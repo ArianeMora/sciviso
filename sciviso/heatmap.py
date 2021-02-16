@@ -49,11 +49,13 @@ class Heatmap(Vis):
         df_dists.index = self.df[self.row_index].values
         ax = sns.clustermap(df_dists, col_cluster=self.cluster_cols, figsize=self.figsize, row_cluster=self.cluster_rows,
                             col_colors=self.col_colours,
-                            row_colors=self.row_colours, cmap=self.cmap, vmax=self.vmax, vmin=self.vmin, yticklabels=1)
+                            row_colors=self.row_colours, cmap=self.cmap_str, vmax=self.vmax, vmin=self.vmin,
+                            yticklabels=1, xticklabels=1)
         plt.title(self.title)
         plt.setp(ax.ax_heatmap.yaxis.get_majorticklabels(), rotation=0)
         plt.setp(ax.ax_heatmap.xaxis.get_majorticklabels(), rotation=45, horizontalalignment='right')
         ax.ax_heatmap.tick_params(labelsize=self.label_font_size)
         self.add_labels(title=False, x=False)
         ax.fig.suptitle(self.title, fontsize=self.title_font_size, fontweight=self.title_font_weight)
+        ax.ax_heatmap.set_xticklabels(ax.ax_heatmap.get_xmajorticklabels(), fontsize=self.label_font_size)
         return ax
