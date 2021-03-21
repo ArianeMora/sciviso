@@ -26,7 +26,7 @@ from sciviso import Vis
 class Scatterplot(Vis):
 
     def __init__(self, df: pd.DataFrame, x: object, y: object, title='', xlabel='', ylabel='', colour=None, z = None,
-                 zlabel = None,
+                 zlabel = None, add_legend=True,
                  points_to_annotate=None, annotation_label=None, add_correlation=False, correlation='Spearman',
                  figsize=(2, 2), title_font_size=8, label_font_size=6, title_font_weight=700):
         super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
@@ -43,6 +43,7 @@ class Scatterplot(Vis):
         self.correlation = correlation
         self.xlabel = xlabel
         self.ylabel = ylabel
+        self.add_legend = add_legend
         self.zlabel = zlabel
 
     def annotate(self, ax: plt.axes, x: np.array, y: np.array, labels: np.array) -> plt.axes:
@@ -92,7 +93,7 @@ class Scatterplot(Vis):
 
         # Plot the points
         fig, ax = plt.subplots()
-        scatter = ax.scatter(vis_df[x].values, vis_df[y].values, c=self.colour, alpha=self.opacity, cmap=self.cmap)
+        scatter = ax.scatter(vis_df[x].values, vis_df[y].values, c=self.colour, alpha=self.opacity, cmap=self.cmap_str)
 
         # Check if we need to annotate anything
         if self.points_to_annotate is not None:
@@ -100,8 +101,10 @@ class Scatterplot(Vis):
             self.annotate(ax, vis_df[x].values, vis_df[y].values, self.df[self.annotation_label].values)
 
         self.add_labels()
-        plt.colorbar(scatter)
+        if self.add_legend:
+            plt.colorbar(scatter)
         ax.tick_params(labelsize=self.label_font_size)
+        self.set_ax_params(ax)
         return ax
 
     def plot3D(self):
@@ -124,7 +127,7 @@ class Scatterplot(Vis):
         ax = Axes3D(fig)
 
         scatter = ax.scatter(vis_df[x].values, vis_df[y].values, vis_df[z].values,
-                             c=self.colour, alpha=self.opacity, cmap=self.cmap)
+                             c=self.colour, alpha=self.opacity, cmap=self.cmap_str)
         # Check if we need to annotate anything
         if self.points_to_annotate is not None:
             self.check_columns([self.annotation_label])
@@ -134,7 +137,7 @@ class Scatterplot(Vis):
         self.add_labels()
         ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize=self.label_font_size)
         ax.tick_params(labelsize=self.label_font_size)
-        #plt.colorbar(scatter)
+        self.set_ax_params(ax)
 
         return ax
 
@@ -170,7 +173,7 @@ class Scatterplot(Vis):
             g_i += 1
         ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize=self.label_font_size)
         ax.tick_params(labelsize=self.label_font_size)
-
+        self.set_ax_params(ax)
         plt.title(self.title)
         plt.show()
 
@@ -207,7 +210,11 @@ class Scatterplot(Vis):
             g_i += 1
         ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize=self.label_font_size)
         ax.tick_params(labelsize=self.label_font_size)
-
+        self.set_ax_params(ax)
+        # remove fill
+        ax.xaxis.pane.fill = False
+        ax.yaxis.pane.fill = False
+        ax.zaxis.pane.fill = False
         plt.title(self.title)
         plt.show()
 

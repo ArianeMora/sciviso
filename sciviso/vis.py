@@ -202,3 +202,13 @@ class Vis:
 
     def plot(self):
         self.u.warn_p(["Please initiate one of the charts. Vis is just a wrapper. See docs for more info."])
+
+    def set_ax_params(self, ax):
+        ax.tick_params(direction='out', length=2, width=0.5)
+        ax.spines['bottom'].set_linewidth(0.5)
+        ax.spines['top'].set_linewidth(0)
+        ax.spines['left'].set_linewidth(0.5)
+        ax.spines['right'].set_linewidth(0)
+        ax.tick_params(labelsize=self.label_font_size)
+        ax.tick_params(axis='x', which='major', pad=2.0)
+        ax.tick_params(axis='y', which='major', pad=2.0)

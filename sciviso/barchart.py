@@ -25,7 +25,8 @@ from sciviso import Vis
 class Barchart(Vis):
 
     def __init__(self, df: pd.DataFrame, x: object, y: object, title='', xlabel='', ylabel='', hue=None, order=None,
-                 hue_order=None, figsize=(1.5, 1.5), title_font_size=8, label_font_size=6, title_font_weight=700):
+                 hue_order=None, figsize=(1.5, 1.5), title_font_size=8, label_font_size=6, title_font_weight=700,
+                 errwidth=0, linewidth=1, edgecolor="k"):
         super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
                          title_font_weight=title_font_weight)
         super().__init__(df)
@@ -39,6 +40,9 @@ class Barchart(Vis):
         self.label = 'barchart'
         self.xlabel = xlabel
         self.ylabel = ylabel
+        self.errwidth = errwidth
+        self.linewidth =linewidth
+        self.edgecolor = edgecolor
 
     def plot(self):
         x, y, hue_order, order, hue = self.x, self.y, self.hue_order, self.order, self.hue
@@ -65,9 +69,11 @@ class Barchart(Vis):
             order = list(set(vis_df[x].values))
             order.sort()
 
-        ax = sns.barplot(data=vis_df, x=x, y=y, hue=hue, hue_order=hue_order, order=order, palette=self.palette)
+        ax = sns.barplot(data=vis_df, x=x, y=y, hue=hue, hue_order=hue_order, order=order, palette=self.palette,
+                         edgecolor=self.edgecolor, linewidth=self.linewidth, errwidth=self.errwidth)
         ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right')
         plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., fontsize=self.label_font_size)
         ax.tick_params(labelsize=self.label_font_size)
         self.add_labels()
+        self.set_ax_params(ax)
         return ax

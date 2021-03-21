@@ -140,5 +140,5 @@ class Volcanoplot(Vis):
         self.add_scatter_and_annotate(ax, x, y, self.colours['sig_big-neg-logFC'], sig_big_neg_logfc, annotate=True)
         self.add_labels()
         ax.tick_params(labelsize=6)
-
+        self.set_ax_params(ax)
         return ax

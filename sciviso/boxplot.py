@@ -142,4 +142,5 @@ class Boxplot(Vis):
         if self.box_colors is not None:
             for i, b in enumerate(ax.artists):
                 b.set_facecolor(self.box_colors[i])
+        self.set_ax_params(ax)
         return ax

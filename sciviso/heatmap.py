@@ -26,6 +26,7 @@ class Heatmap(Vis):
 
     def __init__(self, df: pd.DataFrame, chart_columns: list, row_index: str, title='', xlabel='', ylabel='',
                  cluster_rows=True, cluster_cols=True, row_colours=None, col_colours=None, vmin=None, vmax=None,
+                 linewidths=0.5, x_tick_labels=1,
                  figsize=(3, 3), title_font_size=8, label_font_size=6, title_font_weight=700, cmap='RdBu_r'):
         super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
                          title_font_weight=title_font_weight)
@@ -41,6 +42,8 @@ class Heatmap(Vis):
         self.xlabel = xlabel
         self.ylabel = ylabel
         self.cmap_str = cmap
+        self.x_tick_labels = x_tick_labels
+        self.linewidths = linewidths
 
     def plot(self):
         self.check_args_in_columns([self.chart_columns, [self.row_index]])
@@ -50,7 +53,7 @@ class Heatmap(Vis):
         ax = sns.clustermap(df_dists, col_cluster=self.cluster_cols, figsize=self.figsize, row_cluster=self.cluster_rows,
                             col_colors=self.col_colours,
                             row_colors=self.row_colours, cmap=self.cmap_str, vmax=self.vmax, vmin=self.vmin,
-                            yticklabels=1, xticklabels=1)
+                            yticklabels=1, xticklabels=self.x_tick_labels, linewidths=self.linewidths, linecolor="black")
         plt.title(self.title)
         plt.setp(ax.ax_heatmap.yaxis.get_majorticklabels(), rotation=0)
         plt.setp(ax.ax_heatmap.xaxis.get_majorticklabels(), rotation=45, horizontalalignment='right')
@@ -58,4 +61,5 @@ class Heatmap(Vis):
         self.add_labels(title=False, x=False)
         ax.fig.suptitle(self.title, fontsize=self.title_font_size, fontweight=self.title_font_weight)
         ax.ax_heatmap.set_xticklabels(ax.ax_heatmap.get_xmajorticklabels(), fontsize=self.label_font_size)
+        self.set_ax_params(ax.ax_heatmap)
         return ax

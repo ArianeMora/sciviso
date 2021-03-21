@@ -89,7 +89,7 @@ class TestVis(unittest.TestCase):
         row_colors2 = pd.DataFrame(labels)[0].map(lut)
         annot = self.df[self.numeric_cols].values
         heatmap = Heatmap(self.df, self.numeric_cols, self.label, 'Xlabel', 'Ylabel',
-                          row_colours=[row_colors, row_colors2])
+                          row_colours=[row_colors, row_colors2], linewidths=0.5, x_tick_labels=0)
         heatmap.plot()
         heatmap.save_png([self.data_dir, "heatmap"])
         plt.show()

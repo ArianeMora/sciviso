@@ -35,7 +35,7 @@ class Histogram(Vis):
         self.title = title
         self.bins = bins
         self.normalise = normalise
-        self.colour = colour if colour is not None else self.default_colour
+        self.colour = colour if colour is not None else "black"
         self.fit_norm = fit_norm
         self.plot_rug = plot_rug
         self.plot_kde = plot_kde
@@ -64,10 +64,10 @@ class Histogram(Vis):
                               norm_hist=self.normalise, bins=self.bins)
         else:
             ax = sns.distplot(values, kde=self.plot_kde, rug=self.plot_rug, hist=self.plot_hist,
-                              norm_hist=self.normalise, bins=self.bins)
+                              norm_hist=self.normalise, bins=self.bins, color=self.colour)
         self.add_labels()
         self.apply_limits('x', self.max_x, self.min_x)
         self.apply_limits('y', self.max_y, self.min_y)
-        ax.tick_params(labelsize=self.label_font_size)
 
+        self.set_ax_params(ax)
         return ax
