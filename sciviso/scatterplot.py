@@ -102,7 +102,7 @@ class Scatterplot(Vis):
 
         self.add_labels()
         if self.add_legend:
-            plt.colorbar(scatter)
+            plt.colorbar(scatter, shrink=0.2, aspect=3)
         ax.tick_params(labelsize=self.label_font_size)
         self.set_ax_params(ax)
         return ax
@@ -155,8 +155,7 @@ class Scatterplot(Vis):
         labels = []
         if plt_bg:
             rand_idxs = np.random.choice(range(0, len(self.df), 1), max_bg)
-            colour = ['lightgrey'] * rand_idxs
-            ax.scatter(x[rand_idxs], y[rand_idxs], c=colour, alpha=alpha_bg)
+            ax.scatter(x[rand_idxs], y[rand_idxs], c='lightgrey', alpha=alpha_bg)
             labels = ['None']
 
         g_i = 0
@@ -175,6 +174,7 @@ class Scatterplot(Vis):
         ax.tick_params(labelsize=self.label_font_size)
         self.set_ax_params(ax)
         plt.title(self.title)
+        plt.tight_layout()
         plt.show()
 
     def plot_groups_3D(self, grp_labels: list, grp_idxs: list, grp_colours=None, plt_bg=True, max_bg=600,
@@ -192,8 +192,7 @@ class Scatterplot(Vis):
         labels = []
         if plt_bg:
             rand_idxs = np.random.choice(range(0, len(self.df), 1), max_bg)
-            colour = ['lightgrey'] * rand_idxs
-            ax.scatter(x[rand_idxs], y[rand_idxs], z[rand_idxs], c=colour, alpha=alpha_bg)
+            ax.scatter(x[rand_idxs], y[rand_idxs], z[rand_idxs], c='lightgrey', alpha=alpha_bg)
             labels = ['None']
 
         g_i = 0
@@ -216,6 +215,7 @@ class Scatterplot(Vis):
         ax.yaxis.pane.fill = False
         ax.zaxis.pane.fill = False
         plt.title(self.title)
+        plt.tight_layout()
         plt.show()
 
     def plot(self):

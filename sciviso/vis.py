@@ -20,6 +20,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 from matplotlib.colors import ListedColormap
+from textwrap import wrap
 
 from sciutil import SciUtil, SciException
 
@@ -44,7 +45,7 @@ class Vis:
 
     def __init__(self, df: pd.DataFrame, sciutil=None, cmap='seismic', sep='_', dpi=300,
                  style='ticks', palette='pastel', opacity=0.8, default_colour="teal", figsize=(3, 3),
-                 title_font_size=8, label_font_size=6, title_font_weight=700):
+                 title_font_size=8, label_font_size=6, title_font_weight=700, text_font_weight=700):
         self.sep = sep
         self.df = df
         self.columns = list(df.columns)
@@ -60,10 +61,13 @@ class Vis:
         self.label_font_size = label_font_size
         self.title_font_size = title_font_size
         self.title_font_weight = title_font_weight
+        self.text_font_weight = text_font_weight
+        self.palette = palette
         self.title = None
         self.xlabel = None
         self.ylabel = None
         self.cmap_str = cmap
+        self.labels = 'short'
         self.palette = ['#483873', '#1BD8A6', '#B117B7', '#AAC7E2', '#FFC107', '#016957', '#9785C0',
              '#D09139', '#338A03', '#FF69A1', '#5930B1', '#FFE884', '#35B567', '#1E88E5',
              '#ACAD60', '#A2FFB4', '#B618F5', '#854A9C']
@@ -72,14 +76,32 @@ class Vis:
         sns.set(rc={'figure.figsize': self.figsize, 'font.family': 'sans-serif',
                     'font.sans-serif': 'Arial', 'font.size': label_font_size}, style=self.style)
 
+    def load_style(self, style_dict):
+        """ Load a style from a dict. """
+        self.default_colour = style_dict.get('default_colour') or self.default_colour
+        self.label_font_size = style_dict.get('label_font_size') or self.label_font_size
+        self.title_font_size = style_dict.get('title_font_size') or self.title_font_size
+        self.title_font_weight = style_dict.get('title_font_weight') or self.title_font_weight
+        self.text_font_weight = style_dict.get('text_font_weight') or self.text_font_weight
+        self.palette = style_dict.get('palette') or self.palette
+        self.figsize = style_dict.get('figsize') or self.figsize
+        plt.rcParams['figure.figsize'] = self.figsize
+        sns.set(rc={'figure.figsize': self.figsize, 'font.family': 'sans-serif',
+                    'font.sans-serif': 'Arial', 'font.size': self.label_font_size}, style=self.style)
+        self.cmap_str = style_dict.get('cmap') or self.cmap_str
+        self.style = style_dict.get('style') or self.style
+        self.cmap = ListedColormap(sns.color_palette(self.cmap_str))
+        self.opacity = style_dict.get('opacity') or self.opacity
+        self.labels = style_dict.get('labels') or self.labels
+
     def set_palette(self, palette):
         self.palette = palette
 
     def add_labels(self, title=True, x=True, y=True):
         if x:
-            plt.xlabel(self.xlabel, fontsize=self.label_font_size)
+            plt.xlabel(self.xlabel, fontsize=self.label_font_size, fontweight=self.text_font_weight)
         if y:
-            plt.ylabel(self.ylabel, fontsize=self.label_font_size)
+            plt.ylabel(self.ylabel, fontsize=self.label_font_size, fontweight=self.text_font_weight)
         if title:
             plt.title(self.title, fontsize=self.title_font_size, fontweight=self.title_font_weight)
 
@@ -212,3 +234,18 @@ class Vis:
         ax.tick_params(labelsize=self.label_font_size)
         ax.tick_params(axis='x', which='major', pad=2.0)
         ax.tick_params(axis='y', which='major', pad=2.0)
+        # Make sure if the labels are very long they wrap
+        labels = [str(item.get_text()).replace('_', ' ') for item in ax.get_xticklabels()]
+        if self.labels == 'wrap':
+            labels_short = ['\n'.join(wrap(l, 20)) for l in labels]
+        elif self.labels == 'short':
+            labels_short = []
+            for l in labels:
+                if len(l) < 15:
+                    labels_short.append(l)
+                else:
+                    labels_short.append(f'{l[:15]}...')
+        else:
+            labels_short = labels
+        if labels_short[0] != '':
+            ax.set_xticklabels(labels_short, weight=self.text_font_weight)
