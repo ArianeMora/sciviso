@@ -25,7 +25,7 @@ from sciviso import Vis
 class Line(Vis):
 
     def __init__(self, df: pd.DataFrame, title='', xlabel='', ylabel='', colour=None, figsize=(1.5, 1.5),
-                 title_font_size=8, label_font_size=6, title_font_weight=700):
+                 title_font_size=8, label_font_size=6, title_font_weight=700, config={}):
         super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
                          title_font_weight=title_font_weight)
         super().__init__(df)
@@ -33,6 +33,8 @@ class Line(Vis):
         self.colour = colour
         self.xlabel = xlabel
         self.ylabel = ylabel
+        if config:
+            self.load_style(config)
 
     def plot_line_grps(self, idxs, axis_labels, axis_columns, labels_lst=None, title='', plt_mean=True, colours=None,
                       dot_colours=None, ylim=None, alpha_bg=0.1, alpha_highlight=0.8, linewidth_bg=0.5,

@@ -62,12 +62,18 @@ class Vis:
         self.title_font_size = title_font_size
         self.title_font_weight = title_font_weight
         self.text_font_weight = text_font_weight
+        self.axis_font_size = label_font_size
         self.palette = palette
         self.title = None
         self.xlabel = None
         self.ylabel = None
         self.cmap_str = cmap
-        self.labels = 'short'
+        self.labels = None
+        self.bins, self.cluster_rows, self.cluster_cols, self.line_width = None, None, None, None
+        self.col_colours, self.row_colours, self.vmin, self.vmax, self.x_tick_labels = None, None, None, None, None
+        self.min_x, self.min_y, self.max_x, self.max_y = None, None, None, None
+        self.add_legend, self.zlabel, self.colour = None, None, None
+        self.hue, self.add_dots, self.add_stats, self.stat_method = None, None, None, None
         self.palette = ['#483873', '#1BD8A6', '#B117B7', '#AAC7E2', '#FFC107', '#016957', '#9785C0',
              '#D09139', '#338A03', '#FF69A1', '#5930B1', '#FFE884', '#35B567', '#1E88E5',
              '#ACAD60', '#A2FFB4', '#B618F5', '#854A9C']
@@ -80,6 +86,7 @@ class Vis:
         """ Load a style from a dict. """
         self.default_colour = style_dict.get('default_colour') or self.default_colour
         self.label_font_size = style_dict.get('label_font_size') or self.label_font_size
+        self.axis_font_size = style_dict.get('axis_font_size') or self.axis_font_size
         self.title_font_size = style_dict.get('title_font_size') or self.title_font_size
         self.title_font_weight = style_dict.get('title_font_weight') or self.title_font_weight
         self.text_font_weight = style_dict.get('text_font_weight') or self.text_font_weight
@@ -93,6 +100,26 @@ class Vis:
         self.cmap = ListedColormap(sns.color_palette(self.cmap_str))
         self.opacity = style_dict.get('opacity') or self.opacity
         self.labels = style_dict.get('labels') or self.labels
+        self.bins = style_dict.get('bins') or self.bins
+        self.cluster_rows = style_dict.get('cluster_rows') or self.cluster_rows
+        self.cluster_cols = style_dict.get('cluster_cols') or self.cluster_cols
+        self.line_width = style_dict.get('line_width') or self.line_width
+        self.vmin = style_dict.get('vmin') or self.vmin
+        self.vmax = style_dict.get('vmax') or self.vmax
+        self.col_colours = style_dict.get('col_colours') or self.col_colours
+        self.row_colours = style_dict.get('row_colours') or self.row_colours
+        self.x_tick_labels = style_dict.get('x_tick_labels') or self.x_tick_labels
+        self.min_x = style_dict.get('min_x') or self.min_x
+        self.min_y = style_dict.get('min_y') or self.min_y
+        self.max_x = style_dict.get('max_x') or self.max_x
+        self.max_y = style_dict.get('max_y') or self.max_y
+        self.add_legend = style_dict.get('add_legend') or self.add_legend
+        self.zlabel = style_dict.get('zlabel') or self.zlabel
+        self.colour = style_dict.get('colour') or self.colour
+        self.add_dots = style_dict.get('add_dots') or self.add_dots
+        self.add_stats = style_dict.get('add_stats') or self.add_stats
+        self.stat_method = style_dict.get('stat_method') or self.stat_method
+        self.hue = style_dict.get('hue') or self.hue
 
     def set_palette(self, palette):
         self.palette = palette
@@ -231,7 +258,7 @@ class Vis:
         ax.spines['top'].set_linewidth(0)
         ax.spines['left'].set_linewidth(0.5)
         ax.spines['right'].set_linewidth(0)
-        ax.tick_params(labelsize=self.label_font_size)
+        ax.tick_params(labelsize=self.axis_font_size)
         ax.tick_params(axis='x', which='major', pad=2.0)
         ax.tick_params(axis='y', which='major', pad=2.0)
         # Make sure if the labels are very long they wrap
@@ -247,5 +274,20 @@ class Vis:
                     labels_short.append(f'{l[:15]}...')
         else:
             labels_short = labels
-        if labels_short[0] != '':
+        if labels_short and labels_short[0] != '':
             ax.set_xticklabels(labels_short, weight=self.text_font_weight)
+
+        labels = [str(item.get_text()).replace('_', ' ').capitalize() for item in ax.get_yticklabels()]
+        if self.labels == 'wrap':
+            labels_short = ['\n'.join(wrap(l, 20)) for l in labels]
+        elif self.labels == 'short':
+            labels_short = []
+            for l in labels:
+                if len(l) < 15:
+                    labels_short.append(l)
+                else:
+                    labels_short.append(f'{l[:15]}...')
+        else:
+            labels_short = labels
+        if labels_short and labels_short[0] != '':
+            ax.set_yticklabels(labels_short, weight=self.text_font_weight)

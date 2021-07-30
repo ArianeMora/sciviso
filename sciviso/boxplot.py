@@ -30,7 +30,8 @@ class Boxplot(Vis):
     """
     def __init__(self, df: pd.DataFrame, x: object, y: object, title='', xlabel='', ylabel='', box_colors=None,
                  hue=None, order=None, hue_order=None, showfliers=False, add_dots=False, add_stats=True,
-                 stat_method='Mann-Whitney', box_pairs=None, figsize=(1.5, 1.5), title_font_size=8, label_font_size=6, title_font_weight=700):
+                 stat_method='Mann-Whitney', box_pairs=None, figsize=(1.5, 1.5), title_font_size=8, label_font_size=6,
+                 title_font_weight=700, config={}):
         super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
                          title_font_weight=title_font_weight)
         self.df = df
@@ -38,17 +39,19 @@ class Boxplot(Vis):
         self.y = y
         self.title = title
         self.hue = hue
-        self.order = order
-        self.hue_order = hue_order
-        self.showfliers = showfliers
+        self.order = order if config.get('order') is None else config.get('order')
+        self.hue_order = hue_order if config.get('hue_order') is None else config.get('hue_order')
+        self.showfliers = showfliers if config.get('showfliers') is None else config.get('showfliers')
         self.add_dots = add_dots
         self.add_stats = add_stats
         self.stat_method = stat_method
-        self.box_pairs = box_pairs
+        self.box_pairs = box_pairs if config.get('box_pairs') is None else config.get('box_pairs')
         self.label = 'boxplot'
         self.xlabel = xlabel
         self.ylabel = ylabel
-        self.box_colors = box_colors
+        self.box_colors = box_colors if config.get('box_colors') is None else config.get('box_colors')
+        if config:
+            self.load_style(config)
 
     def format_data_for_boxplot(self, df: pd.DataFrame, conditions: list, filter_column=None, filter_values=None):
         condition_dict = defaultdict(list)

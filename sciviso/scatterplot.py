@@ -28,7 +28,7 @@ class Scatterplot(Vis):
     def __init__(self, df: pd.DataFrame, x: object, y: object, title='', xlabel='', ylabel='', colour=None, z = None,
                  zlabel = None, add_legend=True,
                  points_to_annotate=None, annotation_label=None, add_correlation=False, correlation='Spearman',
-                 figsize=(2, 2), title_font_size=8, label_font_size=6, title_font_weight=700):
+                 figsize=(2, 2), title_font_size=8, label_font_size=6, title_font_weight=700, s=20, config={}):
         super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
                          title_font_weight=title_font_weight)
 
@@ -45,6 +45,9 @@ class Scatterplot(Vis):
         self.ylabel = ylabel
         self.add_legend = add_legend
         self.zlabel = zlabel
+        self.s = s if config.get('s') is None else config.get('s')
+        if config:
+            self.load_style(config)
 
     def annotate(self, ax: plt.axes, x: np.array, y: np.array, labels: np.array) -> plt.axes:
         """
@@ -93,7 +96,8 @@ class Scatterplot(Vis):
 
         # Plot the points
         fig, ax = plt.subplots()
-        scatter = ax.scatter(vis_df[x].values, vis_df[y].values, c=self.colour, alpha=self.opacity, cmap=self.cmap_str)
+        scatter = ax.scatter(vis_df[x].values, vis_df[y].values, c=self.colour, alpha=self.opacity, cmap=self.cmap_str,
+                             s=self.s, vmin=self.vmin, vmax=self.vmax)
 
         # Check if we need to annotate anything
         if self.points_to_annotate is not None:
@@ -126,8 +130,13 @@ class Scatterplot(Vis):
         fig = plt.figure()
         ax = Axes3D(fig)
 
-        scatter = ax.scatter(vis_df[x].values, vis_df[y].values, vis_df[z].values,
-                             c=self.colour, alpha=self.opacity, cmap=self.cmap_str)
+        scatter = ax.scatter(vis_df[x].values, vis_df[y].values, vis_df[z].values, s=self.s,
+                             c=self.colour, alpha=self.opacity, cmap=self.cmap_str,
+                             vmin=self.vmin, vmax=self.vmax)
+        # remove fill
+        ax.xaxis.pane.fill = False
+        ax.yaxis.pane.fill = False
+        ax.zaxis.pane.fill = False
         # Check if we need to annotate anything
         if self.points_to_annotate is not None:
             self.check_columns([self.annotation_label])
@@ -135,14 +144,15 @@ class Scatterplot(Vis):
                           self.df[self.annotation_label].values)
 
         self.add_labels()
-        ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize=self.label_font_size)
+        if self.add_legend:
+            plt.colorbar(scatter, shrink=0.2, aspect=3)
         ax.tick_params(labelsize=self.label_font_size)
         self.set_ax_params(ax)
 
         return ax
 
     def plot_groups_2D(self, grp_labels: list, grp_idxs: list, grp_colours=None, plt_bg=True, max_bg=600,
-                       s=70, linewidth=1.0, alpha_highlight=0.8, alpha_bg=0.5):
+                       linewidth=1.0, alpha_highlight=0.8, alpha_bg=0.5):
         """ Allows pre-specified groups to be plot, user passes in an ordered list of group_labels,
         that match group_idxs. Optionally also passes the group colours. """
         if not grp_colours:
@@ -155,16 +165,18 @@ class Scatterplot(Vis):
         labels = []
         if plt_bg:
             rand_idxs = np.random.choice(range(0, len(self.df), 1), max_bg)
-            ax.scatter(x[rand_idxs], y[rand_idxs], c='lightgrey', alpha=alpha_bg)
+            ax.scatter(x[rand_idxs], y[rand_idxs], c='lightgrey', alpha=alpha_bg,
+                       vmin=self.vmin, vmax=self.vmax)
             labels = ['None']
 
         g_i = 0
         c_i = 0
         for g in grp_idxs:
-            ax.scatter(x[g], y[g], s=s, c=grp_colours[c_i],
+            ax.scatter(x[g], y[g], s=self.s, c=grp_colours[c_i],
                        label=grp_labels[g_i],
                        edgecolors='k', linewidth=linewidth,
-                       alpha=alpha_highlight)
+                       alpha=alpha_highlight,
+                       vmin=self.vmin, vmax=self.vmax)
             labels.append(grp_labels[g_i])
             c_i += 1
             if c_i == len(grp_colours):
@@ -175,7 +187,7 @@ class Scatterplot(Vis):
         self.set_ax_params(ax)
         plt.title(self.title)
         plt.tight_layout()
-        plt.show()
+        return ax
 
     def plot_groups_3D(self, grp_labels: list, grp_idxs: list, grp_colours=None, plt_bg=True, max_bg=600,
                        s=70, linewidth=1.0, alpha_highlight=0.8, alpha_bg=0.5):
@@ -192,7 +204,8 @@ class Scatterplot(Vis):
         labels = []
         if plt_bg:
             rand_idxs = np.random.choice(range(0, len(self.df), 1), max_bg)
-            ax.scatter(x[rand_idxs], y[rand_idxs], z[rand_idxs], c='lightgrey', alpha=alpha_bg)
+            ax.scatter(x[rand_idxs], y[rand_idxs], z[rand_idxs], c='lightgrey', alpha=alpha_bg, s=self.s,
+                       vmin=self.vmin, vmax=self.vmax)
             labels = ['None']
 
         g_i = 0
@@ -201,7 +214,8 @@ class Scatterplot(Vis):
             ax.scatter(x[g], y[g], z[g], s=s, c=grp_colours[c_i],
                        label=grp_labels[g_i],
                        edgecolors='k', linewidth=linewidth,
-                       alpha=alpha_highlight)
+                       alpha=alpha_highlight,
+                       vmin=self.vmin, vmax=self.vmax)
             labels.append(grp_labels[g_i])
             c_i += 1
             if c_i == len(grp_colours):
@@ -216,7 +230,7 @@ class Scatterplot(Vis):
         ax.zaxis.pane.fill = False
         plt.title(self.title)
         plt.tight_layout()
-        plt.show()
+        return ax
 
     def plot(self):
         if self.z is None:

@@ -27,7 +27,7 @@ class Histogram(Vis):
 
     def __init__(self, df: pd.DataFrame, x: object, title='', xlabel='', ylabel='', colour=None, normalise=False, fit_norm=False,
                  plot_rug=False, plot_kde=False, plot_hist=True, bins=20, min_x=None, max_x=None, min_y=None, max_y=None,
-                 figsize=(1.5, 1.5), title_font_size=8, label_font_size=6, title_font_weight=700):
+                 figsize=(1.5, 1.5), title_font_size=8, label_font_size=6, title_font_weight=700, config={}):
         super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
                          title_font_weight=title_font_weight)
         self.df = df
@@ -42,11 +42,13 @@ class Histogram(Vis):
         self.plot_hist = plot_hist
         self.label = 'histogram'
         self.xlabel = xlabel
-        self.ylabel = 'Frequency' if self.normalise is False and self.plot_kde is False and fit_norm is False else 'Normalised Frequency'
+        self.ylabel = f'{ylabel} Frequency' if self.normalise is False and self.plot_kde is False and fit_norm is False else f'{ylabel} Normalised Frequency'
         self.min_x = min_x
         self.min_y = min_y
         self.max_y = max_y
         self.max_x = max_x
+        if config:
+            self.load_style(config)
 
     def plot(self):
         x = self.x

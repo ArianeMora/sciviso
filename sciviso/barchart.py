@@ -26,7 +26,7 @@ class Barchart(Vis):
 
     def __init__(self, df: pd.DataFrame, x: object, y: object, title='', xlabel='', ylabel='', hue=None, order=None,
                  hue_order=None, figsize=(1.5, 1.5), title_font_size=8, label_font_size=6, title_font_weight=700,
-                 errwidth=0, linewidth=1, edgecolor="k"):
+                 errwidth=0, linewidth=1, edgecolor="k", config={}):
         super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
                          title_font_weight=title_font_weight)
         super().__init__(df)
@@ -40,9 +40,11 @@ class Barchart(Vis):
         self.label = 'barchart'
         self.xlabel = xlabel
         self.ylabel = ylabel
-        self.errwidth = errwidth
-        self.linewidth =linewidth
-        self.edgecolor = edgecolor
+        self.errwidth = errwidth if config.get('errwidth') is None else config.get('errwidth')
+        self.linewidth = linewidth if config.get('linewidth') is None else config.get('linewidth')
+        self.edgecolor = edgecolor if config.get('edgecolor') is None else config.get('edgecolor')
+        if config:
+            self.load_style(config)
 
     def plot(self):
         x, y, hue_order, order, hue = self.x, self.y, self.hue_order, self.order, self.hue

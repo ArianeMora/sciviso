@@ -28,20 +28,20 @@ class Volcanoplot(Vis):
     def __init__(self, df: pd.DataFrame, log_fc: str, p_val: str, label_column: str, title='',
                  xlabel='', ylabel='', invert=False, p_val_cutoff=0.05,
                  log_fc_cuttoff=2, label_big_sig=False, colours=None, offset=None,
-                 text_colours=None, values_to_label=None, max_labels=20, values_colours=None,
-                 figsize=(3, 3), title_font_size=8, label_font_size=6, title_font_weight=700):
+                 text_colours={}, values_to_label=None, max_labels=20, values_colours={},
+                 figsize=(3, 3), title_font_size=8, label_font_size=6, title_font_weight=700, config={}):
         super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
                          title_font_weight=title_font_weight)
         super().__init__(df)
-        self.log_fc = log_fc
-        self.p_val = p_val
-        self.p_val_cutoff = p_val_cutoff
-        self.log_fc_cuttoff = log_fc_cuttoff
-        self.values_to_label = values_to_label
-        self.label_big_sig = label_big_sig
-        self.invert = invert
-        self.label_column = label_column
-        self.offset = offset
+        self.log_fc = config.get("log_fc") if config.get("log_fc") else log_fc
+        self.p_val = config.get("p_val") if config.get("p_val") else p_val
+        self.p_val_cutoff = config.get("p_val_cutoff") if config.get("p_val_cutoff") else p_val_cutoff
+        self.log_fc_cuttoff = config.get("log_fc_cuttoff") if config.get("log_fc_cuttoff") else log_fc_cuttoff
+        self.values_to_label = config.get("values_to_label") if config.get("values_to_label") else values_to_label
+        self.label_big_sig = config.get("max_labels") if config.get("max_labels") else max_labels
+        self.invert = config.get("invert") if config.get("invert") else invert
+        self.label_column = config.get("label_column") if config.get("label_column") else label_column
+        self.offset = config.get("offset") if config.get("offset") else offset
         self.label = 'volcanoplot'
         self.colours = {'ns_small-neg-logFC': 'lightgrey',
                         'ns_small-pos-logFC': 'lightgrey',
@@ -51,12 +51,15 @@ class Volcanoplot(Vis):
                         'sig_small-pos-logFC': '#d6604c',
                         'sig_big-neg-logFC': '#0a3568',
                         'sig_big-pos-logFC': '#6f0220'} if colours is None else colours
+        self.colours = self.colours if config.get('colours') is None else config.get('colours')
         self.xlabel = xlabel
         self.ylabel = ylabel
         self.title = title
-        self.max_labels = max_labels
-        self.values_colours = values_colours or {}
-        self.text_colours = text_colours or {}
+        self.max_labels = config.get("max_labels") if config.get("max_labels") else max_labels
+        self.values_colours = config.get("values_colours") if config.get("values_colours") else values_colours
+        self.text_colours = config.get("text_colours") if config.get("text_colours") else text_colours
+        if config:
+            self.load_style(config)
 
     def add_scatter_and_annotate(self, fig: plt, x_all: np.array, y_all: np.array,
                                  colour: str, idxs: np.array, annotate=False):

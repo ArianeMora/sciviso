@@ -73,7 +73,7 @@ class TestVis(unittest.TestCase):
         # Example showing formatting data for plots
         df = boxplot.format_data_for_boxplot(self.df, ["sepal_length", "sepal_width"], "label",
                                              ["Iris-setosa", "Iris-virginica"])
-        boxplot = Boxplot(df, "Conditions", "Values", box_colors=["red", "red", "green"])
+        boxplot = Boxplot(df, "Conditions", "Values", box_colors=["red", "red", "green"], add_dots=True)
         boxplot.plot()
         plt.savefig('fig.svg')
         plt.show()
@@ -90,8 +90,10 @@ class TestVis(unittest.TestCase):
         annot = self.df[self.numeric_cols].values
         heatmap = Heatmap(self.df, self.numeric_cols, self.label, 'Xlabel', 'Ylabel',
                           row_colours=[row_colors, row_colors2], linewidths=0.5, x_tick_labels=0)
-        heatmap.plot()
+        heatmap.plot(linecolor="")
         heatmap.save_png([self.data_dir, "heatmap"])
+        plt.show()
+        heatmap.plot_hm(linecolor="")
         plt.show()
 
     def test_scatterplot(self):
