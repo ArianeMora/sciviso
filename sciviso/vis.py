@@ -120,6 +120,7 @@ class Vis:
         self.add_stats = style_dict.get('add_stats') or self.add_stats
         self.stat_method = style_dict.get('stat_method') or self.stat_method
         self.hue = style_dict.get('hue') or self.hue
+        self.s = style_dict.get('s') or 10
 
     def set_palette(self, palette):
         self.palette = palette

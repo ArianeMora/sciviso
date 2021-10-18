@@ -28,7 +28,7 @@ class Scatterplot(Vis):
     def __init__(self, df: pd.DataFrame, x: object, y: object, title='', xlabel='', ylabel='', colour=None, z = None,
                  zlabel = None, add_legend=True,
                  points_to_annotate=None, annotation_label=None, add_correlation=False, correlation='Spearman',
-                 figsize=(2, 2), title_font_size=8, label_font_size=6, title_font_weight=700, s=20, config={}):
+                 figsize=(2, 2), title_font_size=8, label_font_size=6, title_font_weight=700, s=10, config={}):
         super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
                          title_font_weight=title_font_weight)
 
@@ -211,7 +211,7 @@ class Scatterplot(Vis):
         g_i = 0
         c_i = 0
         for g in grp_idxs:
-            ax.scatter(x[g], y[g], z[g], s=s, c=grp_colours[c_i],
+            ax.scatter(x[g], y[g], z[g], s=self.s, c=grp_colours[c_i],
                        label=grp_labels[g_i],
                        edgecolors='k', linewidth=linewidth,
                        alpha=alpha_highlight,
