@@ -25,10 +25,11 @@ from sciviso import Vis
 
 class Scatterplot(Vis):
 
-    def __init__(self, df: pd.DataFrame, x: object, y: object, title='', xlabel='', ylabel='', colour=None, z = None,
-                 zlabel = None, add_legend=True,
+    def __init__(self, df: pd.DataFrame, x: object, y: object, title='', xlabel='', ylabel='', colour=None, z=None,
+                 zlabel=None, add_legend=True,
                  points_to_annotate=None, annotation_label=None, add_correlation=False, correlation='Spearman',
-                 figsize=(2, 2), title_font_size=8, label_font_size=6, title_font_weight=700, s=10, config={}):
+                 figsize=(2, 2), title_font_size=8, label_font_size=6, title_font_weight=700, s=10, config={},
+                 color_col=None):
         super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
                          title_font_weight=title_font_weight)
 
@@ -45,6 +46,7 @@ class Scatterplot(Vis):
         self.ylabel = ylabel
         self.add_legend = add_legend
         self.zlabel = zlabel
+        self.color_col = color_col
         self.s = s if config.get('s') is None else config.get('s')
         if config:
             self.load_style(config)
@@ -69,8 +71,8 @@ class Scatterplot(Vis):
                             xytext=(-5, 10),
                             textcoords='offset points', ha='center', va='bottom',
                             bbox=dict(boxstyle='round,pad=0.5',
-                            fc='white', alpha=0.2)
-            )
+                                      fc='white', alpha=0.2)
+                            )
 
         return ax
 
@@ -95,9 +97,24 @@ class Scatterplot(Vis):
             self.colour = self.default_colour
 
         # Plot the points
+
         fig, ax = plt.subplots()
-        scatter = ax.scatter(vis_df[x].values, vis_df[y].values, c=self.colour, alpha=self.opacity, cmap=self.cmap_str,
-                             s=self.s, vmin=self.vmin, vmax=self.vmax)
+        # Check if we have a colour col
+        color_col = self.color_col
+        if color_col:
+            colors = list(set(vis_df[color_col].values))
+            ci = 0
+            for c in colors:
+                c_df = vis_df[vis_df[color_col] == c]
+                scatter = ax.scatter(c_df[x].values, c_df[y].values, c=self.palette[ci], alpha=self.opacity,
+                                     s=self.s, vmin=self.vmin, vmax=self.vmax, label=c)
+                ci += 1
+                if ci >= len(self.palette):
+                    ci = 0
+        else:
+            scatter = ax.scatter(vis_df[x].values, vis_df[y].values, c=self.colour, alpha=self.opacity,
+                                 cmap=self.cmap_str,
+                                 s=self.s, vmin=self.vmin, vmax=self.vmax)
 
         # Check if we need to annotate anything
         if self.points_to_annotate is not None:
@@ -105,8 +122,10 @@ class Scatterplot(Vis):
             self.annotate(ax, vis_df[x].values, vis_df[y].values, self.df[self.annotation_label].values)
 
         self.add_labels()
-        if self.add_legend:
+        if self.add_legend and not self.color_col:
             plt.colorbar(scatter, shrink=0.2, aspect=3)
+        elif self.color_col:
+            plt.legend(bbox_to_anchor=(1.05, 1.0), loc='upper left')
         ax.tick_params(labelsize=self.label_font_size)
         self.set_ax_params(ax)
         return ax
@@ -129,10 +148,23 @@ class Scatterplot(Vis):
         # Plot the points
         fig = plt.figure()
         ax = Axes3D(fig)
-
-        scatter = ax.scatter(vis_df[x].values, vis_df[y].values, vis_df[z].values, s=self.s,
-                             c=self.colour, alpha=self.opacity, cmap=self.cmap_str,
-                             vmin=self.vmin, vmax=self.vmax)
+        # Check if we have a colour col
+        color_col = self.color_col
+        if color_col:
+            colors = list(set(vis_df[color_col].values))
+            ci = 0
+            for c in colors:
+                c_df = vis_df[vis_df[color_col] == c]
+                scatter = ax.scatter(c_df[x].values, c_df[y].values, c_df[z].values,
+                                     c=self.palette[ci], alpha=self.opacity,
+                                     s=self.s, vmin=self.vmin, vmax=self.vmax, label=c)
+                ci += 1
+                if ci >= len(self.palette):
+                    ci = 0
+        else:
+            scatter = ax.scatter(vis_df[x].values, vis_df[y].values, vis_df[z].values, s=self.s,
+                                 c=self.colour, alpha=self.opacity, cmap=self.cmap_str,
+                                 vmin=self.vmin, vmax=self.vmax)
         # remove fill
         ax.xaxis.pane.fill = False
         ax.yaxis.pane.fill = False
@@ -141,11 +173,13 @@ class Scatterplot(Vis):
         if self.points_to_annotate is not None:
             self.check_columns([self.annotation_label])
             self.annotate3D(ax, vis_df[x].values, vis_df[y].values, vis_df[z].values,
-                          self.df[self.annotation_label].values)
+                            self.df[self.annotation_label].values)
 
         self.add_labels()
-        if self.add_legend:
+        if self.add_legend and not self.color_col:
             plt.colorbar(scatter, shrink=0.2, aspect=3)
+        elif self.color_col:
+            plt.legend(bbox_to_anchor=(1.05, 1.0), loc='upper left')
         ax.tick_params(labelsize=self.label_font_size)
         self.set_ax_params(ax)
 

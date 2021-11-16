@@ -262,33 +262,3 @@ class Vis:
         ax.tick_params(labelsize=self.axis_font_size)
         ax.tick_params(axis='x', which='major', pad=2.0)
         ax.tick_params(axis='y', which='major', pad=2.0)
-        # Make sure if the labels are very long they wrap
-        labels = [str(item.get_text()).replace('_', ' ') for item in ax.get_xticklabels()]
-        if self.labels == 'wrap':
-            labels_short = ['\n'.join(wrap(l, 20)) for l in labels]
-        elif self.labels == 'short':
-            labels_short = []
-            for l in labels:
-                if len(l) < 15:
-                    labels_short.append(l)
-                else:
-                    labels_short.append(f'{l[:15]}...')
-        else:
-            labels_short = labels
-        if labels_short and labels_short[0] != '':
-            ax.set_xticklabels(labels_short, weight=self.text_font_weight)
-
-        labels = [str(item.get_text()).replace('_', ' ').capitalize() for item in ax.get_yticklabels()]
-        if self.labels == 'wrap':
-            labels_short = ['\n'.join(wrap(l, 20)) for l in labels]
-        elif self.labels == 'short':
-            labels_short = []
-            for l in labels:
-                if len(l) < 15:
-                    labels_short.append(l)
-                else:
-                    labels_short.append(f'{l[:15]}...')
-        else:
-            labels_short = labels
-        if labels_short and labels_short[0] != '':
-            ax.set_yticklabels(labels_short, weight=self.text_font_weight)

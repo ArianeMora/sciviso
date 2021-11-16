@@ -19,15 +19,15 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
-from sciviso import Vis
 from statannot import add_stat_annotation
-
+from sciviso import Vis
 
 class Violinplot(Vis):
 
     def __init__(self, df: pd.DataFrame, x: object, y: object, title='', xlabel='', ylabel='', hue=None, order=None,
                  hue_order=None, showfliers=False, add_dots=False, add_stats=False, stat_method='Mann-Whitney',
-                 figsize=(1.5, 1.5), title_font_size=8, label_font_size=6, title_font_weight=700, config={}):
+                 figsize=(1.5, 1.5), title_font_size=8, box_pairs=None,
+                 label_font_size=6, title_font_weight=700):
         super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
                          title_font_weight=title_font_weight)
         self.df = df
@@ -36,18 +36,17 @@ class Violinplot(Vis):
         self.xlabel = xlabel
         self.ylabel = ylabel
         self.title = title
+        self.hue = hue
         self.order = order
         self.hue_order = hue_order
         self.showfliers = showfliers
         self.add_dots = add_dots
         self.add_stats = add_stats
         self.stat_method = stat_method
-        self.hue = hue
-        if config:
-            self.load_style(config)
+        self.box_pairs = box_pairs
 
     def plot(self):
-        x, y, hue, order, hue_order = self.x, self.y, self.hue, self.order, self.hue_order
+        x, y, hue, order, hue_order, box_pairs = self.x, self.y, self.hue, self.order, self.hue_order, self.box_pairs
         if not isinstance(self.x, str) and not isinstance(self.y, str):
             vis_df = pd.DataFrame()
             vis_df['x'] = x
@@ -73,24 +72,27 @@ class Violinplot(Vis):
         ax = sns.violinplot(data=vis_df, x=x, y=y, hue=hue, hue_order=hue_order, order=order, palette=self.palette,
                             showfliers=self.showfliers)
         if self.add_dots:
-            ax = sns.stripplot(data=vis_df, x=x, y=y, hue_order=hue_order, order=order, color='.2')
+            ax = sns.stripplot(data=vis_df, x=x, y=y, hue_order=hue_order, order=order, alpha=0.9, s=1, color='.2')
         if self.add_stats:
             # Add all pairs in the order if the box pairs is none
 
             pairs = []
-            box_pairs = []
-            for i in order:
-                for j in order:
-                    if i != j:
-                        # Ensure we don't get duplicates
-                        pair = f'{i}{j}' if i < j else f'{j}{i}'
-                        if pair not in pairs:
-                            box_pairs.append((i, j))
-                            pairs.append(pair)
+            if box_pairs is None:
+                box_pairs = []
+                for i in order:
+                    for j in order:
+                        if i != j:
+                            # Ensure we don't get duplicates
+                            pair = f'{i}{j}' if i < j else f'{j}{i}'
+                            if pair not in pairs:
+                                box_pairs.append((i, j))
+                                pairs.append(pair)
             # Add stats annotation
+
             add_stat_annotation(ax, data=vis_df, x=x, y=y, order=order,
                                 box_pairs=box_pairs,
-                                test=self.stat_method, text_format='star', loc='inside', verbose=2)
+                                test=self.stat_method, text_format='star', loc='inside', verbose=2,
+                                pvalue_thresholds=[[1e-4, "****"], [1e-3, "***"], [1e-2, "**"], [0.05, "*"]])
         ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right')
         ax.tick_params(labelsize=self.label_font_size)
         plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., fontsize=self.label_font_size)
