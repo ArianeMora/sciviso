@@ -24,8 +24,8 @@ from sciviso import Vis
 
 class Line(Vis):
 
-    def __init__(self, df: pd.DataFrame, title='', xlabel='', ylabel='', colour=None, figsize=(1.5, 1.5),
-                 title_font_size=8, label_font_size=6, title_font_weight=700, config={}):
+    def __init__(self, df: pd.DataFrame, title='', xlabel='', ylabel='', colour=None, figsize=(3, 3),
+                 title_font_size=12, label_font_size=8, title_font_weight=700, config={}):
         super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
                          title_font_weight=title_font_weight)
         super().__init__(df)

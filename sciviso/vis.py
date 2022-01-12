@@ -45,7 +45,7 @@ class Vis:
 
     def __init__(self, df: pd.DataFrame, sciutil=None, cmap='seismic', sep='_', dpi=300,
                  style='ticks', palette='pastel', opacity=0.8, default_colour="teal", figsize=(3, 3),
-                 title_font_size=8, label_font_size=6, title_font_weight=700, text_font_weight=700):
+                 title_font_size=12, label_font_size=8, title_font_weight=700, text_font_weight=700):
         self.sep = sep
         self.df = df
         self.columns = list(df.columns)

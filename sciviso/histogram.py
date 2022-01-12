@@ -27,7 +27,7 @@ class Histogram(Vis):
 
     def __init__(self, df: pd.DataFrame, x: object, title='', xlabel='', ylabel='', colour=None, normalise=False, fit_norm=False,
                  plot_rug=False, plot_kde=False, plot_hist=True, bins=20, min_x=None, max_x=None, min_y=None, max_y=None,
-                 figsize=(1.5, 1.5), title_font_size=8, label_font_size=6, title_font_weight=700, config={}):
+                 figsize=(3, 3), title_font_size=12, label_font_size=8, title_font_weight=700, config={}):
         super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
                          title_font_weight=title_font_weight)
         self.df = df

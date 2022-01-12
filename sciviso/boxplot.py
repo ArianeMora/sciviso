@@ -30,7 +30,7 @@ class Boxplot(Vis):
     """
     def __init__(self, df: pd.DataFrame, x: object, y: object, title='', xlabel='', ylabel='', box_colors=None,
                  hue=None, order=None, hue_order=None, showfliers=False, add_dots=False, add_stats=True,
-                 stat_method='Mann-Whitney', box_pairs=None, figsize=(1.5, 1.5), title_font_size=8, label_font_size=6, title_font_weight=700):
+                 stat_method='Mann-Whitney', box_pairs=None, figsize=(3, 3), title_font_size=12, label_font_size=8, title_font_weight=700):
         super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
                          title_font_weight=title_font_weight)
         self.df = df
