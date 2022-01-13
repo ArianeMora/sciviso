@@ -47,7 +47,7 @@ class Scatterplot(Vis):
         self.add_legend = add_legend
         self.zlabel = zlabel
         self.color_col = color_col
-        self.s = s if config.get('s') is None else config.get('s')
+        self.s = s if config.get('s') is None else s
         if config:
             self.load_style(config)
 
@@ -198,6 +198,8 @@ class Scatterplot(Vis):
         y = self.df[self.y].values
         labels = []
         if plt_bg:
+            if max_bg > len(x):
+                max_bg = len(x)
             rand_idxs = np.random.choice(range(0, len(self.df), 1), max_bg)
             ax.scatter(x[rand_idxs], y[rand_idxs], c='lightgrey', alpha=alpha_bg,
                        vmin=self.vmin, vmax=self.vmax)
@@ -238,8 +240,8 @@ class Scatterplot(Vis):
         labels = []
         if plt_bg:
             rand_idxs = np.random.choice(range(0, len(self.df), 1), max_bg)
-            ax.scatter(x[rand_idxs], y[rand_idxs], z[rand_idxs], c='lightgrey', alpha=alpha_bg, s=self.s,
-                       vmin=self.vmin, vmax=self.vmax)
+            ax.scatter(x[rand_idxs], y[rand_idxs], z[rand_idxs], c='lightgrey',
+                       alpha=alpha_bg, s=self.s, vmin=self.vmin, vmax=self.vmax)
             labels = ['None']
 
         g_i = 0

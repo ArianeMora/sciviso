@@ -26,7 +26,7 @@ class Heatmap(Vis):
 
     def __init__(self, df: pd.DataFrame, chart_columns: list, row_index: str, title='', xlabel='', ylabel='',
                  cluster_rows=True, cluster_cols=True, row_colours=None, col_colours=None, vmin=None, vmax=None,
-                 linewidths=0.5, x_tick_labels=1,
+                 linewidths=0.5, x_tick_labels=1, y_tick_labels=1,
                  figsize=(3, 3), title_font_size=8, label_font_size=6, title_font_weight=700, cmap='RdBu_r', annot=False,
                  config={}):
         super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
@@ -44,6 +44,7 @@ class Heatmap(Vis):
         self.ylabel = ylabel
         self.cmap_str = cmap
         self.x_tick_labels = x_tick_labels
+        self.y_tick_labels = y_tick_labels
         self.linewidths = linewidths
         self.annot = annot
         if config:
@@ -58,12 +59,12 @@ class Heatmap(Vis):
             ax = sns.clustermap(df_dists, col_cluster=self.cluster_cols, figsize=self.figsize, row_cluster=self.cluster_rows,
                                 col_colors=self.col_colours, ax=ax, annot=self.annot,
                                 row_colors=self.row_colours, cmap=self.cmap_str, vmax=self.vmax, vmin=self.vmin,
-                                yticklabels=1, xticklabels=self.x_tick_labels, linewidths=self.linewidths, linecolor=linecolor)
+                                yticklabels=self.y_tick_labels, xticklabels=self.x_tick_labels, linewidths=self.linewidths, linecolor=linecolor)
         else:
             ax = sns.clustermap(df_dists, col_cluster=self.cluster_cols, figsize=self.figsize, row_cluster=self.cluster_rows,
                                 col_colors=self.col_colours, annot=self.annot,
                                 row_colors=self.row_colours, cmap=self.cmap_str, vmax=self.vmax, vmin=self.vmin,
-                                yticklabels=1, xticklabels=self.x_tick_labels, linewidths=self.linewidths, linecolor=linecolor)
+                                yticklabels=self.y_tick_labels, xticklabels=self.x_tick_labels, linewidths=self.linewidths, linecolor=linecolor)
         plt.title(self.title)
         plt.setp(ax.ax_heatmap.yaxis.get_majorticklabels(), rotation=0)
         plt.setp(ax.ax_heatmap.xaxis.get_majorticklabels(), rotation=45, horizontalalignment='right')
@@ -82,11 +83,11 @@ class Heatmap(Vis):
         if ax:
             ax = sns.heatmap(df_dists,
                              ax=ax, cmap=self.cmap_str, vmax=self.vmax, vmin=self.vmin, annot=self.annot,
-                             yticklabels=1, xticklabels=self.x_tick_labels, linewidths=self.linewidths,
+                             yticklabels=self.y_tick_labels, xticklabels=self.x_tick_labels, linewidths=self.linewidths,
                              linecolor=linecolor)
         else:
             ax = sns.heatmap(df_dists, cmap=self.cmap_str, vmax=self.vmax, vmin=self.vmin, annot=self.annot,
-                             yticklabels=1, xticklabels=self.x_tick_labels, linewidths=self.linewidths,
+                             yticklabels=self.y_tick_labels, xticklabels=self.x_tick_labels, linewidths=self.linewidths,
                              linecolor=linecolor)
         plt.title(self.title)
         plt.setp(ax.yaxis.get_majorticklabels(), rotation=0)

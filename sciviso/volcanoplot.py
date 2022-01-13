@@ -47,10 +47,10 @@ class Volcanoplot(Vis):
                         'ns_small-pos-logFC': 'lightgrey',
                         'ns_big-neg-logFC': 'grey',
                         'ns_big-pos-logFC': 'grey',
-                        'sig_small-neg-logFC': '#2970b1',
-                        'sig_small-pos-logFC': '#d6604c',
-                        'sig_big-neg-logFC': '#0a3568',
-                        'sig_big-pos-logFC': '#6f0220'} if colours is None else colours
+                        'sig_small-neg-logFC': 'paleturquoise',
+                        'sig_small-pos-logFC': 'plum',
+                        'sig_big-neg-logFC': 'darkturquoise',
+                        'sig_big-pos-logFC': 'orchid'} if colours is None else colours
         self.colours = self.colours if config.get('colours') is None else config.get('colours')
         self.xlabel = xlabel
         self.ylabel = ylabel

@@ -43,7 +43,7 @@ class Vis:
 
     """
 
-    def __init__(self, df: pd.DataFrame, sciutil=None, cmap='seismic', sep='_', dpi=300,
+    def __init__(self, df: pd.DataFrame, sciutil=None, cmap='Purples', sep='_', dpi=300,
                  style='ticks', palette='pastel', opacity=0.8, default_colour="teal", figsize=(3, 3),
                  title_font_size=12, label_font_size=8, title_font_weight=700, text_font_weight=700):
         self.sep = sep
@@ -74,13 +74,18 @@ class Vis:
         self.min_x, self.min_y, self.max_x, self.max_y = None, None, None, None
         self.add_legend, self.zlabel, self.colour = None, None, None
         self.hue, self.add_dots, self.add_stats, self.stat_method = None, None, None, None
-        self.palette = ['#483873', '#1BD8A6', '#B117B7', '#AAC7E2', '#FFC107', '#016957', '#9785C0',
+        self.palette = palette if palette else ['#AAC7E2', '#FFC107', '#016957', '#9785C0',
              '#D09139', '#338A03', '#FF69A1', '#5930B1', '#FFE884', '#35B567', '#1E88E5',
-             '#ACAD60', '#A2FFB4', '#B618F5', '#854A9C']
+             '#ACAD60', '#A2FFB4', '#B68F5', '#854A9C']
+        if isinstance(self.palette, str):
+            self.palette = sns.color_palette(self.palette)
+
         plt.rcParams['svg.fonttype'] = 'none'  # Ensure text is saved as text
         plt.rcParams['figure.figsize'] = self.figsize
-        sns.set(rc={'figure.figsize': self.figsize, 'font.family': 'sans-serif',
-                    'font.sans-serif': 'Arial', 'font.size': label_font_size}, style=self.style)
+        self.font_family = 'sans-serif'
+        self.font = 'Arial'
+        sns.set(rc={'figure.figsize': self.figsize, 'font.family': self.font_family,
+                    'font.sans-serif': self.font, 'font.size': label_font_size}, style=self.style)
 
     def load_style(self, style_dict):
         """ Load a style from a dict. """
@@ -93,8 +98,12 @@ class Vis:
         self.palette = style_dict.get('palette') or self.palette
         self.figsize = style_dict.get('figsize') or self.figsize
         plt.rcParams['figure.figsize'] = self.figsize
-        sns.set(rc={'figure.figsize': self.figsize, 'font.family': 'sans-serif',
-                    'font.sans-serif': 'Arial', 'font.size': self.label_font_size}, style=self.style)
+        self.font_family = self.font_family or 'sans-serif'
+        self.font = self.font or 'Arial'
+        sns.set(rc={'figure.figsize': self.figsize, 'font.family': self.font_family,
+                    'font.sans-serif': self.font, 'font.size': self.label_font_size}, style=self.style)
+        plt.rcParams['font.family'] = self.font_family
+        plt.rcParams['font.sans-serif'] = self.font
         self.cmap_str = style_dict.get('cmap') or self.cmap_str
         self.style = style_dict.get('style') or self.style
         self.cmap = ListedColormap(sns.color_palette(self.cmap_str))

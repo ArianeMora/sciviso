@@ -30,7 +30,8 @@ class Boxplot(Vis):
     """
     def __init__(self, df: pd.DataFrame, x: object, y: object, title='', xlabel='', ylabel='', box_colors=None,
                  hue=None, order=None, hue_order=None, showfliers=False, add_dots=False, add_stats=True,
-                 stat_method='Mann-Whitney', box_pairs=None, figsize=(3, 3), title_font_size=12, label_font_size=8, title_font_weight=700):
+                 stat_method='Mann-Whitney', box_pairs=None, figsize=(3, 3), title_font_size=12, label_font_size=8,
+                 title_font_weight=700, config=None):
         super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
                          title_font_weight=title_font_weight)
         self.df = df
@@ -49,6 +50,8 @@ class Boxplot(Vis):
         self.xlabel = xlabel
         self.ylabel = ylabel
         self.box_colors = box_colors
+        if config:
+            self.load_style(config)
 
     def format_data_for_boxplot(self, df: pd.DataFrame, conditions: list, filter_column=None, filter_values=None):
         condition_dict = defaultdict(list)

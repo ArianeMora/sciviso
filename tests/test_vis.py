@@ -73,7 +73,7 @@ class TestVis(unittest.TestCase):
         # Example showing formatting data for plots
         df = boxplot.format_data_for_boxplot(self.df, ["sepal_length", "sepal_width"], "label",
                                              ["Iris-setosa", "Iris-virginica"])
-        boxplot = Boxplot(df, "Conditions", "Values", box_colors=["red", "red", "green"], add_dots=True)
+        boxplot = Boxplot(df, "Conditions", "Values", box_colors=["plum", "gold"], add_dots=True)
         boxplot.plot()
         plt.savefig('fig.svg')
         plt.show()
@@ -118,7 +118,7 @@ class TestVis(unittest.TestCase):
         self.df = pd.read_csv(self.data_dir + 'volcano.csv')
 
         volcanoplot = Volcanoplot(self.df, 'logfc', 'padj', 'external_gene_name', 'A Title', 'Xlabel', 'Ylabel',
-                                  label_big_sig=True)
+                                  label_big_sig=True, )
         volcanoplot.plot()
         plt.show()
 
