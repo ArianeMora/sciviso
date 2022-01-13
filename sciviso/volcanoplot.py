@@ -55,6 +55,7 @@ class Volcanoplot(Vis):
         self.xlabel = xlabel
         self.ylabel = ylabel
         self.title = title
+        self.figsize = figsize
         self.max_labels = config.get("max_labels") if config.get("max_labels") else max_labels
         self.values_colours = config.get("values_colours") if config.get("values_colours") else values_colours
         self.text_colours = config.get("text_colours") if config.get("text_colours") else text_colours
@@ -134,7 +135,7 @@ class Volcanoplot(Vis):
                                      & (log_fc_np <= 0))
 
         # Plot the points
-        fig, ax = plt.subplots(figsize=(3, 3))
+        fig, ax = plt.subplots(figsize=self.figsize)
         self.add_scatter_and_annotate(ax, x, y, self.colours['sig_small-pos-logFC'], sig_small_pos_logfc)
         self.add_scatter_and_annotate(ax, x, y, self.colours['sig_big-pos-logFC'], sig_big_pos_logfc, annotate=True)
 
@@ -142,6 +143,6 @@ class Volcanoplot(Vis):
         self.add_scatter_and_annotate(ax, x, y, self.colours['sig_small-neg-logFC'], sig_small_neg_logfc)
         self.add_scatter_and_annotate(ax, x, y, self.colours['sig_big-neg-logFC'], sig_big_neg_logfc, annotate=True)
         self.add_labels()
-        ax.tick_params(labelsize=6)
+        ax.tick_params(labelsize=self.label_font_size)
         self.set_ax_params(ax)
         return ax

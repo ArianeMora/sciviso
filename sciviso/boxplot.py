@@ -136,14 +136,20 @@ class Boxplot(Vis):
                                 test=self.stat_method, text_format='star', loc='inside', verbose=2)
 
         ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right', weight = 'bold')
-        if legend:
-            plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.,  fontsize=self.label_font_size)
-        ax.tick_params(labelsize=self.label_font_size)
-        self.add_labels()
 
         # Check if the user supplied a list of colours for the boxes:
         if self.box_colors is not None:
             for i, b in enumerate(ax.artists):
                 b.set_facecolor(self.box_colors[i])
+
+        if legend and not self.box_colors:
+            plt.legend(order, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.,  fontsize=self.label_font_size)
+        elif legend and self.box_colors:
+            plt.legend(order, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.,
+                       fontsize=self.label_font_size)
+
+        ax.tick_params(labelsize=self.label_font_size)
+        self.add_labels()
+
         self.set_ax_params(ax)
         return ax

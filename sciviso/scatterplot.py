@@ -28,7 +28,7 @@ class Scatterplot(Vis):
     def __init__(self, df: pd.DataFrame, x: object, y: object, title='', xlabel='', ylabel='', colour=None, z=None,
                  zlabel=None, add_legend=True,
                  points_to_annotate=None, annotation_label=None, add_correlation=False, correlation='Spearman',
-                 figsize=(3, 3), title_font_size=12, label_font_size=8, title_font_weight=700, s=10, config={},
+                 figsize=(3, 3), title_font_size=12, label_font_size=8, title_font_weight=700, s=30, config={},
                  color_col=None):
         super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
                          title_font_weight=title_font_weight)
@@ -122,7 +122,7 @@ class Scatterplot(Vis):
             self.annotate(ax, vis_df[x].values, vis_df[y].values, self.df[self.annotation_label].values)
 
         self.add_labels()
-        if self.add_legend and not self.color_col:
+        if self.add_legend and self.color_col:
             plt.colorbar(scatter, shrink=0.2, aspect=3)
         elif self.color_col:
             plt.legend(bbox_to_anchor=(1.05, 1.0), loc='upper left')
@@ -176,7 +176,10 @@ class Scatterplot(Vis):
                             self.df[self.annotation_label].values)
 
         self.add_labels()
-        if self.add_legend and not self.color_col:
+        if isinstance(self.colour, str):
+            # continue
+            e = ''
+        elif self.add_legend and not self.color_col:
             plt.colorbar(scatter, shrink=0.2, aspect=3)
         elif self.color_col:
             plt.legend(bbox_to_anchor=(1.05, 1.0), loc='upper left')

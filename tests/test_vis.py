@@ -73,7 +73,7 @@ class TestVis(unittest.TestCase):
         # Example showing formatting data for plots
         df = boxplot.format_data_for_boxplot(self.df, ["sepal_length", "sepal_width"], "label",
                                              ["Iris-setosa", "Iris-virginica"])
-        boxplot = Boxplot(df, "Conditions", "Values", box_colors=["plum", "gold"], add_dots=True)
+        boxplot = Boxplot(df, "Conditions", "Values", box_colors=['pink', 'orange'], add_dots=True)
         boxplot.plot()
         plt.savefig('fig.svg')
         plt.show()
