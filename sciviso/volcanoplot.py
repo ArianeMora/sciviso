@@ -77,7 +77,7 @@ class Volcanoplot(Vis):
                 if name in self.values_to_label:
                     lbl_bg = self.values_colours.get(name)
                     color = self.text_colours.get(name)
-                    texts.append(fig.text(x[i], y[i], name, color=color, fontsize=6,
+                    texts.append(fig.text(x[i], y[i], name, color=color, fontsize=self.label_font_size,
                                           bbox=dict(fc=lbl_bg, alpha=1.0)))
             adjust_text(texts, force_text=2.0)
         # Check if the user wants these labeled

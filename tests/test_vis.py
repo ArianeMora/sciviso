@@ -79,22 +79,41 @@ class TestVis(unittest.TestCase):
         plt.show()
 
     def test_heatmap(self):
-        labels = self.df['sepal_width'].values.astype(int)
-        lut = dict(zip(set(labels), sns.color_palette("coolwarm", len(set(labels)))))
+        # labels = self.df['sepal_width'].values.astype(int)
+        # lut = dict(zip(set(labels), sns.color_palette("coolwarm", len(set(labels)))))
+        # row_colors = pd.DataFrame(labels)[0].map(lut)
+        #
+        # # Create additional row_colors here
+        # labels = self.df['sepal_length'].values.astype(int)
+        # lut = dict(zip(set(labels), sns.color_palette("coolwarm", len(set(labels)))))
+        # row_colors2 = pd.DataFrame(labels)[0].map(lut)
+        # annot = self.df[self.numeric_cols].values
+        # heatmap = Heatmap(self.df, self.numeric_cols, self.label, 'Xlabel', 'Ylabel', annot=True,
+        #                   row_colours=[row_colors, row_colors2], rows_to_colour=['sepal_length'],
+        #                   linewidths=0.5, x_tick_labels=0)
+        # heatmap.plot(linecolor="none")
+        # heatmap.save_png([self.data_dir, "heatmap"])
+        # plt.show()
+        # heatmap.plot_hm(linecolor="none")
+        # plt.show()
+        df = self.df
+        labels = df['label'].values
+        lut = dict(zip(set(labels), sns.color_palette("pastel", len(set(labels)))))
         row_colors = pd.DataFrame(labels)[0].map(lut)
+        df['label_2'] = labels + '_2'
 
-        # Create additional row_colors here
-        labels = self.df['sepal_length'].values.astype(int)
-        lut = dict(zip(set(labels), sns.color_palette("coolwarm", len(set(labels)))))
+        # Create additional row_colors here based on the values of one column as an example
+        labels = df['sepal_length'].values.astype(int)
+        lut = dict(zip(set(labels), sns.color_palette("Greens", len(set(labels)))))
         row_colors2 = pd.DataFrame(labels)[0].map(lut)
-        annot = self.df[self.numeric_cols].values
-        heatmap = Heatmap(self.df, self.numeric_cols, self.label, 'Xlabel', 'Ylabel', annot=True,
-                          row_colours=[row_colors, row_colors2], linewidths=0.5, x_tick_labels=0)
-        heatmap.plot(linecolor="")
-        heatmap.save_png([self.data_dir, "heatmap"])
+        heatmap = Heatmap(df,
+                          chart_columns=['sepal_width', 'sepal_length', 'petal_length', 'petal_width'],
+                          row_index='label', row_colours=[row_colors, row_colors2], rows_to_colour=['label', 'label_2'],
+                          y_tick_labels=10,  # How many skips before a tick on the RHS looks neater
+                          figsize=(5, 5))
+        heatmap.plot(linecolor="none")
         plt.show()
-        heatmap.plot_hm(linecolor="")
-        plt.show()
+
 
     def test_scatterplot(self):
         scatterplot = Scatterplot(self.df, self.x, self.y, 'sepal_length', 'Xlabel', 'Ylabel',

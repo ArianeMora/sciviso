@@ -1,0 +1,402 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>sci-viso &mdash; scivae 1.0.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="_static/logo.png"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script src="_static/custom.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+    <link rel="author" title="About these documents" href="#" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installing sci-viso" href="installing/index.html" />
+    <link rel="prev" title="sci-viso" href="index.html" />
+ 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">sci-viso</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#charts">Charts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#barchart">Barchart</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#boxplot-with-statistics">Boxplot (with statistics)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#heatmap">Heatmap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#histogram">Histogram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scatterplot">Scatterplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#violinplot-with-statistics">Violinplot (with statistics)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#volcanoplot">Volcanoplot</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#extending-sci-viso">Extending sci-viso</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#citing-sci-viso">Citing sci-viso</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installing/index.html">Installing sci-viso</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/Barchart.html">Barchart</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/Boxplot.html">Boxplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/Heatmap.html">Heatmap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/Histogram.html">Histogram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/Scatterplot.html">Scatterplot 2D and 3D</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/Violinplot.html">Violinplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/Volcanoplot.html">Volcanoplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html">Change log</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installing/index.html">Installing sci-viso</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Running sci-viso</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples/Barchart.html">Barchart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/Boxplot.html">Boxplot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/Heatmap.html">Heatmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/Histogram.html">Histogram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/Scatterplot.html">Scatterplot 2D and 3D</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/Violinplot.html">Violinplot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/Volcanoplot.html">Volcanoplot</a></li>
+</ul>
+<p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Change log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">scivae</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>sci-viso</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/arianemora/sciviso/blob/main/docs_src/src/about.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="sci-viso">
+<h1>sci-viso<a class="headerlink" href="#sci-viso" title="Permalink to this headline">¶</a></h1>
+<p>Sci-viso is a wrapper around matplotlib and seaborn. These are already great libraries, but as I needed to generate
+figures for publication, I found that I had specific formats that I needed, and continually adding these in was
+making my code clunky and repetative. I also wanted my charts within a publication to have the same “look and feel”,
+like palette, font, sizing etc. So I made sciviso so that my figures could come out of python “publication ready” and
+asthetic.</p>
+<p>I have only made wrappers for charts that I use (obvs) but keen for people to add others or make suggestions (feel free
+to do that via github issues).</p>
+<div class="section" id="charts">
+<h2>Charts<a class="headerlink" href="#charts" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="barchart">
+<h3>Barchart<a class="headerlink" href="#barchart" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/barchart.png"><img alt="_images/barchart.png" src="_images/barchart.png" style="width: 200px;" /></a>
+</div>
+</div>
+<div class="section" id="boxplot-with-statistics">
+<h3>Boxplot (with statistics)<a class="headerlink" href="#boxplot-with-statistics" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/boxplot.png"><img alt="_images/boxplot.png" src="_images/boxplot.png" style="width: 200px;" /></a>
+</div>
+</div>
+<div class="section" id="heatmap">
+<h3>Heatmap<a class="headerlink" href="#heatmap" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/heatmap.png"><img alt="_images/heatmap.png" src="_images/heatmap.png" style="width: 200px;" /></a>
+</div>
+</div>
+<div class="section" id="histogram">
+<h3>Histogram<a class="headerlink" href="#histogram" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/histogram.png"><img alt="_images/histogram.png" src="_images/histogram.png" style="width: 200px;" /></a>
+</div>
+</div>
+<div class="section" id="scatterplot">
+<h3>Scatterplot<a class="headerlink" href="#scatterplot" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/scatter2D.png"><img alt="_images/scatter2D.png" src="_images/scatter2D.png" style="width: 200px;" /></a>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/scatter3d.png"><img alt="_images/scatter3d.png" src="_images/scatter3d.png" style="width: 200px;" /></a>
+</div>
+</div>
+<div class="section" id="violinplot-with-statistics">
+<h3>Violinplot (with statistics)<a class="headerlink" href="#violinplot-with-statistics" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/violin.png"><img alt="_images/violin.png" src="_images/violin.png" style="width: 200px;" /></a>
+</div>
+</div>
+<div class="section" id="volcanoplot">
+<h3>Volcanoplot<a class="headerlink" href="#volcanoplot" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/volcano.png"><img alt="_images/volcano.png" src="_images/volcano.png" style="width: 200px;" /></a>
+</div>
+<p>Each of these charts extends from a base vis which means the styles are set in the same way when the class is instanciated.
+Things which come as present:</p>
+<ol class="arabic simple">
+<li><p>Generating the figures text as elements (for SVG &amp; PDF export)</p></li>
+<li><p>Consistent sizing: figure size &amp; title, and label font sizes and styles</p></li>
+<li><p>Colour (colourmaps, palletes) you can use any colours either as named from matplotlib, or HEX values.</p></li>
+<li><p>X-axis text at 45 degrees for heatmaps &amp; other charts when they have text on the x axis (e.g. boxplot &amp; violinplots).</p></li>
+<li><p>Statistics on box and violin plots (optional) and also colouring each box/violin by a specific colour.</p></li>
+<li><p>Volcanoplot with the option to set colour cutoffs &amp; also labelling of certain points.</p></li>
+<li><p>Scatterplot with labelling of select points (2 and 3D plot).</p></li>
+</ol>
+<p>For details check out the docs page on each of the charts.</p>
+</div>
+</div>
+<div class="section" id="extending-sci-viso">
+<h2>Extending sci-viso<a class="headerlink" href="#extending-sci-viso" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Make a pull request on github - we have made the code extendable for the loss function etc.</p></li>
+</ol>
+</div>
+<div class="section" id="citing-sci-viso">
+<h2>Citing sci-viso<a class="headerlink" href="#citing-sci-viso" title="Permalink to this headline">¶</a></h2>
+<p>Sci-viso can be cited as in <a class="reference internal" href="references.html#references"><span class="std std-ref">References</span></a>, where we also provide citations for the used tools (e.g. matplotlib &amp; seaborn).</p>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Getting started</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">sci-viso</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing/index.html">Installing sci-viso</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Running sci-viso</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples/Barchart.html">Barchart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/Boxplot.html">Boxplot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/Heatmap.html">Heatmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/Histogram.html">Histogram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/Scatterplot.html">Scatterplot 2D and 3D</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/Violinplot.html">Violinplot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/Volcanoplot.html">Volcanoplot</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Change log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="installing/index.html" class="btn btn-neutral float-right" title="Installing sci-viso" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="sci-viso" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2022, Ariane Mora
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
