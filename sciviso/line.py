@@ -85,5 +85,6 @@ class Line(Vis):
         ax.tick_params(labelsize=self.label_font_size)
         ax.legend(labels_lst, loc='center left', bbox_to_anchor=(1, 0.5), fontsize=self.label_font_size)
         self.set_ax_params(ax)
+        plt.tight_layout()
         return ax
 

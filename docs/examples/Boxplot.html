@@ -643,14 +643,6 @@ div.rendered_html tbody tr:hover {
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-No handles with labels found to put in legend.
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 p-value annotation legend:
@@ -669,7 +661,7 @@ Iris-setosa v.s. Iris-virginica: Mann-Whitney-Wilcoxon test two-sided with Bonfe
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Boxplot_4_2.png" src="../_images/examples_Boxplot_4_2.png" />
+<img alt="../_images/examples_Boxplot_4_1.png" src="../_images/examples_Boxplot_4_1.png" />
 </div>
 </div>
 </div>
@@ -821,14 +813,6 @@ Iris-setosa v.s. Iris-virginica: Mann-Whitney-Wilcoxon test two-sided with Bonfe
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-No handles with labels found to put in legend.
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
     Samples  Values Conditions
@@ -868,7 +852,7 @@ cond_1 v.s. cond_2: Mann-Whitney-Wilcoxon test two-sided with Bonferroni correct
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Boxplot_7_3.png" src="../_images/examples_Boxplot_7_3.png" />
+<img alt="../_images/examples_Boxplot_7_2.png" src="../_images/examples_Boxplot_7_2.png" />
 </div>
 </div>
 </div>
@@ -917,14 +901,6 @@ cond_1 v.s. cond_2: Mann-Whitney-Wilcoxon test two-sided with Bonferroni correct
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-No handles with labels found to put in legend.
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 p-value annotation legend:
@@ -941,7 +917,7 @@ cond_1 v.s. cond_2: Mann-Whitney-Wilcoxon test two-sided with Bonferroni correct
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Boxplot_9_2.png" src="../_images/examples_Boxplot_9_2.png" />
+<img alt="../_images/examples_Boxplot_9_1.png" src="../_images/examples_Boxplot_9_1.png" />
 </div>
 </div>
 </div>
@@ -1144,14 +1120,6 @@ cond_1MT v.s. cond_2MT: Mann-Whitney-Wilcoxon test two-sided with Bonferroni cor
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-No handles with labels found to put in legend.
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 p-value annotation legend:
@@ -1169,7 +1137,7 @@ cond_1MT v.s. cond_2MT: Mann-Whitney-Wilcoxon test two-sided with Bonferroni cor
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Boxplot_13_6.png" src="../_images/examples_Boxplot_13_6.png" />
+<img alt="../_images/examples_Boxplot_13_5.png" src="../_images/examples_Boxplot_13_5.png" />
 </div>
 </div>
 </div>
@@ -1177,7 +1145,7 @@ cond_1MT v.s. cond_2MT: Mann-Whitney-Wilcoxon test two-sided with Bonferroni cor
 <h2>Saving<a class="headerlink" href="#Saving" title="Permalink to this headline">¶</a></h2>
 <p>Saving is the same for all plots and v simple, just make sure you specify what ending you want it to have.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1204,22 +1172,23 @@ cond_1MT v.s. cond_2MT: Mann-Whitney-Wilcoxon test two-sided with Bonferroni cor
 <span class="n">boxplot</span> <span class="o">=</span> <span class="n">Boxplot</span><span class="p">(</span><span class="n">formatted_df</span><span class="p">,</span> <span class="s2">&quot;Conditions&quot;</span><span class="p">,</span> <span class="s2">&quot;Values&quot;</span><span class="p">,</span>
                   <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;logFC&#39;</span><span class="p">,</span>
                   <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Gene expression changes&#39;</span><span class="p">,</span>
-                  <span class="n">box_colors</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;plum&quot;</span><span class="p">,</span> <span class="s2">&quot;gold&quot;</span><span class="p">],</span>
-                  <span class="n">add_dots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                  <span class="n">box_colors</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;orchid&quot;</span><span class="p">,</span> <span class="s2">&quot;gold&quot;</span><span class="p">],</span>
+                  <span class="n">add_dots</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                  <span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;palette&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;orchid&#39;</span><span class="p">,</span> <span class="s1">&#39;paleturquoise&#39;</span><span class="p">,</span> <span class="s1">&#39;gold&#39;</span><span class="p">],</span>
+                           <span class="s1">&#39;figsize&#39;</span><span class="p">:(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>  <span class="c1"># Size of figure (x, y)</span>
+                           <span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+                           <span class="s1">&#39;title_font_size&#39;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="c1"># Size of the title (pt)</span>
+                           <span class="s1">&#39;label_font_size&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="c1"># Size of the labels (pt)</span>
+                           <span class="s1">&#39;title_font_weight&#39;</span><span class="p">:</span> <span class="mi">700</span><span class="p">,</span> <span class="c1"># 700 = bold, 600 = normal, 400 = thin</span>
+                           <span class="s1">&#39;font_family&#39;</span><span class="p">:</span> <span class="s1">&#39;sans-serif&#39;</span><span class="p">,</span> <span class="c1"># &#39;serif&#39;, &#39;sans-serif&#39;, or &#39;monospace&#39;</span>
+                           <span class="s1">&#39;font&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Tahoma&#39;</span><span class="p">]</span> <span class="c1"># Default: Arial  # http://jonathansoma.com/lede/data-studio/matplotlib/list-all-fonts-available-in-matplotlib-plus-samples/</span>
+                           <span class="p">})</span>
 <span class="n">boxplot</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;chart.svg&#39;</span><span class="p">)</span> <span class="c1"># .png, .pdf, .jpg</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;boxplot.svg&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span> <span class="c1"># .png, .pdf, .jpg</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;boxplot.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span> <span class="c1"># .png, .pdf, .jpg</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;chart.pdf&#39;</span><span class="p">)</span> <span class="c1"># .png, .pdf, .jpg</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-No handles with labels found to put in legend.
-</pre></div></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
@@ -1254,7 +1223,7 @@ cond_1 v.s. cond_2: Mann-Whitney-Wilcoxon test two-sided with Bonferroni correct
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Boxplot_15_2.png" src="../_images/examples_Boxplot_15_2.png" />
+<img alt="../_images/examples_Boxplot_15_1.png" src="../_images/examples_Boxplot_15_1.png" />
 </div>
 </div>
 </div>

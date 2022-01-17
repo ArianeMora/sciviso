@@ -145,4 +145,5 @@ class Volcanoplot(Vis):
         self.add_labels()
         ax.tick_params(labelsize=self.label_font_size)
         self.set_ax_params(ax)
+        plt.tight_layout()
         return ax

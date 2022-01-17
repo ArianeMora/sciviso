@@ -100,6 +100,7 @@ class Heatmap(Vis):
         ax.fig.suptitle(self.title, fontsize=self.title_font_size, fontweight=self.title_font_weight)
         ax.ax_heatmap.set_xticklabels(ax.ax_heatmap.get_xmajorticklabels(), fontsize=self.label_font_size)
         self.set_ax_params(ax.ax_heatmap)
+        plt.tight_layout()
         return ax
 
     def plot_hm(self, ax=None, linecolor="black"):
@@ -123,5 +124,6 @@ class Heatmap(Vis):
         self.add_labels(title=False, x=False)
         ax.set_xticklabels(ax.get_xmajorticklabels(), fontsize=self.label_font_size)
         self.set_ax_params(ax)
+        plt.tight_layout()
         #plt.colorbar(ax=ax, shrink=0.3, aspect=3, orientation='horizontal')
         return ax

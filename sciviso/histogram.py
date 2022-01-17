@@ -72,4 +72,5 @@ class Histogram(Vis):
         self.apply_limits('y', self.max_y, self.min_y)
 
         self.set_ax_params(ax)
+        plt.tight_layout()
         return ax

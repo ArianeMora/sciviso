@@ -639,7 +639,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -657,8 +657,8 @@ div.rendered_html tbody tr:hover {
                     <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
                     <span class="c1"># You could also pass these as individual parameters, but it&#39;s easier to set as a dictionary</span>
                     <span class="c1"># also, then you can re-use it for other charts!</span>
-                    <span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;palette&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;orchid&#39;</span><span class="p">,</span> <span class="s1">&#39;paleturquoise&#39;</span><span class="p">,</span> <span class="s1">&#39;slateblue&#39;</span><span class="p">],</span>
-                           <span class="s1">&#39;figsize&#39;</span><span class="p">:(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>  <span class="c1"># Size of figure (x, y)</span>
+                    <span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;palette&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;orchid&#39;</span><span class="p">,</span> <span class="s1">&#39;paleturquoise&#39;</span><span class="p">,</span> <span class="s1">&#39;gold&#39;</span><span class="p">],</span>
+                           <span class="s1">&#39;figsize&#39;</span><span class="p">:(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>  <span class="c1"># Size of figure (x, y)</span>
                            <span class="s1">&#39;title_font_size&#39;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="c1"># Size of the title (pt)</span>
                            <span class="s1">&#39;label_font_size&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="c1"># Size of the labels (pt)</span>
                            <span class="s1">&#39;title_font_weight&#39;</span><span class="p">:</span> <span class="mi">700</span><span class="p">,</span> <span class="c1"># 700 = bold, 600 = normal, 400 = thin</span>
@@ -667,6 +667,7 @@ div.rendered_html tbody tr:hover {
                            <span class="p">})</span>
 <span class="n">barchart</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;barchart.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span> <span class="c1"># .png, .pdf, .jpg</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;barchart.svg&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span> <span class="c1"># .png, .pdf, .jpg</span>
 
 </pre></div>
 </div>

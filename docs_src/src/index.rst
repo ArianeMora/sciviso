@@ -18,7 +18,7 @@ Charts
 Barchart
 --------
 
-.. figure:: _static/barchart.png
+.. figure:: _static/barchart.svg
    :width: 200
    :align: center
 
@@ -26,46 +26,46 @@ Barchart
 Boxplot (with statistics)
 -------------------------
 
-.. figure:: _static/boxplot.png
+.. figure:: _static/boxplot.svg
    :width: 200
    :align: center
 
 Heatmap
 -------
 
-.. figure:: _static/heatmap.png
+.. figure:: _static/heatmap.svg
    :width: 200
    :align: center
 
 Histogram
 ---------
 
-.. figure:: _static/histogram.png
+.. figure:: _static/histogram.svg
    :width: 200
    :align: center
 
 Scatterplot
 -----------
 
-.. figure:: _static/scatter2D.png
+.. figure:: _static/scatter2D.svg
    :width: 200
    :align: center
 
-.. figure:: _static/scatter3d.png
+.. figure:: _static/scatter3d.svg
    :width: 200
    :align: center
 
 Violinplot (with statistics)
 ----------------------------
 
-.. figure:: _static/violin.png
+.. figure:: _static/violin.svg
    :width: 200
    :align: center
 
 Volcanoplot
 -----------
 
-.. figure:: _static/volcano.png
+.. figure:: _static/volcano.svg
    :width: 200
    :align: center
 

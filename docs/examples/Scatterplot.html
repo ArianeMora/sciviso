@@ -952,7 +952,7 @@ div.rendered_html tbody tr:hover {
 <h2>Saving<a class="headerlink" href="#Saving" title="Permalink to this headline">¶</a></h2>
 <p>Saving is the same for all plots and v simple, just make sure you specify what ending you want it to have.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -960,11 +960,19 @@ div.rendered_html tbody tr:hover {
                           <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Sepal width&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Sepal Length&#39;</span><span class="p">,</span>
                           <span class="n">points_to_annotate</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Iris-setosa&#39;</span><span class="p">],</span> <span class="c1"># Could add the other ones in here</span>
                           <span class="n">annotation_label</span><span class="o">=</span><span class="s1">&#39;label&#39;</span><span class="p">,</span>
-                          <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
-                          <span class="n">colour</span><span class="o">=</span><span class="s1">&#39;orchid&#39;</span><span class="p">,</span>
-                          <span class="n">add_legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># What column those values come from</span>
+                          <span class="n">colour</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;petal_width&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+                          <span class="n">add_legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                          <span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;palette&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;orchid&#39;</span><span class="p">,</span> <span class="s1">&#39;paleturquoise&#39;</span><span class="p">,</span> <span class="s1">&#39;gold&#39;</span><span class="p">],</span>
+                           <span class="s1">&#39;figsize&#39;</span><span class="p">:(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>  <span class="c1"># Size of figure (x, y)</span>
+                           <span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+                           <span class="s1">&#39;title_font_size&#39;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="c1"># Size of the title (pt)</span>
+                           <span class="s1">&#39;label_font_size&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="c1"># Size of the labels (pt)</span>
+                           <span class="s1">&#39;title_font_weight&#39;</span><span class="p">:</span> <span class="mi">700</span><span class="p">,</span> <span class="c1"># 700 = bold, 600 = normal, 400 = thin</span>
+                           <span class="s1">&#39;font_family&#39;</span><span class="p">:</span> <span class="s1">&#39;sans-serif&#39;</span><span class="p">,</span> <span class="c1"># &#39;serif&#39;, &#39;sans-serif&#39;, or &#39;monospace&#39;</span>
+                           <span class="s1">&#39;font&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Tahoma&#39;</span><span class="p">]</span> <span class="c1"># Default: Arial  # http://jonathansoma.com/lede/data-studio/matplotlib/list-all-fonts-available-in-matplotlib-plus-samples/</span>
+                           <span class="p">})</span> <span class="c1"># What column those values come from</span>
 <span class="n">scatterplot</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;chart.svg&#39;</span><span class="p">)</span> <span class="c1"># .png, .pdf, .jpg</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;scatter2D.svg&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span> <span class="c1"># .png, .pdf, .jpg</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;scatter2D.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span> <span class="c1"># .png, .pdf, .jpg</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;chart.pdf&#39;</span><span class="p">)</span> <span class="c1"># .png, .pdf, .jpg</span>
 </pre></div>
@@ -978,7 +986,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -987,9 +995,15 @@ div.rendered_html tbody tr:hover {
                           <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Sepal width&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Sepal Length&#39;</span><span class="p">,</span>
                           <span class="n">z</span><span class="o">=</span><span class="s1">&#39;petal_width&#39;</span><span class="p">,</span>
 
-                          <span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;palette&#39;</span><span class="p">:[</span><span class="s1">&#39;orchid&#39;</span><span class="p">,</span> <span class="s1">&#39;aquamarine&#39;</span><span class="p">]},</span>
-                          <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="c1"># Make the figure bigger.</span>
-                          <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="c1"># Make the size of the points bigger</span>
+                         <span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;palette&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;orchid&#39;</span><span class="p">,</span> <span class="s1">&#39;paleturquoise&#39;</span><span class="p">,</span> <span class="s1">&#39;gold&#39;</span><span class="p">],</span>
+                           <span class="s1">&#39;figsize&#39;</span><span class="p">:(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>  <span class="c1"># Size of figure (x, y)</span>
+                           <span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+                           <span class="s1">&#39;title_font_size&#39;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="c1"># Size of the title (pt)</span>
+                           <span class="s1">&#39;label_font_size&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="c1"># Size of the labels (pt)</span>
+                           <span class="s1">&#39;title_font_weight&#39;</span><span class="p">:</span> <span class="mi">700</span><span class="p">,</span> <span class="c1"># 700 = bold, 600 = normal, 400 = thin</span>
+                           <span class="s1">&#39;font_family&#39;</span><span class="p">:</span> <span class="s1">&#39;sans-serif&#39;</span><span class="p">,</span> <span class="c1"># &#39;serif&#39;, &#39;sans-serif&#39;, or &#39;monospace&#39;</span>
+                           <span class="s1">&#39;font&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Tahoma&#39;</span><span class="p">]</span> <span class="c1"># Default: Arial  # http://jonathansoma.com/lede/data-studio/matplotlib/list-all-fonts-available-in-matplotlib-plus-samples/</span>
+                           <span class="p">})</span> <span class="c1"># Make the size of the points bigger</span>
 
 <span class="c1">#</span>
 <span class="n">groups_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Iris-setosa&#39;</span><span class="p">,</span> <span class="s1">&#39;Iris-virginica&#39;</span><span class="p">]</span> <span class="c1"># Could also do all groups but this is just showing how</span>
@@ -1001,7 +1015,7 @@ div.rendered_html tbody tr:hover {
 <span class="n">scatterplot</span><span class="o">.</span><span class="n">plot_groups_3D</span><span class="p">(</span><span class="n">groups_labels</span><span class="p">,</span> <span class="n">group_idxs</span><span class="p">,</span>
                            <span class="n">alpha_bg</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
 <span class="c1"># Since you can&#39;t see one group since it&#39;s behind other values, let&#39;s remove the background &quot;grey points&quot;</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;chart.svg&#39;</span><span class="p">)</span> <span class="c1"># .png, .pdf, .jpg</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;scatter3d.svg&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span> <span class="c1"># .png, .pdf, .jpg</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;scatter3d.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span> <span class="c1"># .png, .pdf, .jpg</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;chart.pdf&#39;</span><span class="p">)</span> <span class="c1"># .png, .pdf, .jpg</span>
 </pre></div>

@@ -152,4 +152,5 @@ class Boxplot(Vis):
         self.add_labels()
 
         self.set_ax_params(ax)
+        plt.tight_layout()
         return ax

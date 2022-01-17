@@ -77,4 +77,5 @@ class Barchart(Vis):
         ax.tick_params(labelsize=self.label_font_size)
         self.add_labels()
         self.set_ax_params(ax)
+        plt.tight_layout()
         return ax

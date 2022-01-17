@@ -738,15 +738,24 @@ div.rendered_html tbody tr:hover {
 <h2>Saving<a class="headerlink" href="#Saving" title="Permalink to this headline">¶</a></h2>
 <p>Saving is the same for all plots and v simple, just make sure you specify what ending you want it to have.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">histogram</span> <span class="o">=</span> <span class="n">Histogram</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;petal_width&#39;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Petal width&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Petal Width&#39;</span><span class="p">,</span>
                       <span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-                      <span class="n">colour</span><span class="o">=</span><span class="s1">&#39;orchid&#39;</span><span class="p">,</span> <span class="n">fit_norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">plot_rug</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                      <span class="n">colour</span><span class="o">=</span><span class="s1">&#39;orchid&#39;</span><span class="p">,</span> <span class="n">fit_norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">plot_rug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                      <span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;palette&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;orchid&#39;</span><span class="p">,</span> <span class="s1">&#39;paleturquoise&#39;</span><span class="p">,</span> <span class="s1">&#39;gold&#39;</span><span class="p">],</span>
+                           <span class="s1">&#39;figsize&#39;</span><span class="p">:(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>  <span class="c1"># Size of figure (x, y)</span>
+                           <span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+                           <span class="s1">&#39;title_font_size&#39;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="c1"># Size of the title (pt)</span>
+                           <span class="s1">&#39;label_font_size&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="c1"># Size of the labels (pt)</span>
+                           <span class="s1">&#39;title_font_weight&#39;</span><span class="p">:</span> <span class="mi">700</span><span class="p">,</span> <span class="c1"># 700 = bold, 600 = normal, 400 = thin</span>
+                           <span class="s1">&#39;font_family&#39;</span><span class="p">:</span> <span class="s1">&#39;sans-serif&#39;</span><span class="p">,</span> <span class="c1"># &#39;serif&#39;, &#39;sans-serif&#39;, or &#39;monospace&#39;</span>
+                           <span class="s1">&#39;font&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Tahoma&#39;</span><span class="p">]</span> <span class="c1"># Default: Arial  # http://jonathansoma.com/lede/data-studio/matplotlib/list-all-fonts-available-in-matplotlib-plus-samples/</span>
+                           <span class="p">})</span>
 <span class="n">histogram</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;histogram.svg&#39;</span><span class="p">)</span> <span class="c1"># .png, .pdf, .jpg</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;histogram.svg&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span> <span class="c1"># .png, .pdf, .jpg</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;histogram.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span> <span class="c1"># .png, .pdf, .jpg</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;histogram.pdf&#39;</span><span class="p">)</span> <span class="c1"># .png, .pdf, .jpg</span>
 </pre></div>

@@ -100,4 +100,5 @@ class Violinplot(Vis):
         plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., fontsize=self.label_font_size)
         self.add_labels()
         self.set_ax_params(ax)
+        plt.tight_layout()
         return ax

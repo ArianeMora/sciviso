@@ -184,8 +184,10 @@ class Scatterplot(Vis):
         elif self.color_col:
             plt.legend(bbox_to_anchor=(1.05, 1.0), loc='upper left')
         ax.tick_params(labelsize=self.label_font_size)
+        plt.title(self.title)
         self.set_ax_params(ax)
 
+        plt.tight_layout()
         return ax
 
     def plot_groups_2D(self, grp_labels: list, grp_idxs: list, grp_colours=None, plt_bg=True, max_bg=600,
@@ -223,8 +225,8 @@ class Scatterplot(Vis):
             g_i += 1
         ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize=self.label_font_size)
         ax.tick_params(labelsize=self.label_font_size)
-        self.set_ax_params(ax)
         plt.title(self.title)
+        self.set_ax_params(ax)
         plt.tight_layout()
         return ax
 
@@ -262,12 +264,13 @@ class Scatterplot(Vis):
             g_i += 1
         ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize=self.label_font_size)
         ax.tick_params(labelsize=self.label_font_size)
-        self.set_ax_params(ax)
         # remove fill
         ax.xaxis.pane.fill = False
         ax.yaxis.pane.fill = False
         ax.zaxis.pane.fill = False
+        self.add_labels()
         plt.title(self.title)
+        self.set_ax_params(ax)
         plt.tight_layout()
         return ax
 
