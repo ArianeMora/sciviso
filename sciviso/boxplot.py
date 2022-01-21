@@ -143,7 +143,7 @@ class Boxplot(Vis):
                 b.set_facecolor(self.box_colors[i])
 
         if legend and not self.box_colors:
-            plt.legend(order, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.,  fontsize=self.label_font_size)
+            plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.,  fontsize=self.label_font_size)
         elif legend and self.box_colors:
             plt.legend(order, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.,
                        fontsize=self.label_font_size)
