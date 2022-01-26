@@ -24,7 +24,7 @@ import shutil
 import tempfile
 import unittest
 
-from sciviso import Barchart, Boxplot, Heatmap, Histogram, Scatterplot, Violinplot, Volcanoplot, Line
+from sciviso import Barchart, Boxplot, Heatmap, Histogram, Scatterplot, Violinplot, Volcanoplot, Line, Emapplot
 
 
 class TestVis(unittest.TestCase):
@@ -86,7 +86,7 @@ class TestVis(unittest.TestCase):
         # Create additional row_colors here
         labels = self.df['sepal_length'].values.astype(int)
         lut = dict(zip(set(labels), sns.color_palette("coolwarm", len(set(labels)))))
-        row_colors2 = pd.DataFrame(labels)[0].map(lut)
+        row_colors2 = pd.DataFrame(labels)[0].map(lut).values
         annot = self.df[self.numeric_cols].values
         heatmap = Heatmap(self.df, self.numeric_cols, self.label, 'Xlabel', 'Ylabel', annot=True,
                           row_colours=[row_colors, row_colors2], rows_to_colour=['sepal_length'],
@@ -148,4 +148,11 @@ class TestVis(unittest.TestCase):
         cols = [['sepal_length', 'petal_length'], ['sepal_width', 'petal_width']]
 
         line.plot_line_grps(idxs, labels, cols)
+        plt.show()
+
+    def test_emapplot(self):
+        df = pd.read_csv('data/emapexample.csv')
+        eplot = Emapplot(df, config={'figsize': (5, 5)})
+        eplot.build_graph()
+        plt.savefig('fig.svg')
         plt.show()

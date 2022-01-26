@@ -84,7 +84,6 @@ class Heatmap(Vis):
                                 linewidths=self.linewidths,
                                 linecolor=linecolor)
         if self.rows_to_colour:
-            #positions = ['upper right', 'right', 'lower right', 'center right', 'upper left', 'center left', 'lower center', 'upper center']
             for i, rc in enumerate(self.rows_to_colour):
                 labels = self.df[rc].values
                 lut = dict(zip(set(labels), sns.color_palette(self.color_palettes[i], len(set(labels)))))
