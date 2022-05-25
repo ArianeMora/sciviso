@@ -13,6 +13,10 @@ asthetic.
 I have only made wrappers for charts that I use (obvs) but keen for people to add others or make suggestions (feel free
 to do that via github issues).
 
+Others:
+https://github.com/lukelbd/proplot
+https://matplotlib.org/stable/index.html#contributing
+
 ## Check out the docs
 
 [Link to docs](https://arianemora.github.io/sciviso/)

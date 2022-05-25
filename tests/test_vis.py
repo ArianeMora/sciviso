@@ -152,7 +152,31 @@ class TestVis(unittest.TestCase):
 
     def test_emapplot(self):
         df = pd.read_csv('data/emapexample.csv')
-        eplot = Emapplot(df, config={'figsize': (5, 5)})
+        eplot = Emapplot(df, config={'figsize': (3, 3)})
         eplot.build_graph()
         plt.savefig('fig.svg')
         plt.show()
+
+        rcm_labels = ["MDS", "MDS_TMDE", "MDE", "MDE_TMDS", "TMDE", "TMDS", "TPDE", "TPDE_TMDS", "TPDS", "TPDS_TMDE"]
+        r = 'MDE_TMDS'
+        fig_dir= '/Users/ariane/Documents/code/sircle_meth/figures/sircle/'
+        files = os.listdir(fig_dir)  # ClusterGoSummary_MDE_TMDS_matched-island.csv
+        cluster_files = [c for c in files if 'ClusterGoSummary' in c]
+        cluster_files
+        for c in cluster_files:
+            for test_title in ['matched', 'tvn']:
+                if f'y_{r}_{test_title}' in c:
+                    print(c)
+                    try:
+                        title = r + ' ' + c.split('_')[-1].split('.')[0]
+                        df = pd.read_csv(f'{fig_dir}{c}')
+                        df.sort_values('p.adjust')
+                        df = df.head(n=20)
+                        eplot = Emapplot(df, config={'figsize': (3, 3)})
+                        eplot.build_graph()
+                        plt.title(title)
+                        plt.gca().set_clip_on = False
+                        plt.savefig(f'{fig_dir}{title.replace(" ", "-")}.png', bbox_inches='tight')
+                        plt.show()
+                    except:
+                        print(c)

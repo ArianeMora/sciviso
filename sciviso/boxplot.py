@@ -1,3 +1,6 @@
+# Want to also plot the RNA, protein between S1 and S4 and also the protein from the new dataset
+
+
 ###############################################################################
 #                                                                             #
 #    This program is free software: you can redistribute it and/or modify     #
@@ -28,6 +31,7 @@ class Boxplot(Vis):
     Box plot. Adds stat annotations and returns the SVG or saves it to disk.
     for stats annotations details see: https://github.com/webermarcolivier/statannot
     """
+
     def __init__(self, df: pd.DataFrame, x: object, y: object, title='', xlabel='', ylabel='', box_colors=None,
                  hue=None, order=None, hue_order=None, showfliers=False, add_dots=False, add_stats=True,
                  stat_method='Mann-Whitney', box_pairs=None, figsize=(3, 3), title_font_size=12, label_font_size=8,
@@ -87,7 +91,7 @@ class Boxplot(Vis):
         box_df['Conditions'] = condition
         return box_df
 
-    def plot(self, legend=True):
+    def plot(self, ax=None, legend=True):
         x, y, hue_order, order, hue, box_pairs = self.x, self.y, self.hue_order, self.order, self.hue, self.box_pairs
         # First lets check whether we were passed lists or strings for our y and x arrays
         if not isinstance(x, str) and not isinstance(y, str):
@@ -114,9 +118,11 @@ class Boxplot(Vis):
             order.sort()
 
         ax = sns.boxplot(data=vis_df, x=x, y=y, hue=hue, hue_order=hue_order, order=order, palette=self.palette,
-                         showfliers=self.showfliers)
+                         showfliers=self.showfliers, ax=ax)
         if self.add_dots:
-            ax = sns.swarmplot(data=vis_df, x=x, y=y, hue_order=hue_order, order=order, alpha=0.5, color='.2')
+            ax = sns.swarmplot(data=vis_df, x=x, y=y, hue_order=hue_order,
+                               order=order, hue=hue, dodge=True, alpha=0.3, ax=ax, palette=['black', 'black'])
+
         if self.add_stats:
             # Add all pairs in the order if the box pairs is none
             if box_pairs is None:
@@ -135,7 +141,7 @@ class Boxplot(Vis):
                                 box_pairs=box_pairs,
                                 test=self.stat_method, text_format='star', loc='inside', verbose=2)
 
-        ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right', weight = 'bold')
+        ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right', weight='bold')
 
         # Check if the user supplied a list of colours for the boxes:
         if self.box_colors is not None:
@@ -143,14 +149,24 @@ class Boxplot(Vis):
                 b.set_facecolor(self.box_colors[i])
 
         if legend and not self.box_colors:
-            plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.,  fontsize=self.label_font_size)
+            plt.legend(bbox_to_anchor=(1.05, 1), borderaxespad=0., fontsize=self.label_font_size)
         elif legend and self.box_colors:
             plt.legend(order, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.,
                        fontsize=self.label_font_size)
 
+        if legend == False:
+            ax.legend([], [], frameon=False)
         ax.tick_params(labelsize=self.label_font_size)
-        self.add_labels()
-
+        self.add_labels(ax)
+        ax.title.set_text(self.title)
         self.set_ax_params(ax)
         plt.tight_layout()
         return ax
+
+    def add_labels(self, ax, title=True, x=True, y=True):
+        if x:
+            ax.set(xlabel=self.xlabel)
+        if y:
+            ax.set(ylabel=self.ylabel)
+        if title:
+            ax.title.set_text(self.title)

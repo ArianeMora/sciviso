@@ -56,6 +56,7 @@ class Heatmap(Vis):
         self.y_tick_labels = y_tick_labels
         self.linewidths = linewidths
         self.annot = annot
+        self.axis_line_width = 1.0
         if config:
             self.load_style(config)
 

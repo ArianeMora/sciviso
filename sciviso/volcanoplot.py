@@ -32,7 +32,6 @@ class Volcanoplot(Vis):
                  figsize=(3, 3), title_font_size=8, label_font_size=6, title_font_weight=700, config={}):
         super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
                          title_font_weight=title_font_weight)
-        super().__init__(df)
         self.log_fc = config.get("log_fc") if config.get("log_fc") else log_fc
         self.p_val = config.get("p_val") if config.get("p_val") else p_val
         self.p_val_cutoff = config.get("p_val_cutoff") if config.get("p_val_cutoff") else p_val_cutoff

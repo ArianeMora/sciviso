@@ -45,7 +45,7 @@ class Vis:
 
     def __init__(self, df: pd.DataFrame, sciutil=None, cmap='Purples', sep='_', dpi=300,
                  style='ticks', palette='pastel', opacity=0.8, default_colour="teal", figsize=(3, 3),
-                 title_font_size=12, label_font_size=8, title_font_weight=700, text_font_weight=700):
+                 title_font_size=12, label_font_size=8, title_font_weight="bold", text_font_weight="bold"):
         self.sep = sep
         self.df = df
         self.columns = list(df.columns)
@@ -63,12 +63,14 @@ class Vis:
         self.title_font_weight = title_font_weight
         self.text_font_weight = text_font_weight
         self.axis_font_size = label_font_size
+        self.axis_line_width = 1.0
         self.palette = palette
         self.title = None
         self.xlabel = None
         self.ylabel = None
         self.cmap_str = cmap
         self.labels = None
+        self.axis_line_width = 0.5
         self.bins, self.cluster_rows, self.cluster_cols, self.line_width = None, None, None, None
         self.col_colours, self.row_colours, self.vmin, self.vmax, self.x_tick_labels = None, None, None, None, None
         self.min_x, self.min_y, self.max_x, self.max_y = None, None, None, None
@@ -130,17 +132,26 @@ class Vis:
         self.stat_method = style_dict.get('stat_method') or self.stat_method
         self.hue = style_dict.get('hue') or self.hue
         self.s = style_dict.get('s') or 10
+        self.axis_line_width = style_dict.get('axis_line_width') or 0.5
 
     def set_palette(self, palette):
         self.palette = palette
 
-    def add_labels(self, title=True, x=True, y=True):
-        if x:
-            plt.xlabel(self.xlabel, fontsize=self.label_font_size, fontweight=self.text_font_weight)
-        if y:
-            plt.ylabel(self.ylabel, fontsize=self.label_font_size, fontweight=self.text_font_weight)
-        if title:
-            plt.title(self.title, fontsize=self.title_font_size, fontweight=self.title_font_weight)
+    def add_labels(self, title=True, x=True, y=True, ax=None):
+        if ax is not None:
+            if x:
+                ax.set(xlabel=self.xlabel)
+            if y:
+                ax.set(ylabel=self.ylabel)
+            if title:
+                ax.title.set_text(self.title)
+        else:
+            if x:
+                plt.xlabel(self.xlabel, fontsize=self.label_font_size, fontweight=self.text_font_weight)
+            if y:
+                plt.ylabel(self.ylabel, fontsize=self.label_font_size, fontweight=self.text_font_weight)
+            if title:
+                plt.title(self.title, fontsize=self.title_font_size, fontweight=self.title_font_weight)
 
     @staticmethod
     def apply_limits(axis, max_v: float, min_v=None):
@@ -263,10 +274,10 @@ class Vis:
         self.u.warn_p(["Please initiate one of the charts. Vis is just a wrapper. See docs for more info."])
 
     def set_ax_params(self, ax):
-        ax.tick_params(direction='out', length=2, width=0.5)
-        ax.spines['bottom'].set_linewidth(0.5)
+        ax.tick_params(direction='out', length=2, width=self.axis_line_width)
+        ax.spines['bottom'].set_linewidth(self.axis_line_width)
         ax.spines['top'].set_linewidth(0)
-        ax.spines['left'].set_linewidth(0.5)
+        ax.spines['left'].set_linewidth(self.axis_line_width)
         ax.spines['right'].set_linewidth(0)
         ax.tick_params(labelsize=self.axis_font_size)
         ax.tick_params(axis='x', which='major', pad=2.0)
