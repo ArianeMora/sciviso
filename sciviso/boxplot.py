@@ -157,16 +157,8 @@ class Boxplot(Vis):
         if legend == False:
             ax.legend([], [], frameon=False)
         ax.tick_params(labelsize=self.label_font_size)
-        self.add_labels(ax)
+        self.add_labels(ax=ax)
         ax.title.set_text(self.title)
-        self.set_ax_params(ax)
+        self.set_ax_params(ax=ax)
         plt.tight_layout()
         return ax
-
-    def add_labels(self, ax, title=True, x=True, y=True):
-        if x:
-            ax.set(xlabel=self.xlabel)
-        if y:
-            ax.set(ylabel=self.ylabel)
-        if title:
-            ax.title.set_text(self.title)
