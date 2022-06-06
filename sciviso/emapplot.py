@@ -14,17 +14,18 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.     #
 #                                                                             #
 ###############################################################################
-import sys
+import matplotlib as mpl
 
 import matplotlib.pyplot as plt
 import pandas as pd
 from collections import defaultdict
+import numpy as np
 import networkx as nx
 import seaborn as sns
 from matplotlib.patches import Rectangle
 from matplotlib.legend_handler import HandlerBase
-import numpy as np
 from matplotlib.colors import ListedColormap
+import sys
 
 from sciviso import Vis
 
@@ -54,9 +55,10 @@ class HandlerColormap(HandlerBase):
 class Emapplot(Vis):
 
     def __init__(self, df: pd.DataFrame, size_column='Count', color_column='p.adjust', id_column='ID',
-                 label_column='Description', overlap_column='gene_id', overlap_sep='/', title='', config={}):
+                 label_column='Description', overlap_column='gene_id', overlap_sep='/', title='',
+                 config={}):
         super().__init__(df)
-        self.title = title
+        self.title=title
         self.size = size_column
         self.color = color_column
         self.id = id_column
@@ -66,21 +68,21 @@ class Emapplot(Vis):
         if config:
             self.load_style(config)
 
-    def build_graph(self, min_count=None, max_count=None, min_overlap=1, node_cmap='viridis', edge_cmap='Greys',
-                    plot_cliques=False):
+    def build_graph(self, min_overlap=1, node_cmap='viridis', plot_cliques=False):
         """
         Builds a graph from the dataframe from R
         :return:
         """
         G = nx.Graph()
+
         edge_map = defaultdict(dict)
         gene_ids = self.df[self.overlap_column].values
-        gene_ids = [set(genes.split(self.overlap_sep)) for genes in gene_ids]  # Turn it into a list
+        gene_ids = [set(genes.split(self.overlap_sep)) for genes in gene_ids] # Turn it into a list
         all_genes = 0
         for g in gene_ids:
             all_genes += len(g)
+        min_overlap = min_overlap
         # Want to iterate over and get the maps between the two
-        overlapping_numbers = []
         for i, id_i in enumerate(self.df[self.id].values):
             for j, id_j in enumerate(self.df[self.id].values):
                 if i != j:
@@ -91,12 +93,10 @@ class Emapplot(Vis):
                             overlapping_genes = len(gene_ids[i] & gene_ids[j])
                             if overlapping_genes >= min_overlap:
                                 edge_map[id_i][id_j] = overlapping_genes
-                                overlapping_numbers.append(overlapping_genes)
                     else:
                         overlapping_genes = len(gene_ids[i] & gene_ids[j])
                         if overlapping_genes >= min_overlap:
                             edge_map[id_i][id_j] = overlapping_genes
-                            overlapping_numbers.append(overlapping_genes)
         edges = []
         for node1 in edge_map:
             for node2 in edge_map[node1]:
@@ -126,7 +126,12 @@ class Emapplot(Vis):
             G.add_node(node)
             edge_groups[node].append(node) # So that we actually draw it!
         # Now we want a list of node sizes and colours
-        self.df["norm_sized"] = [int(100*(c/max_count)) for c in self.df[self.size].values]
+        mins = np.min(self.df[self.size].values)
+        maxs = np.max(self.df[self.size].values)
+        norms = maxs - mins
+        counts = [20 + 100 * (maxs - c)/norms for c in self.df[self.size].values]
+        sizes = counts
+        colour = self.df[self.color].values
         # Colour the edges by the number of genes shared between the nodes
         edge_values = [edge_map[edge[0]][edge[1]] for edge in edges]
         lut = dict(zip(set(edge_values), sns.dark_palette("#d1d5db", len(set(edge_values)), reverse=True)))
@@ -134,30 +139,31 @@ class Emapplot(Vis):
         edge_colours = pd.DataFrame(edge_values)[0].map(lut).values
         # Need to create a layout when doing
         # separate calls to draw nodes and edges
-        pos = nx.spring_layout(G,  k=1)
-        # Other options: nx.kamada_kawai_layout(G) # nx.spring_layout(G,  k=2) #
+        pos = nx.spring_layout(G,  k=2) #nx.kamada_kawai_layout(G) # nx.spring_layout(G,  k=2) #
         nx.draw_networkx_nodes(G, pos, cmap=plt.get_cmap(node_cmap),
-                               node_color=self.df[self.color].values, node_size=self.df["norm_sized"].values)
+                               node_color=colour, node_size=sizes)
+
         labels = dict(zip(self.df[self.id].values, self.df[self.label].values))
-        nx.draw_networkx_edges(G, pos, edgelist=edges, alpha=0.8, edge_color=edge_colours, width=0.5, arrows=False)
+        nx.draw_networkx_edges(G, pos, edgelist=edges, edge_color=edge_colours, arrows=False)
         # Plot the small labels and then for each "cluster" plot the smallest GO ID this should
         # correspond to the "top" term.
         # https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.clique.find_cliques.html#networkx.algorithms.clique.find_cliques
-        cliques = nx.find_cliques(G)
         labels_to_draw = {}
         gene_numbers = dict(zip(self.df[self.id].values, self.df[self.size].values))
+
         # If the user has selected the smallest GO term as the one they want
         if plot_cliques:
+            cliques = nx.find_cliques(G)
             for clique in cliques:
-                 # For each clique we want to get the GO term with the smallest ID
-                 smallest_GO = min([g.split(':')[1] for g in clique])
-                 labels_to_draw[f'GO:{smallest_GO}'] = labels[f'GO:{smallest_GO}']
+                # For each clique we want to get the GO term with the smallest ID
+                smallest_GO = min([g.split(':')[1] for g in clique])
+                labels_to_draw[f'GO:{smallest_GO}'] = labels[f'GO:{smallest_GO}']
 
-            for node, node_group in edge_groups.items():
-                #For each clique we want to get the GO term with the smallest ID
-                smallest_GO = np.argmax([gene_numbers.get(g) for g in node_group])
-                go = node_group[smallest_GO]
-                labels_to_draw[go] = labels[go]
+        for node, node_group in edge_groups.items():
+            # For each clique we want to get the GO term with the smallest ID
+            smallest_GO = np.argmax([gene_numbers.get(g) for g in node_group])
+            go = node_group[smallest_GO]
+            labels_to_draw[go] = labels[go]
 
         small_labels = {}
         for go in labels:
@@ -168,40 +174,46 @@ class Emapplot(Vis):
             nx.draw_networkx_labels(G, pos, small_labels, font_size=self.axis_font_size, font_color='black',
                                     font_family='sans-serif', verticalalignment='bottom')
 
-            nx.draw_networkx_labels(G, pos, labels_to_draw, font_size=self.label_font_size, verticalalignment='bottom',
+            nx.draw_networkx_labels(G, pos, labels_to_draw, font_size=self.label_font_size,
+                                    verticalalignment='bottom',
                                     font_family='sans-serif')
         else:
             nx.draw_networkx_labels(G, pos, small_labels, font_size=self.axis_font_size, font_color='black',
                                     font_family='sans-serif', verticalalignment='bottom', clip_on=False)
 
-            nx.draw_networkx_labels(G, pos, labels_to_draw, font_size=self.label_font_size, verticalalignment='bottom',
+            nx.draw_networkx_labels(G, pos, labels_to_draw, font_size=self.label_font_size,
+                                    verticalalignment='bottom',
                                     font_family='sans-serif', clip_on=False)
+        cmin_node = '{:.2e}'.format(min(colour))
+        cmax_node = '{:.2e}'.format(max(colour))
 
-        cmap_labels = [f'G.shared:{min(overlapping_numbers)}-{max(overlapping_numbers)}']
+        cmap_labels = [f'P.adj:{cmin_node},{cmax_node}', f'G.shared:{min(edge_values)}-{max(edge_values)}']
         # create proxy artists as handles:
         cmaps = [plt.get_cmap(node_cmap), edge_cmap]
         cmap_handles = [Rectangle((0, 0), 1, 1) for _ in cmaps]
         handler_map = dict(zip(cmap_handles,
                                [HandlerColormap(cm, num_stripes=8) for cm in cmaps]))
         legend2 = plt.legend(handles=cmap_handles,
-                             labels=cmap_labels,
-                             handler_map=handler_map,
-                             fontsize=self.axis_font_size, bbox_to_anchor=(0.4, 0.3))
+                   labels=cmap_labels,
+                   handler_map=handler_map,
+                   fontsize=self.axis_font_size, bbox_to_anchor=(0.4, 0.3))
 
         plt.gca().add_artist(legend2)
 
-        gene_min = int(min_count)
-        gene_mean = int(((max_count-min_count)/2))
-        gene_max = int(max_count)
-        gmin = plt.scatter([], [], s=int(100*(min_count/max_count)), marker='o', color='#222')
-        gmid = plt.scatter([], [], s=int(100*(gene_mean/max_count)), marker='o', color='#222')
-        gmax = plt.scatter([], [], s=int(100*(1)), marker='o', color='#222')
+        gene_min = int(np.min(self.df[self.size].values))
+        gene_mean = int(np.mean(self.df[self.size].values))
+        gene_max = int(np.max(self.df[self.size].values))
+        gmin = plt.scatter([], [], s=int(np.min(counts)), marker='o', color='#222')
+        gmid = plt.scatter([], [], s=int(np.mean(counts)), marker='o', color='#222')
+        gmax = plt.scatter([], [], s=int(np.max(counts)), marker='o', color='#222')
+
         legend = plt.legend((gmin, gmid, gmax),
-                            (str(gene_min), str(gene_mean), str(gene_max)),
-                            scatterpoints=1,
-                            loc='lower left',
-                            ncol=1,
-                            fontsize=8, bbox_to_anchor=(0, -0.1))
+                   (str(gene_min), str(gene_mean), str(gene_max)),
+                   scatterpoints=1,
+                   loc='lower left',
+                   ncol=1,
+                   fontsize=self.axis_font_size, bbox_to_anchor=(0, -0.1))
         legend.set_title("No. Genes")
+
         plt.gca().add_artist(legend)
         plt.axis("off")
