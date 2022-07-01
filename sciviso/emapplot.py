@@ -132,11 +132,7 @@ class Emapplot(Vis):
         counts = [20 + 100 * (maxs - c)/norms for c in self.df[self.size].values]
         sizes = counts
         colour = self.df[self.color].values
-        # Colour the edges by the number of genes shared between the nodes
-        edge_values = [edge_map[edge[0]][edge[1]] for edge in edges]
-        lut = dict(zip(set(edge_values), sns.dark_palette("#d1d5db", len(set(edge_values)), reverse=True)))
-        edge_cmap = ListedColormap(sns.dark_palette("#d1d5db", len(set(edge_values)), reverse=True))
-        edge_colours = pd.DataFrame(edge_values)[0].map(lut).values
+
         # Need to create a layout when doing
         # separate calls to draw nodes and edges
         pos = nx.spring_layout(G,  k=2) #nx.kamada_kawai_layout(G) # nx.spring_layout(G,  k=2) #
@@ -144,7 +140,19 @@ class Emapplot(Vis):
                                node_color=colour, node_size=sizes)
 
         labels = dict(zip(self.df[self.id].values, self.df[self.label].values))
-        nx.draw_networkx_edges(G, pos, edgelist=edges, edge_color=edge_colours, arrows=False)
+        if len(edges) > 0:
+            # Colour the edges by the number of genes shared between the nodes
+            edge_values = [edge_map[edge[0]][edge[1]] for edge in edges]
+            lut = dict(zip(set(edge_values), sns.dark_palette("#d1d5db", len(set(edge_values)), reverse=True)))
+            edge_cmap = ListedColormap(sns.dark_palette("#d1d5db", len(set(edge_values)), reverse=True))
+            edge_colours = pd.DataFrame(edge_values)[0].map(lut).values
+            nx.draw_networkx_edges(G, pos, edgelist=edges, edge_color=edge_colours, arrows=False)
+        else:
+            # Set defaults for the legends
+            edge_cmap = plt.get_cmap("Greys")
+            edge_values = [0]
+            self.u.warn_p(['Note, there are no edges drawn since there were no overlaps. Ensure you selected the '
+                           'overlap column correctly, you input:', self.overlap_column, ' with the separator:', self.sep])
         # Plot the small labels and then for each "cluster" plot the smallest GO ID this should
         # correspond to the "top" term.
         # https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.clique.find_cliques.html#networkx.algorithms.clique.find_cliques

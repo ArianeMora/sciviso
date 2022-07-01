@@ -50,17 +50,16 @@ class Heatmap(Vis):
         self.color_palettes = color_palettes if color_palettes else [
             'Purples', 'Blues', 'Greens', 'Oranges', 'Reds', 'YlOrBr',
             'Pastel1', 'Pastel2', 'Paired', 'Accent', 'Dark2',
-                      'Set1', 'Set2', 'Set3', 'tab10', 'tab20', 'tab20b',
-                      'tab20c']
+            'Set1', 'Set2', 'Set3', 'tab10', 'tab20', 'tab20b',
+            'tab20c']
         self.x_tick_labels = x_tick_labels
         self.y_tick_labels = y_tick_labels
         self.linewidths = linewidths
         self.annot = annot
-        self.axis_line_width = 1.0
         if config:
             self.load_style(config)
 
-    def plot(self, ax=None, linecolor="none"):
+    def plot(self, ax=None, linecolor="none", row_linkage=None, col_linkage=None):
         self.check_args_in_columns([self.chart_columns, [self.row_index]])
         df_dists = pd.DataFrame(self.df[self.chart_columns].values)
         df_dists.columns = self.chart_columns
@@ -73,16 +72,21 @@ class Heatmap(Vis):
                 lut = dict(zip(set(labels), sns.color_palette(self.color_palettes[i], len(set(labels)))))
                 self.row_colours.append(pd.DataFrame(labels)[0].map(lut))
         if ax:
-            ax = sns.clustermap(df_dists, col_cluster=self.cluster_cols, figsize=self.figsize, row_cluster=self.cluster_rows,
+            ax = sns.clustermap(df_dists, col_cluster=self.cluster_cols, figsize=self.figsize,
+                                row_cluster=self.cluster_rows,
                                 col_colors=self.col_colours, ax=ax, annot=self.annot,
+                                row_linkage=row_linkage,
+                                col_linkage=col_linkage,
                                 row_colors=self.row_colours, cmap=self.cmap_str, vmax=self.vmax, vmin=self.vmin,
-                                yticklabels=self.y_tick_labels, xticklabels=self.x_tick_labels, linewidths=self.linewidths, linecolor=linecolor)
+                                yticklabels=self.y_tick_labels, xticklabels=self.x_tick_labels,
+                                linewidths=self.linewidths, linecolor=linecolor)
         else:
-            ax = sns.clustermap(df_dists, col_cluster=self.cluster_cols, figsize=self.figsize, row_cluster=self.cluster_rows,
+            ax = sns.clustermap(df_dists, col_cluster=self.cluster_cols, figsize=self.figsize,
+                                row_cluster=self.cluster_rows,
                                 col_colors=self.col_colours, annot=self.annot,
                                 row_colors=self.row_colours, cmap=self.cmap_str, vmax=self.vmax, vmin=self.vmin,
                                 yticklabels=self.y_tick_labels, xticklabels=self.x_tick_labels,
-                                linewidths=self.linewidths,
+                                linewidths=self.linewidths, row_linkage=row_linkage, col_linkage=col_linkage,
                                 linecolor=linecolor)
         if self.rows_to_colour:
             for i, rc in enumerate(self.rows_to_colour):
@@ -125,5 +129,5 @@ class Heatmap(Vis):
         ax.set_xticklabels(ax.get_xmajorticklabels(), fontsize=self.label_font_size)
         self.set_ax_params(ax)
         plt.tight_layout()
-        #plt.colorbar(ax=ax, shrink=0.3, aspect=3, orientation='horizontal')
+        plt.colorbar(ax=ax, shrink=0.3, aspect=3, orientation='horizontal')
         return ax
