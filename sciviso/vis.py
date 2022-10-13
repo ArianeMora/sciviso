@@ -23,7 +23,13 @@ from matplotlib.colors import ListedColormap
 from textwrap import wrap
 
 from sciutil import SciUtil, SciException
-
+# Illustrator pallets so much nicer! https://www.pinterest.com.au/pin/3096293485830872/?mt=login
+BL_OR = ['#E76F51', '#F4A261', '#E9C46A', '#2A9D8F', '#264653']
+OR_BL = ['#FFEBD2', '#FFA364', '#FC7643', '#AF4F41', '#273248']
+PINKS = ['#FFCDB2', '#FFB4A2', '#E5989B', '#B5838D', '#6D6875']
+PURPS = ['#E99E75', '#44426E', '#776483', '#BBAAB8', '#292643']
+BRIGHTS = ['#9FE7F5', '#429EBD', '#053F5C', '#F7AD19', '#F27F0C', '#FB6D10', '#EB3E1B', '#86112E', '#4D3347', '#2E2E41']
+REDS = ['#CE8054', '#B35340', '#6F3637', '#4B2B31']
 
 class VisException(SciException):
     def __init__(self, message=''):
@@ -79,6 +85,7 @@ class Vis:
         self.palette = palette if palette else ['#AAC7E2', '#FFC107', '#016957', '#9785C0',
              '#D09139', '#338A03', '#FF69A1', '#5930B1', '#FFE884', '#35B567', '#1E88E5',
              '#ACAD60', '#A2FFB4', '#B68F5', '#854A9C']
+
         if isinstance(self.palette, str):
             self.palette = sns.color_palette(self.palette)
 

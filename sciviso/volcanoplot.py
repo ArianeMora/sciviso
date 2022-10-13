@@ -44,12 +44,12 @@ class Volcanoplot(Vis):
         self.label = 'volcanoplot'
         self.colours = {'ns_small-neg-logFC': 'lightgrey',
                         'ns_small-pos-logFC': 'lightgrey',
-                        'ns_big-neg-logFC': 'grey',
-                        'ns_big-pos-logFC': 'grey',
-                        'sig_small-neg-logFC': 'paleturquoise',
-                        'sig_small-pos-logFC': 'plum',
-                        'sig_big-neg-logFC': 'darkturquoise',
-                        'sig_big-pos-logFC': 'orchid'} if colours is None else colours
+                        'ns_big-neg-logFC': 'lightgrey',
+                        'ns_big-pos-logFC': 'lightgrey',
+                        'sig_small-neg-logFC': 'lightgrey',
+                        'sig_small-pos-logFC': 'lightgrey',
+                        'sig_big-neg-logFC': '#128e8c',
+                        'sig_big-pos-logFC': '#cf2026'} if colours is None else colours
         self.colours = self.colours if config.get('colours') is None else config.get('colours')
         self.xlabel = xlabel
         self.ylabel = ylabel
@@ -65,7 +65,7 @@ class Volcanoplot(Vis):
                                  colour: str, idxs: np.array, annotate=False):
         x = x_all[idxs]
         y = y_all[idxs]
-        ax = fig.scatter(x, y, c=colour, alpha=self.opacity, s=20)
+        ax = fig.scatter(x, y, c=colour, alpha=self.opacity, s=self.s)
 
         # Check if we want to annotate any of these with their gene IDs
 
@@ -133,8 +133,12 @@ class Volcanoplot(Vis):
         sig_big_neg_logfc = np.where((p_val_np <= self.p_val_cutoff) & (np.abs(log_fc_np) >= self.log_fc_cuttoff)
                                      & (log_fc_np <= 0))
 
+        ns = np.where(p_val_np > self.p_val_cutoff)
         # Plot the points
         fig, ax = plt.subplots(figsize=self.figsize)
+
+        self.add_scatter_and_annotate(ax, x, y, self.colours['sig_small-pos-logFC'], ns)
+
         self.add_scatter_and_annotate(ax, x, y, self.colours['sig_small-pos-logFC'], sig_small_pos_logfc)
         self.add_scatter_and_annotate(ax, x, y, self.colours['sig_big-pos-logFC'], sig_big_pos_logfc, annotate=True)
 

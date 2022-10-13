@@ -23,26 +23,22 @@ from scipy.stats import norm
 from sciviso import Vis
 
 
-class Histogram(Vis):
+class Countplot(Vis):
 
-    def __init__(self, df: pd.DataFrame, x: object, title='', xlabel='', ylabel='', colour=None, normalise=False, fit_norm=False,
-                 plot_rug=False, plot_kde=False, plot_hist=True, bins=20, min_x=None, max_x=None, min_y=None, max_y=None,
+    def __init__(self, df: pd.DataFrame, x=None, y=None, title='', xlabel='', ylabel='', colour=None, hue=None,
+                 min_x=None, max_x=None, min_y=None, max_y=None,
                  figsize=(3, 3), title_font_size=12, label_font_size=8, title_font_weight=700, config={}):
         super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
                          title_font_weight=title_font_weight)
         self.df = df
         self.x = x
+        self.y = y
         self.title = title
-        self.bins = bins
-        self.normalise = normalise
+        self.hue = hue
         self.colour = colour if colour is not None else "black"
-        self.fit_norm = fit_norm
-        self.plot_rug = plot_rug
-        self.plot_kde = plot_kde
-        self.plot_hist = plot_hist
-        self.label = 'histogram'
+        self.label = 'countplot'
         self.xlabel = xlabel
-        self.ylabel = f'{ylabel} Frequency' if self.normalise is False and self.plot_kde is False and fit_norm is False else f'{ylabel} Normalised Frequency'
+        self.ylabel = ylabel
         self.min_x = min_x
         self.min_y = min_y
         self.max_y = max_y
@@ -50,26 +46,15 @@ class Histogram(Vis):
         if config:
             self.load_style(config)
 
-    def plot(self, ax=None):
+    def plot(self):
         x = self.x
+        y = self.y
         # First lets check whether we were passed lists or strings for our y and x arrays
-        if not isinstance(x, str):
-            vis_df = pd.DataFrame()
-            vis_df['x'] = x
-            x = 'x'
-        else:
-            vis_df = self.df
-        # set the orders
-        values = vis_df[x].values
-        if self.fit_norm:
-            ax = sns.distplot(values, fit=norm, kde=self.plot_kde, rug=self.plot_rug, hist=self.plot_hist,
-                              norm_hist=self.normalise, bins=self.bins)
-        else:
-            if ax is not None:
-                ax = ax.hist(values, bins=self.bins, color=self.colour)
-            else:
-                ax = sns.distplot(values, fit=norm, kde=self.plot_kde, rug=self.plot_rug, hist=self.plot_hist,
-                                  bins=self.bins)
+        if x is not None:
+            ax = sns.countplot(data=self.df, x=x, hue=self.hue, palette=self.palette)
+            ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right', weight='bold')
+        elif y is not None:
+            ax = sns.countplot(data=self.df, y=y, hue=self.hue, palette=self.palette)
         self.add_labels()
         self.apply_limits('x', self.max_x, self.min_x)
         self.apply_limits('y', self.max_y, self.min_y)
