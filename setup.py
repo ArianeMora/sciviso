@@ -45,7 +45,8 @@ setup(name='sciviso',
               'sciviso = sciviso.__main__:main'
           ]
       },
-      install_requires=['sciutil', 'pandas', 'numpy', 'matplotlib', 'statannot', 'seaborn', 'adjustText', 'wordcloud', 'networkx'],
+      install_requires=['sciutil', 'pandas', 'numpy', 'matplotlib', 'statannot', 'seaborn', 'adjustText', 'wordcloud',
+                        'networkx', 'dash', 'kaleido'],  # the last two are for sankey plots
       python_requires='>=3.6',
       data_files=[("", ["LICENSE"])]
       )

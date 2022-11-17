@@ -27,9 +27,8 @@ class Countplot(Vis):
 
     def __init__(self, df: pd.DataFrame, x=None, y=None, title='', xlabel='', ylabel='', colour=None, hue=None,
                  min_x=None, max_x=None, min_y=None, max_y=None,
-                 figsize=(3, 3), title_font_size=12, label_font_size=8, title_font_weight=700, config={}):
-        super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
-                         title_font_weight=title_font_weight)
+                 figsize=(3, 3), config={}):
+        super().__init__(df, figsize=figsize)
         self.df = df
         self.x = x
         self.y = y

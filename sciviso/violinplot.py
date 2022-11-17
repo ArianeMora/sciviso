@@ -26,10 +26,8 @@ class Violinplot(Vis):
 
     def __init__(self, df: pd.DataFrame, x: object, y: object, title='', xlabel='', ylabel='', hue=None, order=None,
                  hue_order=None, showfliers=False, add_dots=False, add_stats=False, stat_method='Mann-Whitney',
-                 figsize=(3, 3), title_font_size=12, box_pairs=None,
-                 label_font_size=8, title_font_weight=700, config=None):
-        super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
-                         title_font_weight=title_font_weight)
+                 figsize=(3, 3), box_pairs=None, config=None):
+        super().__init__(df, figsize=figsize)
         self.df = df
         self.x = x
         self.y = y

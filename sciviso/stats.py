@@ -206,15 +206,11 @@ class Vis:
         print(None)
 
     def get_assumptions(self, stat_name: str):
-
-
         references = ['[1] https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2996580/', '[2] https://docs.scipy.org/doc/scipy/reference/stats.html#statistical-tests']
 
     def output_assumptions(self, test_name: str):
         # assumption rows: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2996580/
-        assumptions = [f'Assumptions:',
-                       f'1: {}']
-
+        assumptions = [f'Assumptions:']
 
     def write_stats_file(self):
         print(None)

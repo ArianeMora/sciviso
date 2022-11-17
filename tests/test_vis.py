@@ -24,7 +24,8 @@ import shutil
 import tempfile
 import unittest
 
-from sciviso import Barchart, Boxplot, Heatmap, Histogram, Scatterplot, Violinplot, Volcanoplot, Line, Emapplot
+from sciviso import Barchart, Boxplot, Heatmap, Histogram, Scatterplot, Violinplot, Volcanoplot, Line, \
+    Emapplot, Sankeyplot
 
 
 class TestVis(unittest.TestCase):
@@ -55,6 +56,14 @@ class TestVis(unittest.TestCase):
         barchart = Barchart(self.df, self.label, self.y)
         barchart.plot()
         plt.show()
+
+    def test_sankey(self):
+        df = pd.read_csv('data/RegGrps2-old-new-diff.csv')
+        # https://plotly.com/python/sankey-diagram/
+        # Convert into the source target, value and the labels
+        # Labels are each one in the groups
+        sk = Sankeyplot(df)
+        sk.plot(colour_col='Proteomics')
 
     def test_histpgram(self):
         histogram = Histogram(self.df, self.y, fit_norm=True, plot_rug=True)

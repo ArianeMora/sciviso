@@ -28,11 +28,10 @@ class Heatmap(Vis):
     def __init__(self, df: pd.DataFrame, chart_columns: list, row_index: str, title='', xlabel='', ylabel='',
                  cluster_rows=True, cluster_cols=True, row_colours=None, col_colours=None, vmin=None, vmax=None,
                  linewidths=0.5, x_tick_labels=1, y_tick_labels=1, rows_to_colour=None, cols_to_colour=None,
-                 figsize=(3, 3), title_font_size=8, label_font_size=6, title_font_weight=700, cmap='RdBu_r',
+                 figsize=(3, 3), cmap='RdBu_r',
                  annot=False, color_palettes=None,
                  config={}):
-        super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
-                         title_font_weight=title_font_weight)
+        super().__init__(df, figsize=figsize)
         self.chart_columns = chart_columns
         self.row_index = row_index
         self.title = title

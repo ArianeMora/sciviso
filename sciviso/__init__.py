@@ -18,7 +18,7 @@
 __title__ = 'sciviso'
 __description__ = 'sciviso: Wrapper for common visualisations for sci packages.'
 __url__ = 'https://github.com/ArianeMora/sciviso.git'
-__version__ = '1.0.8'
+__version__ = '1.0.9'
 __author__ = 'Ariane Mora'
 __author_email__ = 'ariane.n.mora@gmail.com'
 __license__ = 'GPL3'
@@ -33,3 +33,4 @@ from sciviso.scatterplot import Scatterplot
 from sciviso.volcanoplot import Volcanoplot
 from sciviso.emapplot import Emapplot
 from sciviso.line import Line
+from sciviso.sankey import Sankeyplot

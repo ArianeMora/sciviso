@@ -25,10 +25,8 @@ from sciviso import Vis
 class Barchart(Vis):
 
     def __init__(self, df: pd.DataFrame, x: object, y: object, title='', xlabel='', ylabel='', hue=None, order=None,
-                 hue_order=None, figsize=(3, 3), title_font_size=12, label_font_size=8, title_font_weight=700,
-                 errwidth=0, linewidth=1, edgecolor="k", config={}):
-        super().__init__(df, figsize=figsize, title_font_size=title_font_size, label_font_size=label_font_size,
-                         title_font_weight=title_font_weight)
+                 hue_order=None, figsize=(3, 3), errwidth=0, linewidth=1, edgecolor="k", config={}):
+        super().__init__(df, figsize=figsize)
         super().__init__(df)
         self.df = df
         self.x = x
