@@ -59,13 +59,16 @@ class TestVis(unittest.TestCase):
 
     def test_sankey(self):
         df = pd.read_csv('data/RegGrps2-old-new-diff.csv')
+        df = pd.read_csv('data/SiRCle_r1.csv')
         # https://plotly.com/python/sankey-diagram/
         # Convert into the source target, value and the labels
         # Labels are each one in the groups
+        df = df[df['Regulation_Grouping_2'] != 'None']
         sk = Sankeyplot(df)
-        sk.plot(colour_col='Proteomics')
+        fig = sk.plot(columns=['Methylation', 'RNA', 'Protein', 'Regulation_Grouping_2'], colour_col='Protein')
+        fig.show()
 
-    def test_histpgram(self):
+    def test_histogram(self):
         histogram = Histogram(self.df, self.y, fit_norm=True, plot_rug=True)
         histogram.plot()
         plt.show()

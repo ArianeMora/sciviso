@@ -20,6 +20,10 @@ import plotly.graph_objects as go
 
 from sciviso import Vis
 
+"""
+Based on: https://plotly.com/python/sankey-diagram/
+"""
+
 
 class Sankeyplot(Vis):
 
@@ -31,7 +35,7 @@ class Sankeyplot(Vis):
         self.label = 'sankey'
         self.colours = colours if colours is not None else ['#AAC7E2', '#FFC107', '#016957', '#9785C0',
                '#D09139', '#338A03', '#FF69A1', '#5930B1', '#FFE884', '#35B567', '#1E88E5',
-               '#ACAD60', '#A2FFB4', '#B68F5', '#854A9C']
+               '#ACAD60', '#A2FFB4', '#854A9C']
         if config:
             self.load_style(config)
 
@@ -50,8 +54,8 @@ class Sankeyplot(Vis):
         columns = columns if columns else self.df.columns
         for c in columns:
             for v in self.df[c].values:
-                if labels.get(f'{c} {v}') is None:
-                    labels[f'{c} {v}'] = i
+                if labels.get(f'{c}:{v}') is None:
+                    labels[f'{c}:{v}'] = i
                     i += 1
         # Now we want to do the source to target
         source = []
@@ -75,16 +79,16 @@ class Sankeyplot(Vis):
                 target_values = self.df[columns[i + 1]].values
                 for j, s in enumerate(source_values):
                     value.append(1)
-                    source.append(labels.get(f'{c} {s}'))
-                    target.append(labels.get(f'{columns[i + 1]} {target_values[j]}'))
+                    source.append(labels.get(f'{c}:{s}'))
+                    target.append(labels.get(f'{columns[i + 1]}:{target_values[j]}'))
                     colours.append(cmap.get(colour_column[j]))
-
+        label_shows = [c.split(':')[1] for c in list(labels.keys())]
         fig = go.Figure(data=[go.Sankey(
             node=dict(
                 pad=15,
                 thickness=20,
                 line=dict(color="black", width=0.5),
-                label=list(labels.keys()),
+                label=label_shows,
                 color='white'
             ),
             link=dict(
@@ -95,4 +99,4 @@ class Sankeyplot(Vis):
             ))])
 
         fig.update_layout(title_text=self.title, font_size=self.title_font_size)
-        fig.show()
+        return fig
