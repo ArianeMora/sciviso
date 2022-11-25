@@ -33,8 +33,8 @@ class Sankeyplot(Vis):
         self.df = df
         self.title = title
         self.label = 'sankey'
-        self.colours = colours if colours is not None else ['#AAC7E2', '#FFC107', '#016957', '#9785C0',
-               '#D09139', '#338A03', '#FF69A1', '#5930B1', '#FFE884', '#35B567', '#1E88E5',
+        self.colours = colours if colours is not None else ['#FFC107', '#016957', '#9785C0',
+               '#D09139', '#338A03', '#5930B1', '#FFE884', '#35B567', '#1E88E5',
                '#ACAD60', '#A2FFB4', '#854A9C']
         if config:
             self.load_style(config)
