@@ -68,13 +68,6 @@ class Emapplot(Vis):
         if config:
             self.load_style(config)
 
-    def get_colours(self, colours, vmin, vmax, step=8):
-        # Convert the colours to be between the vmin and vmax at certain step sizes
-        new_colours = []
-        step_size = (vmax-vmin)/step
-        colour_intervals =
-        for c in colours:
-
 
     def build_graph(self, min_overlap=1, node_cmap='viridis',
                     plot_cliques=False, c_vmin=None, c_vmax=None, edge_vmin=None, edge_vmax=None,
