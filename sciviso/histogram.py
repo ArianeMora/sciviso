@@ -67,7 +67,7 @@ class Histogram(Vis):
             if ax is not None:
                 ax = ax.hist(values, bins=self.bins, color=self.colour)
             else:
-                ax = sns.distplot(values, fit=norm, kde=self.plot_kde, rug=self.plot_rug, hist=self.plot_hist,
+                ax = sns.histplot(values, fit=norm, kde=self.plot_kde, rug=self.plot_rug, hist=self.plot_hist,
                                   bins=self.bins)
         self.add_labels()
         self.apply_limits('x', self.max_x, self.min_x)

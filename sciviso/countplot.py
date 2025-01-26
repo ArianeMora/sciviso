@@ -50,7 +50,7 @@ class Countplot(Vis):
         y = self.y
         # First lets check whether we were passed lists or strings for our y and x arrays
         if x is not None:
-            ax = sns.countplot(data=self.df, x=x, hue=self.hue, palette=self.palette)
+            ax = sns.countplot(data=self.df, x=x, hue=self.hue, palette=self.palette, order =self.df[x].value_counts().index)
             ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right', weight='bold')
         elif y is not None:
             ax = sns.countplot(data=self.df, y=y, hue=self.hue, palette=self.palette)

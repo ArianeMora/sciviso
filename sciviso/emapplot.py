@@ -68,7 +68,17 @@ class Emapplot(Vis):
         if config:
             self.load_style(config)
 
-    def build_graph(self, min_overlap=1, node_cmap='viridis', plot_cliques=False):
+    def get_colours(self, colours, vmin, vmax, step=8):
+        # Convert the colours to be between the vmin and vmax at certain step sizes
+        new_colours = []
+        step_size = (vmax-vmin)/step
+        colour_intervals =
+        for c in colours:
+
+
+    def build_graph(self, min_overlap=1, node_cmap='viridis',
+                    plot_cliques=False, c_vmin=None, c_vmax=None, edge_vmin=None, edge_vmax=None,
+                    g_min=None, g_mid=None, g_max=None):
         """
         Builds a graph from the dataframe from R
         :return:
@@ -126,8 +136,8 @@ class Emapplot(Vis):
             G.add_node(node)
             edge_groups[node].append(node) # So that we actually draw it!
         # Now we want a list of node sizes and colours
-        mins = np.min(self.df[self.size].values)
-        maxs = np.max(self.df[self.size].values)
+        mins = np.min(self.df[self.size].values) if not g_min else g_min
+        maxs = np.max(self.df[self.size].values) if not g_max else g_max
         norms = maxs - mins
         counts = [20 + 100 * (maxs - c)/norms for c in self.df[self.size].values]
         sizes = counts
@@ -136,6 +146,8 @@ class Emapplot(Vis):
         # Need to create a layout when doing
         # separate calls to draw nodes and edges
         pos = nx.spring_layout(G,  k=2) #nx.kamada_kawai_layout(G) # nx.spring_layout(G,  k=2) #
+        if c_vmin is not None and c_vmax is not None:
+            colour = get_colours(colour, c_vmin, c_vmax)
         nx.draw_networkx_nodes(G, pos, cmap=plt.get_cmap(node_cmap),
                                node_color=colour, node_size=sizes)
 
@@ -146,7 +158,8 @@ class Emapplot(Vis):
             lut = dict(zip(set(edge_values), sns.dark_palette("#d1d5db", len(set(edge_values)), reverse=True)))
             edge_cmap = ListedColormap(sns.dark_palette("#d1d5db", len(set(edge_values)), reverse=True))
             edge_colours = pd.DataFrame(edge_values)[0].map(lut).values
-            nx.draw_networkx_edges(G, pos, edgelist=edges, edge_color=edge_colours, arrows=False)
+            nx.draw_networkx_edges(G, pos, edgelist=edges, edge_color=edge_colours, arrows=False,
+                                  edge_vmin=edge_vmin, edge_vmax=edge_vmax)
         else:
             # Set defaults for the legends
             edge_cmap = plt.get_cmap("Greys")
@@ -211,9 +224,17 @@ class Emapplot(Vis):
         gene_min = int(np.min(self.df[self.size].values))
         gene_mean = int(np.mean(self.df[self.size].values))
         gene_max = int(np.max(self.df[self.size].values))
-        gmin = plt.scatter([], [], s=int(np.min(counts)), marker='o', color='#222')
-        gmid = plt.scatter([], [], s=int(np.mean(counts)), marker='o', color='#222')
-        gmax = plt.scatter([], [], s=int(np.max(counts)), marker='o', color='#222')
+        if g_min is not None and g_mid is not None and g_max is not None:
+            gmin = plt.scatter([], [], s=int(g_min), marker='o', color='#222')
+            gmid = plt.scatter([], [], s=int(g_mid), marker='o', color='#222')
+            gmax = plt.scatter([], [], s=int(g_max), marker='o', color='#222')
+            gene_min = g_min
+            gene_mean = g_mid
+            gene_max = g_max
+        else:
+            gmin = plt.scatter([], [], s=int(np.min(counts)), marker='o', color='#222')
+            gmid = plt.scatter([], [], s=int(np.mean(counts)), marker='o', color='#222')
+            gmax = plt.scatter([], [], s=int(np.max(counts)), marker='o', color='#222')
 
         legend = plt.legend((gmin, gmid, gmax),
                    (str(gene_min), str(gene_mean), str(gene_max)),

@@ -85,7 +85,7 @@ class Vis:
         self.palette = palette if palette else ['#AAC7E2', '#FFC107', '#016957', '#9785C0',
              '#D09139', '#338A03', '#FF69A1', '#5930B1', '#FFE884', '#35B567', '#1E88E5',
              '#ACAD60', '#A2FFB4', '#B68F5', '#854A9C']
-
+        self.colour_map, self.colour_map_rev = None, None
         if isinstance(self.palette, str):
             self.palette = sns.color_palette(self.palette)
 
@@ -95,6 +95,29 @@ class Vis:
         self.font = 'Arial'
         sns.set(rc={'figure.figsize': self.figsize, 'font.family': self.font_family,
                     'font.sans-serif': self.font, 'font.size': label_font_size}, style=self.style)
+        self.make_colour()
+
+    def make_colour(self):
+        """ Make colour from the column if it has been provided """
+        if self.colour in list(self.df.columns):
+            # Make the colour actually colours
+            new_colours = []
+            colour_map = {}
+            colour_map_rev = {}
+            i = 0
+            for c in set(self.df[self.colour].values):
+                if i == len(self.palette):
+                    self.u.warn_p([])
+                i = 0
+                colour_map[c] = self.palette[i]
+                colour_map_rev[self.palette[i]] = c
+                i += 1
+            for c in self.df[self.colour].values:
+                new_colours.append(colour_map[c])
+            self.df = self.df.copy()
+            self.df[self.colour] = new_colours
+            self.colour_map = colour_map
+            self.colour_map_rev = colour_map_rev
 
     def load_style(self, style_dict):
         """ Load a style from a dict. """

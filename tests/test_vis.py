@@ -59,13 +59,14 @@ class TestVis(unittest.TestCase):
 
     def test_sankey(self):
         df = pd.read_csv('data/RegGrps2-old-new-diff.csv')
-        df = pd.read_csv('data/SiRCle_r1.csv')
+        df = pd.read_csv('/Users/ariane/Documents/code/SiRCle_multiomics_integration/data/sircle/F3_regulatory_clustering/review/RCM_Detected_P0.5-R1.0-M0.1.csv')
         # https://plotly.com/python/sankey-diagram/
         # Convert into the source target, value and the labels
         # Labels are each one in the groups
-        df = df[df['Regulation_Grouping_2'] != 'None']
+        df = df[df['Regulation_Grouping_2_filtered'] != 'None']
+        df = df.sort_values(by=['Regulation_Grouping_2_filtered'])
         sk = Sankeyplot(df)
-        fig = sk.plot(columns=['Methylation', 'RNA', 'Protein', 'Regulation_Grouping_2'], colour_col='Protein')
+        fig = sk.plot(columns=['Methylation', 'RNA', 'Protein', 'Regulation_Grouping_2', 'Regulation_Grouping_2_filtered'], colour_col='Regulation_Grouping_2_filtered')
         fig.show()
 
     def test_histogram(self):
@@ -126,7 +127,6 @@ class TestVis(unittest.TestCase):
         heatmap.plot(linecolor="none")
         plt.show()
 
-
     def test_scatterplot(self):
         scatterplot = Scatterplot(self.df, self.x, self.y, 'sepal_length', 'Xlabel', 'Ylabel',
                                   points_to_annotate=['Iris-setosa'],
@@ -164,31 +164,8 @@ class TestVis(unittest.TestCase):
 
     def test_emapplot(self):
         df = pd.read_csv('data/emapexample.csv')
-        eplot = Emapplot(df, config={'figsize': (3, 3)})
-        eplot.build_graph()
+        eplot = Emapplot(df, overlap_column='geneID', config={'figsize': (3, 3)})
+        eplot.build_graph(c_vmin=0.01, c_vmax=0.05, edge_vmin=1, edge_vmax=100,
+                    g_min=10, g_mid=100, g_max=200)
         plt.savefig('fig.svg')
         plt.show()
-
-        rcm_labels = ["MDS", "MDS_TMDE", "MDE", "MDE_TMDS", "TMDE", "TMDS", "TPDE", "TPDE_TMDS", "TPDS", "TPDS_TMDE"]
-        r = 'MDE_TMDS'
-        fig_dir= '/Users/ariane/Documents/code/sircle_meth/figures/sircle/'
-        files = os.listdir(fig_dir)  # ClusterGoSummary_MDE_TMDS_matched-island.csv
-        cluster_files = [c for c in files if 'ClusterGoSummary' in c]
-        cluster_files
-        for c in cluster_files:
-            for test_title in ['matched', 'tvn']:
-                if f'y_{r}_{test_title}' in c:
-                    print(c)
-                    try:
-                        title = r + ' ' + c.split('_')[-1].split('.')[0]
-                        df = pd.read_csv(f'{fig_dir}{c}')
-                        df.sort_values('p.adjust')
-                        df = df.head(n=20)
-                        eplot = Emapplot(df, config={'figsize': (3, 3)})
-                        eplot.build_graph()
-                        plt.title(title)
-                        plt.gca().set_clip_on = False
-                        plt.savefig(f'{fig_dir}{title.replace(" ", "-")}.png', bbox_inches='tight')
-                        plt.show()
-                    except:
-                        print(c)

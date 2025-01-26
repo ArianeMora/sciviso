@@ -34,3 +34,4 @@ from sciviso.volcanoplot import Volcanoplot
 from sciviso.emapplot import Emapplot
 from sciviso.line import Line
 from sciviso.sankey import Sankeyplot
+from sciviso.countplot import Countplot

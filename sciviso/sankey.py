@@ -18,6 +18,7 @@
 import pandas as pd
 import plotly.graph_objects as go
 
+from collections import defaultdict
 from sciviso import Vis
 
 """
@@ -71,6 +72,14 @@ class Sankeyplot(Vis):
             if i == len(self.colours):
                 i = 0
 
+        source_target_dict = defaultdict(int)
+        colour_dict = {}
+        cmap = {'MDS': '#d8419b', 'MDS+TMDE': '#e585c0', 'MDS_ncRNA': '#d880b4',
+                      'MDE': '#6aaf44', 'MDE+TMDS': '#0e8e6d', 'MDE_ncRNA': '#9edb77',
+                      'TMDE': '#fe2323', 'TMDS': '#2952ff',
+                      'TPDE': '#e68e25', 'TPDE+TMDS': '#844c0f',
+                      'TPDS': '#462d76', 'TPDS+TMDE': '#9b29b7'}
+
         for i, c in enumerate(columns):
             if i + 1 < len(columns):
                 # Basically we want to go through each and say the column0 is the source and the next value is the
@@ -78,11 +87,20 @@ class Sankeyplot(Vis):
                 source_values = self.df[c].values
                 target_values = self.df[columns[i + 1]].values
                 for j, s in enumerate(source_values):
+                    lbl = str(labels.get(f'{c}:{s}')) + '-' + str(labels.get(f'{columns[i + 1]}:{target_values[j]}'))
+                    colour_dict[lbl] = cmap.get(colour_column[j])
+                    source_target_dict[lbl] += 1
                     value.append(1)
                     source.append(labels.get(f'{c}:{s}'))
                     target.append(labels.get(f'{columns[i + 1]}:{target_values[j]}'))
                     colours.append(cmap.get(colour_column[j]))
+
         label_shows = [c.split(':')[1] for c in list(labels.keys())]
+        new_df = pd.DataFrame()
+        source = [int(k.split('-')[0]) for k in source_target_dict]
+        target = [int(k.split('-')[1]) for k in source_target_dict]
+        value = [v for k, v in source_target_dict.items()]
+        colours = [colour_dict[k] for k in source_target_dict]
         fig = go.Figure(data=[go.Sankey(
             node=dict(
                 pad=15,
