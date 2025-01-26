@@ -26,7 +26,7 @@ from sciviso import Vis
 class Histogram(Vis):
 
     def __init__(self, df: pd.DataFrame, x: object, title='', xlabel='', ylabel='', colour=None, normalise=False, fit_norm=False,
-                 plot_rug=False, plot_kde=False, plot_hist=True, bins=20, min_x=None, max_x=None, min_y=None, max_y=None,
+                 plot_rug=False, plot_kde=False, plot_hist=True, hue=None, bins=20, min_x=None, max_x=None, min_y=None, max_y=None,
                  figsize=(3, 3), config={}):
         super().__init__(df, figsize=figsize)
         self.df = df
@@ -41,6 +41,7 @@ class Histogram(Vis):
         self.plot_hist = plot_hist
         self.label = 'histogram'
         self.xlabel = xlabel
+        self.hue = hue
         self.ylabel = f'{ylabel} Frequency' if self.normalise is False and self.plot_kde is False and fit_norm is False else f'{ylabel} Normalised Frequency'
         self.min_x = min_x
         self.min_y = min_y
@@ -67,8 +68,7 @@ class Histogram(Vis):
             if ax is not None:
                 ax = ax.hist(values, bins=self.bins, color=self.colour)
             else:
-                ax = sns.histplot(values, fit=norm, kde=self.plot_kde, rug=self.plot_rug, hist=self.plot_hist,
-                                  bins=self.bins)
+                ax = sns.histplot(vis_df, x=self.x, bins=self.bins, hue=self.hue, color=self.colour, palette=self.palette)
         self.add_labels()
         self.apply_limits('x', self.max_x, self.min_x)
         self.apply_limits('y', self.max_y, self.min_y)
